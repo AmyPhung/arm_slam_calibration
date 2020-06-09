@@ -1,7 +1,7 @@
 # arm_slam_calibration
 
 # Build Status
-[![Build Status](https://travis-ci.org/AmyPhung/arm_slam_calibration.svg?branch=master)](https://travis-ci.org/AmyPhung/arm_slam_calibration)
+[![Build Status](https://travis-ci.org/AmyPhung/arm_slam_calibration.svg?branch=master)](https://travis-ci.org/github/AmyPhung/arm_slam_calibration)
 
 ## Setup
 + `cd ~/catkin_ws/src`
