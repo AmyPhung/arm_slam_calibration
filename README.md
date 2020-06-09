@@ -1,5 +1,8 @@
 # arm_slam_calibration
 
+## Dependencies
++ https://github.com/versatran01/apriltag.git
+
 ## Setup
 + `cd ~/catkin_ws/src`
 + `git clone https://github.com/AmyPhung/arm_slam_calibration`
