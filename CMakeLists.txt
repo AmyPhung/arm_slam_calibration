@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.0.2)
-project(arm_slam_calibration)
+project(joint_calibration)
 
 find_package(catkin REQUIRED COMPONENTS
-  roscpp
+    roscpp
+    message_filters
+    apriltag_ros
+    apriltag_msgs
+    sensor_msgs
 )
 
 catkin_package(
