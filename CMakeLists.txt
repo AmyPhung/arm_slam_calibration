@@ -3,10 +3,13 @@ project(joint_calibration)
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp
+    rospy
     message_filters
     apriltag_ros
     apriltag_msgs
     sensor_msgs
+    robot_calibration
+    robot_calibration_msgs
 )
 
 catkin_package(
