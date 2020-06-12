@@ -1,4 +1,4 @@
-# arm_slam_calibration
+# Joint Calibration
 
 # Build Status
 [![Build Status](https://travis-ci.com/AmyPhung/arm_slam_calibration.svg?branch=master)](https://travis-ci.com/github/AmyPhung/arm_slam_calibration)
