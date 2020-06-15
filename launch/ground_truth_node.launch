@@ -1,0 +1,11 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+
+  <node pkg="joint_calibration" type="ground_truth_gui.py"
+        name="ground_truth_gui" output="screen"/>
+
+  <node pkg="joint_calibration" type="ground_truth_creator.py"
+        name="ground_truth_creator" output="screen">
+  </node>
+
+</launch>

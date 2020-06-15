@@ -36,6 +36,7 @@ class CalibrationGui():
     def run(self):
         while not rospy.is_shutdown():
             self.root.update()
+            
             if self.exit == True:
                 break
 
