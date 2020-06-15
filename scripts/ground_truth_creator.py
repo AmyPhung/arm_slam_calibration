@@ -3,6 +3,7 @@ import roslib
 import rospy
 import tf2_ros
 from std_msgs.msg import Bool
+from geometry_msgs.msg import TransformStamped
 
 import numpy as np
 import math
@@ -38,15 +39,17 @@ class GroundTruthCreator():
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(10.0))
         self.listener = tf2_ros.TransformListener(self.tf_buffer)
         self.broadcaster = tf2_ros.TransformBroadcaster()
-        self.capture_sub  = rospy.Subscriber("/capture_ground_truth", Bool,
-                                             self.capture_callback)
+        self.capture_sub  = rospy.Subscriber("/capture_ground_truth",
+            Bool, self.capture_callback)
+        self.tag_ground_truth_pub = rospy.Publisher("/tag_ground_truth",
+            TransformStamped, queue_size=10)
 
         self.tag_frames = []
         self.complete = False
 
     def capture_callback(self, msg):
         if msg.data == True:
-            self.save_tag_tfs()
+            self.publish_tag_tfs()
             self.complete = True
 
     def list_tag_frames(self):
@@ -56,50 +59,16 @@ class GroundTruthCreator():
         return filter(is_tag_frame, frame_list)
 
 
-    def save_tag_tfs(self):
-        """ Save transforms from base frame to each of the tags in a yaml
-        file """
-        rospy.loginfo("Saving tag transforms")
-
-        tags_dict = {}
+    def publish_tag_tfs(self):
+        """ Publish transforms from base frame to each of the tags """
+        rospy.loginfo("Publishing tag transforms")
 
         for tag in self.tag_frames:
             virtual_tag = "virtual_" + tag
 
-            virtual_tf = self.tf_buffer.lookup_transform("base_link", virtual_tag,
+            virtual_tf = self.tf_buffer.lookup_transform(BASE_FRAME, virtual_tag,
                                                         rospy.Time(0))
-            print(virtual_tf)
-        #
-        # print(self.tf_buffer._getFrameStrings())
-        #
-        # tags_dict = {}
-        #
-        # for tag in self.tag_frames:
-        #     virtual_name = "/virtual_" + tag
-        #     # tag_584
-        #
-        #     # try:
-        #     (trans, rot) = self.tf_buffer.lookupTransform(virtual_name, "base_link",
-        #                                             rospy.Time(0))
-        #     print((trans,rot))
-        #         # (trans, rot) = self.listener.lookupTransform(virtual_name,
-        #         #     BASE_FRAME, rospy.Time(0))
-        #         # tags_dict[virtual_name] = (trans, rot)
-        #         # print(tags_dict)
-        #     # except: #(tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-        #     #     # print("Frame %s couldn't be found", virtual_name)
-        #     #     continue
-        #
-        #     # try:
-        #     #     (trans, rot) = self.listener.waitForTransform(virtual_name,
-        #     #         BASE_FRAME, rospy.Time(0), rospy.Duration(TIMEOUT))
-        #     #     tags_dict[virtual_name] = (trans, rot)
-        #     #
-        #     # except: #(tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-        #     #     print("Frame %s couldn't be found", virtual_name)
-        #     #     continue
-        #
-        # # print(tags_dict)
+            self.tag_ground_truth_pub.publish(virtual_tf)
 
     def broadcast_tag_tfs(self):
         """ Broadcasts tag locations with respect to base frame """
@@ -108,7 +77,7 @@ class GroundTruthCreator():
                 tag_tf = self.tf_buffer.lookup_transform(tag, FRAME2b,
                                                         rospy.Time(0))
             except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException):
-                print("Frame %s couldn't be found", tag)
+                rospy.logwarn("Frame %s couldn't be found", tag)
                 continue
 
             new_tag_frame = "virtual_" + tag
@@ -124,12 +93,9 @@ class GroundTruthCreator():
             if self.list_tag_frames() != None:
                 self.tag_frames = self.list_tag_frames()
 
-
-
-            print(self.tag_frames)
+            rospy.loginfo(self.tag_frames)
             self.broadcast_tag_tfs()
             self.update_rate.sleep()
-            # self.save_tag_tfs()
 
             if self.complete == True:
                 break
