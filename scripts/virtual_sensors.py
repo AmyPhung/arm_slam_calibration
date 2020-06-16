@@ -99,9 +99,9 @@ class VirtualSensors():
                 continue
 
             msg = PointLabeled()
-            msg.header = tag_tf.header
+            msg.point_stamped.header = tag_tf.header
             msg.label = tag_tf.child_frame_id
-            msg.twist = tag_tf.transform.translation
+            msg.point_stamped.point = tag_tf.transform.translation
 
             publisher.publish(msg)
 

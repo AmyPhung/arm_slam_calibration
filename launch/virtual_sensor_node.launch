@@ -4,5 +4,6 @@
   <include file="$(find tagslam)/launch/tagslam.launch"/>
   <include file="$(find easy_handeye)/launch/publish.launch"/>
 
-  <node file="$(find joint_calibration)/launch/virtual_sensors.py"/>
+  <node pkg="joint_calibration" type= "virtual_sensors.py"
+    name="virtual_sensors" output="screen"/>
 </launch>

@@ -23,6 +23,7 @@ class CalibrationGui():
         self.exit = False
 
     def captureCB(self):
+        rospy.loginfo("Recording point...")
         msg = Bool()
         msg.data = True
         self.capture_pub.publish(msg)
@@ -36,7 +37,7 @@ class CalibrationGui():
     def run(self):
         while not rospy.is_shutdown():
             self.root.update()
-            
+
             if self.exit == True:
                 break
 

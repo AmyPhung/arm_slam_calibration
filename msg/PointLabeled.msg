@@ -1,3 +1,2 @@
-std_msgs/Header header
 string label
-geometry_msgs/Point twist
+geometry_msgs/PointStamped point_stamped
