@@ -1,0 +1,8 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+  <include file="$(find tagslam)/launch/apriltag_detector_node.launch"/>
+  <include file="$(find tagslam)/launch/tagslam.launch"/>
+  <include file="$(find easy_handeye)/launch/publish.launch"/>
+
+  <!-- <include file="$(find joint_calibration)/launch/ground_truth_node.launch"/> -->
+</launch>

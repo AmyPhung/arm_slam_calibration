@@ -5,12 +5,15 @@ import rosbag
 import rospy
 import math
 import tf2_ros
-from sensor_msgs.msg import PointCloud2
 from joint_calibration.msg import PointLabeled
 
 
 class VirtualSensors():
     """
+    Note: requires
+    easy_handeye publish.launch
+    tagslam tagslam.launch
+    tagslam apriltag
 
     load bag file
     publish static transform from base_link to tag tfs
@@ -40,11 +43,17 @@ class VirtualSensors():
 
         bag_name = "/home/amy/whoi_ws/src/joint_calibration/bags/tag_ground_truth.bag" # TODO: ROS param this
         self.base_frame = rospy.get_param("base_frame", "base_link")
+        self.camera_frame = rospy.get_param("camera_frame", "fisheye")
         self.timeout = rospy.get_param("timeout", 5)
 
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(self.timeout))
         self.listener = tf2_ros.TransformListener(self.tf_buffer)
         self.broadcaster = tf2_ros.TransformBroadcaster()
+
+        self.sensor_base_pub = rospy.Publisher("/virtual_sensor_base",
+            PointLabeled, queue_size=10)
+        self.sensor_fisheye_pub = rospy.Publisher("/virtual_sensor_fisheye",
+            PointLabeled, queue_size=10)
 
         self.ground_truth_tfs = []
         self.tag_frames = []
@@ -75,8 +84,7 @@ class VirtualSensors():
         else:
             return False
 
-    def list_tag_frames(self):# TODO: move this to helper functions ==========================================
-
+    def list_tag_frames(self):
         """ Filters through tf frames and returns a list only containing
         frames that represent AprilTags """
         frame_list = self.tf_buffer._getFrameStrings()
@@ -88,14 +96,34 @@ class VirtualSensors():
         for frame in self.ground_truth_tfs:
             self.broadcaster.sendTransform(frame)
 
-    def publishBasePoints(self):
-        for tag in self.tag_frames:
-            msg = PointLabeled()
-            tag_tf = self.tf_buffer.lookup_transform(self.base_frame,
-                tag, rospy.Time(0))
+    def publishPoints(self, sensor):
+        if sensor == "base":
+            frame = self.base_frame
+            publisher = self.sensor_base_pub
+        elif sensor == "fisheye":
+            frame = self.camera_frame
+            publisher = self.sensor_fisheye_pub
+        else:
+            rospy.logerr("Invalid sensor name inputted in publishPoints")
+            return
 
-            print(self.tag_frames)
-            # TODO: finish this
+        for tag in self.tag_frames:
+            # Get transform from sensor to tag
+            try:
+                tag_tf = self.tf_buffer.lookup_transform(frame,
+                    tag, rospy.Time(0))
+            except (tf2_ros.LookupException,
+                    tf2_ros.ConnectivityException,
+                    tf2_ros.ExtrapolationException):
+                rospy.logwarn("Frame %s couldn't be found", tag)
+                continue
+
+            msg = PointLabeled()
+            msg.header = tag_tf.header
+            msg.label = tag_tf.child_frame_id
+            msg.twist = tag_tf.transform.translation
+
+            publisher.publish(msg)
 
 
     def run(self):
@@ -105,7 +133,8 @@ class VirtualSensors():
             if self.list_tag_frames() != None:
                 self.tag_frames = self.list_tag_frames()
 
-            self.publishBasePoints()
+            self.publishPoints(sensor="base")
+            # self.publishPoints(sensor="fisheye")
 
             self.update_rate.sleep()
 
