@@ -2,7 +2,9 @@
   <param name="/use_sim_time" value="true"/>
   <include file="$(find tagslam)/launch/apriltag_detector_node.launch"/>
   <include file="$(find tagslam)/launch/tagslam.launch"/>
-  <include file="$(find easy_handeye)/launch/publish.launch"/>
+
+  <!-- Tf is manually added tf in titan urdf file. Uncomment for original urdf -->
+  <!-- <include file="$(find easy_handeye)/launch/publish.launch"/> -->
 
   <node pkg="joint_calibration" type= "virtual_sensors.py"
     name="virtual_sensors" output="screen"/>
