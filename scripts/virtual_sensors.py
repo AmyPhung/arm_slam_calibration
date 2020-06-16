@@ -9,42 +9,19 @@ from joint_calibration.msg import PointLabeled
 
 
 class VirtualSensors():
-    """
-    Note: requires
-    easy_handeye publish.launch
-    tagslam tagslam.launch
-    tagslam apriltag
-
-    load bag file
-    publish static transform from base_link to tag tfs
-
-    self.tag_frames = **SOMEHOW LOOK UP LIST OF TAGS**
-
-    self.sensor_base_pub = Publisher
-    self.sensor_fisheye_pub = Publisher
-
-    def run(self):
-        while not rospy.is_shutdown():
-            base_pcl = self.computeBasePoints()
-            fisheye_pcl = self.computeFisheyePoints()
-
-            self.sensor_base_pub.publish(base_pcl)
-            self.sensor_fisheye_pub.publish(fisheye_pcl)
-
-    def computeBasePoints(self):
-        base_tf = lookupTransform
-        self.reformat_as_pcl(tf)
-
-    def computeFisheyePoints(self):
+    """ Node to create two virtual sensors - publishes labeled points
+    representing tag positions in base_link frame as if they were measured
+    by the fisheye camera or from the base_link itself (as a "ground truth")
     """
     def __init__(self):
         rospy.init_node("GroundTruthCreator")
         self.update_rate = rospy.Rate(10)
 
+        # TODO: make bag name an ros param
         bag_name = "/home/amy/whoi_ws/src/joint_calibration/bags/tag_ground_truth.bag" # TODO: ROS param this
         self.base_frame = rospy.get_param("base_frame", "base_link")
         self.camera_frame = rospy.get_param("camera_frame", "fisheye")
-        self.timeout = rospy.get_param("timeout", 5)
+        self.timeout = rospy.get_param("timeout", 500) # TODO: pick more sensible timeout
 
         self.tf_buffer = tf2_ros.Buffer(rospy.Duration(self.timeout))
         self.listener = tf2_ros.TransformListener(self.tf_buffer)
@@ -94,6 +71,7 @@ class VirtualSensors():
         """ Re-publish ground truth tf """
         # TODO: make this use static publisher
         for frame in self.ground_truth_tfs:
+            frame.header.stamp = rospy.get_rostime()
             self.broadcaster.sendTransform(frame)
 
     def publishPoints(self, sensor):
@@ -108,10 +86,12 @@ class VirtualSensors():
             return
 
         for tag in self.tag_frames:
-            # Get transform from sensor to tag
+            # TODO: Get rid of warnings on startup
+
+            # Get position of tag in sensor frame
             try:
-                tag_tf = self.tf_buffer.lookup_transform(frame,
-                    tag, rospy.Time(0))
+                tag_tf = self.tf_buffer.lookup_transform(
+                    frame, tag, rospy.Time(0))
             except (tf2_ros.LookupException,
                     tf2_ros.ConnectivityException,
                     tf2_ros.ExtrapolationException):
@@ -134,7 +114,7 @@ class VirtualSensors():
                 self.tag_frames = self.list_tag_frames()
 
             self.publishPoints(sensor="base")
-            # self.publishPoints(sensor="fisheye")
+            self.publishPoints(sensor="fisheye")
 
             self.update_rate.sleep()
 
