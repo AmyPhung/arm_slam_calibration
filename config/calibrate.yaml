@@ -1,0 +1,29 @@
+verbose: true
+base_link: base_link
+models:
+ - name: fisheye
+   type: chain
+   frame: fisheye
+ - name: base
+   type: chain
+   frame: base_link
+free_params:
+ - shoulder_yaw
+ - shoulder_pitch
+ - forearm_pitch
+ - wrist_pitch
+ - wrist_yaw
+ - wrist_rotate
+# free_frames:
+ # - name: fisheye
+ #   x: true
+ #   y: true
+ #   z: true
+ #   roll: true
+ #   pitch: true
+ #   yaw: true
+error_blocks:
+ - name: hand_eye
+   type: chain3d_to_chain3d
+   model_a: fisheye
+   model_b: base

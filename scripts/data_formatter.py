@@ -80,6 +80,9 @@ class DataFormatter():
         data_msg = CalibrationData()
         data_msg.joint_states = self.state_msg
 
+        # TODO: Put this somewhere else - just for quick testing
+        data_msg.joint_states.position = list(map(lambda x : x - 1, data_msg.joint_states.position))
+
         fisheye_obs = Observation()
         fisheye_obs.sensor_name = "fisheye"
         fisheye_obs.features = self.fisheye_msgs.values()
