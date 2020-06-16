@@ -21,7 +21,7 @@ class GroundTruthCreator():
     """
     def __init__(self):
         rospy.init_node("GroundTruthCreator")
-        self.update_rate = rospy.Rate(1)
+        self.update_rate = rospy.Rate(10)
 
         self.base_frame = rospy.get_param("base_frame", "base_link")
         self.camera_frame1 = rospy.get_param("camera_frame1", "fisheye")
@@ -45,6 +45,7 @@ class GroundTruthCreator():
             self.publish_tag_tfs()
             self.complete = True
 
+# TODO: move this to helper functions ==========================================
     def is_tag_frame(self, frame):
         """ Returns True if input frame is a tag frame (starts with tag_),
         False otherwise
@@ -59,6 +60,7 @@ class GroundTruthCreator():
             return True
         else:
             return False
+# TODO: move this to helper functions ==========================================
 
     def list_tag_frames(self):
         """ Filters through tf frames and returns a list only containing
