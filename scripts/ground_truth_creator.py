@@ -108,9 +108,8 @@ class GroundTruthCreator():
             self.update_rate.sleep()
 
             if self.complete == True:
+                rospy.loginfo("Tag frames captured! Exiting...")
                 break
-
-
 
 
 if __name__ == '__main__':
