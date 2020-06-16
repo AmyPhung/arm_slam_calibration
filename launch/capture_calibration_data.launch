@@ -10,8 +10,8 @@
         name="data_formatter" output="screen"/>
 
 
-  <node pkg="rosbag" type="record" name="rosbag_record_tag_tf"
+  <!-- <node pkg="rosbag" type="record" name="rosbag_record_tag_tf"
       args="record -O  $(find joint_calibration)/bags/calibration_data.bag
-      /calibration_data"/>
+      /calibration_data /robot_description"/> -->
 
 </launch>

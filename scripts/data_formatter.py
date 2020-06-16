@@ -1,55 +1,22 @@
 #!/usr/bin/env python
 
 import rospy
+import rosbag
 from robot_calibration_msgs.msg import CalibrationData
 from robot_calibration_msgs.msg import Observation
 from robot_calibration_msgs.msg import ExtendedCameraInfo
 from joint_calibration.msg import PointLabeled
 from std_msgs.msg import Bool
+from std_msgs.msg import String
 from sensor_msgs.msg import JointState
 
 # Python Imports
 from collections import OrderedDict
 
 class DataFormatter():
-    """
-    sync subs gui
-    sync subs tagslam (fisheye)
-    sync subs tagslam2 (stereo pair)
-
-
-
-    dictionary: tag
-    ** sequence needs to match between sensors **
-
-
-    publisher: robot_description
-    publisher: calibration_data
-
-
-
-
-
-
-    ordered dictionary - sort alphabetically
-
-
-
-
-
-    In caputre data:
-    sync callback:
-        if gui.true
-            capture sample (fisheye.msg, tagslam2.msg)
-        else
-            save bag? - send shutdown signal?
-            exit
-
-    def capture_sample(self):
-
-    formats and publishes calibration data to /calibration_data topic
-
-    TODO: add break on exit
+    """ Formats data from two virtual sensor topics and publishes
+    calibration data to /calibration_data topic. Also writes robot_description
+    and calibration data to calibration bag file
     """
     def __init__(self):
         rospy.init_node("DataFormatter")
@@ -79,6 +46,18 @@ class DataFormatter():
         self.fisheye_msgs = OrderedDict(zip(self.tags, self.blank))
         self.state_msg = None
 
+        # TODO: Make this a param
+        self.bag = rosbag.Bag('/home/amy/whoi_ws/src/joint_calibration/bags/calibration_data.bag', 'w') # TODO: make this a param
+
+        # write the URDF
+        description = String()
+        description.data = rospy.get_param('robot_description')
+        self.bag.write('robot_description', description)
+
+        # Node will shutdown when this is True
+        self.complete = False
+
+
     def sensor_base_cb(self, msg):
         tag_name = msg.label
         self.base_msgs[tag_name] = msg.point_stamped
@@ -91,6 +70,8 @@ class DataFormatter():
         """ Callback function from gui output topic """
         if msg.data == True:
             self.publish_current_values()
+        else:
+            self.complete = True
 
     def state_cb(self, msg):
         self.state_msg = msg
@@ -102,7 +83,6 @@ class DataFormatter():
         fisheye_obs = Observation()
         fisheye_obs.sensor_name = "fisheye"
         fisheye_obs.features = self.fisheye_msgs.values()
-        print(type(fisheye_obs.features))
 
         base_obs = Observation()
         base_obs.sensor_name = "base"
@@ -111,8 +91,17 @@ class DataFormatter():
         data_msg.observations = [fisheye_obs, base_obs]
 
         self.calibration_pub.publish(data_msg)
+        self.bag.write('calibration_data', data_msg)
+
+    def run(self):
+        while not rospy.is_shutdown():
+            if self.complete == True:
+                break
+            self.update_rate.sleep()
+
+        self.bag.close()
 
 
 if __name__ == '__main__':
     df = DataFormatter()
-    rospy.spin()
+    df.run()
