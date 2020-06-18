@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  docker build -t arm_slam_calibration .
+  docker build -t joint_calibration .

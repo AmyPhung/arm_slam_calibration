@@ -1,5 +1,5 @@
 ARG ROS_DISTRO=melodic
-ARG PROJECT=arm_slam_calibration
+ARG PROJECT=joint_calibration
 
 FROM ros:$ROS_DISTRO
 
