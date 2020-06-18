@@ -1,0 +1,31 @@
+<!-- capture_ground_truth.launch
+Used for capturing a single tagslam output (tf between tags and base_link
+to use as ground truth. Save in tag_ground_truth.bag -->
+
+<launch>
+  <param name="/use_sim_time" value="true"/>
+
+  <arg name="base_frame" default="base_link" />
+  <arg name="timeout" default="10" />
+  <arg name="tag_frames" default="['tag_584', 'tag_582', 'tag_580',
+                                   'tag_579', 'tag_578', 'tag_577',
+                                   'tag_9', 'tag_5', 'tag_7']" />
+
+  <arg name="save_filename"
+    default="$(find joint_calibration)/bags/tag_ground_truth.bag" />
+
+  <node pkg="joint_calibration" type="ground_truth_gui.py"
+        name="ground_truth_gui" output="screen"/>
+
+  <node pkg="joint_calibration" type="virtual_tfs.py"
+        name="virtual_tfs" output="screen"/>
+
+  <node pkg="joint_calibration" type="capture_ground_truth.py"
+        name="capture_ground_truth" output="screen">
+    <param name="base_frame" type="string" value="$(arg base_frame)"/>
+    <param name="timeout" type="string" value="$(arg timeout)"/>
+    <param name="tag_frames" value="$(arg tag_frames)"/>
+    <param name="save_filename" type="string" value="$(arg save_filename)"/>
+  </node>
+
+</launch>
