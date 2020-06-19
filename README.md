@@ -46,8 +46,8 @@
 
 ### Play bag data from cmd line
 + `rosbag play merged.bag --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
-+ For testing`rosbag play merged.bag /joint_states:=/fake_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
-+ `rosrun joint_calibration fake_joints.py`
++ For testing`rosbag play merged.bag /joint_states:=/original_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
++ `rosrun joint_calibration joint_state_republisher.py`
 
 ### Debugging
 + `rosrun tf view_frames`
