@@ -54,10 +54,12 @@ class VirtualTfs():
             try:
                 tag_tf = self.tf_buffer.lookup_transform(tag,
                     self.camera_frame2, rospy.Time(0))
+                rospy.loginfo_throttle(20, "Virtual Frames available")
             except (tf2_ros.LookupException,
                     tf2_ros.ConnectivityException,
                     tf2_ros.ExtrapolationException):
-                rospy.logwarn_throttle(10, "Can't find frames in virtual_tfs")
+                rospy.logwarn_throttle(10,
+                    "Can't find virtual frames in tf tree")
                 continue
 
             new_tag_frame = "virtual_" + tag
@@ -72,9 +74,9 @@ class VirtualTfs():
         while not rospy.is_shutdown():
             if self.list_tag_frames() != []:
                 self.tag_frames = self.list_tag_frames()
-                rospy.loginfo_throttle(20, "Frames available")
+
             else:
-                rospy.loginfo_throttle(10, "No tag frames")
+                rospy.loginfo_throttle(10, "Waiting on virtual frames...")
 
             self.broadcast_tag_tfs()
             self.update_rate.sleep()
