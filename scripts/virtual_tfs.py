@@ -48,18 +48,6 @@ class VirtualTfs():
         frame_list = self.tf_buffer._getFrameStrings()
         return filter(self.is_tag_frame, frame_list)
 
-
-    def publish_tag_tfs(self):
-        """ Publish transforms from base frame to eacVirtualTfsh of the tags """
-        rospy.loginfo("Publishing tag transforms")
-
-        for tag in self.tag_frames:
-            virtual_tag = "virtual_" + tag
-
-            virtual_tf = self.tf_buffer.lookup_transform(self.base_frame,
-                virtual_tag, rospy.Time(0))
-            self.tag_ground_truth_pub.publish(virtual_tf)
-
     def broadcast_tag_tfs(self):
         """ Broadcasts tag locations with respect to base frame """
         for tag in self.tag_frames:
@@ -69,7 +57,7 @@ class VirtualTfs():
             except (tf2_ros.LookupException,
                     tf2_ros.ConnectivityException,
                     tf2_ros.ExtrapolationException):
-                rospy.logwarn("Frame %s couldn't be found", tag)
+                rospy.logwarn_throttle(10, "Can't find frames in virtual_tfs")
                 continue
 
             new_tag_frame = "virtual_" + tag
@@ -86,7 +74,7 @@ class VirtualTfs():
                 self.tag_frames = self.list_tag_frames()
                 rospy.loginfo_throttle(20, "Frames available")
             else:
-                rospy.loginfo_throttle(10, "Can't find tag frames")
+                rospy.loginfo_throttle(10, "No tag frames")
 
             self.broadcast_tag_tfs()
             self.update_rate.sleep()

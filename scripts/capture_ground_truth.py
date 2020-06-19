@@ -37,8 +37,6 @@ class CaptureGroundTruth():
         self.broadcaster = tf2_ros.TransformBroadcaster()
         self.capture_sub  = rospy.Subscriber("/capture_ground_truth",
             Bool, self.capture_callback)
-        self.tag_ground_truth_pub = rospy.Publisher("/tag_ground_truth",
-            TransformStamped, queue_size=10)
 
         self.complete = False
 
@@ -48,21 +46,22 @@ class CaptureGroundTruth():
     def capture_callback(self, msg):
         """ Callback function from gui output topic """
         if msg.data == True:
-            self.publish_tag_tfs()
+            self.record_tag_tfs()
             self.bag.close()
             self.complete = True
 
-    def publish_tag_tfs(self):
-        """ Publish transforms from base frame to each of the tags """
-        rospy.loginfo("Publishing tag transforms")
+    def record_tag_tfs(self):
+        """ Record transforms from base frame to each of the tags """
+        rospy.loginfo("Recording tag transforms to bag")
 
         for tag in self.tag_frames:
-            virtual_tag = "virtual_" + tag
+            sample_tag = "virtual_" + tag
 
-            virtual_tf = self.tf_buffer.lookup_transform(self.base_frame,
-                virtual_tag, rospy.Time(0))
-            self.tag_ground_truth_pub.publish(virtual_tf)
-            self.bag.write('tag_ground_truth', virtual_tf)
+            sample_tf = self.tf_buffer.lookup_transform(self.base_frame,
+                sample_tag, rospy.Time(0))
+
+            sample_tf.child_frame_id = "base_" + tag
+            self.bag.write('/tag_ground_truth', sample_tf)
 
     def run(self):
         while not rospy.is_shutdown():

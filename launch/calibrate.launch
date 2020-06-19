@@ -1,3 +1,6 @@
+<!-- calibrate.launch
+Run optimizer in robot_calibration package on saved calibration data bag -->
+
 <launch>
 
   <node pkg="robot_calibration" type="calibrate" name="calibrate"

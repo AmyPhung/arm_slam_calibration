@@ -1,17 +1,29 @@
+<!-- capture_calibration_data.launch
+Used for capturing a single tagslam output (tf between tags and base_link
+to use as ground truth. Save in tag_ground_truth.bag -->
+
 <launch>
+  <arg name="base_frame" default="base_link" />
+  <arg name="camera_frame1" default="fisheye" />
+  <arg name="camera_frame2" default="cam0" />
+  <arg name="timeout" default="10" />
+  <arg name="tag_frames" default="['tag_584', 'tag_582', 'tag_580',
+                                   'tag_579', 'tag_578', 'tag_577',
+                                   'tag_9', 'tag_5', 'tag_7']" />
+
   <param name="/use_sim_time" value="true"/>
 
-  <include file="$(find joint_calibration)/launch/virtual_sensor_node.launch"/>
+  <node pkg="joint_calibration" type="ground_truth_tfs.py"
+        name="ground_truth_tfs" output="screen"/>
+
+  <node pkg="joint_calibration" type="virtual_tfs.py"
+        name="virtual_tfs" output="screen"/>
+
+<!--
 
   <node pkg="joint_calibration" type="calibration_gui.py"
         name="calibration_gui" output="screen"/>
 
   <node pkg="joint_calibration" type="data_formatter.py"
-        name="data_formatter" output="screen"/>
-
-
-  <!-- <node pkg="rosbag" type="record" name="rosbag_record_tag_tf"
-      args="record -O  $(find joint_calibration)/bags/calibration_data.bag
-      /calibration_data /robot_description"/> -->
-
+        name="data_formatter" output="screen"/> -->
 </launch>
