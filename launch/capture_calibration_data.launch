@@ -9,8 +9,8 @@ to use as ground truth. Save in tag_ground_truth.bag -->
         name="calibration_gui" output="screen"/>
 
   <node pkg="joint_calibration" type="virtual_sensors.py"
-        name="data_formatter" output="screen"/>
+        name="virtual_sensors" output="screen"/>
 
-  <!-- <node pkg="joint_calibration" type="data_formatter.py"
-        name="data_formatter" output="screen"/> -->
+  <node pkg="joint_calibration" type="data_formatter.py"
+        name="data_formatter" output="screen"/>
 </launch>
