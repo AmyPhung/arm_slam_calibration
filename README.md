@@ -22,39 +22,34 @@
 + need to set sim time to true before starting `rosparam set use_sim_time true`
 + `rqt_bag --clock` start running bag
 + Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch` Wait till it loads
-+ `roslaunch joint_calibration set_ground_truth.launch`
++ `roslaunch joint_calibration bringup.launch`
++ `roslaunch joint_calibration capture_ground_truth.launch`
++ Wait till virtual tags show up in RVIZ before clicking button
 
-
-### Debugging ground-truth code:
-+ Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch`
-+ Start apriltag detection `roslaunch tagslam apriltag_detector_node.launch`
-+ Start tagslam `roslaunch tagslam tagslam.launch`
-
-## Testing virtual-sensors
+### Recording calibration dataset
 + `roscore`
 + need to set sim time to true before starting `rosparam set use_sim_time true`
 + `rqt_bag --clock` start running bag
 + Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch` Wait till it loads
-+ `roslaunch joint_calibration virtual_sensor_node.launch`
-
-## Record calibration dataset
-+ `roscore`
-+ need to set sim time to true before starting `rosparam set use_sim_time true`
-+ `rqt_bag --clock` start running bag
-+ Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch` Wait till it loads
++ `roslaunch joint_calibration bringup.launch`
 + `roslaunch joint_calibration capture_calibration_data.launch`
++ Wait till virtual tags show up in RVIZ before collecting points
 
-
-## Calibrate
+### Calibrate
 + `roslaunch joint_calibration calibrate.launch`
 
+### Other launch files
++ `bringup.launch` - Starts up essential processes for joint_calibration
++ `connect_tf_trees.launch` - Publish tf between fisheye -> virtual tags and base_link -> ground truth tags to conenct everything to one tf tree
 
-## Play bag data from cmd line
+## Misc useful notes
+
+### Play bag data from cmd line
 + `rosbag play merged.bag --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
 + For testing`rosbag play merged.bag /joint_states:=/fake_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
 + `rosrun joint_calibration fake_joints.py`
 
-## Debugging
+### Debugging
 + `rosrun tf view_frames`
 + `killall -9 rviz`
 + `killall -9 roscore`
@@ -62,8 +57,8 @@
 + `rosmsg show PointLabeled`
 + known bug: when ROS time jumps backwards (i.e. when the bag restarts), the tfs don't like that - when this happens, just close everything and re-run
 
-## TODO:
+### TODO:
 + Document launch files, scripts
 + Add node args
 + Add args for sim time
-+ fix build
++ create shared functions
