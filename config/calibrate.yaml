@@ -8,26 +8,26 @@ models:
    type: chain
    frame: base_link
 free_params:
- - shoulder_yaw
- - shoulder_pitch
- - forearm_pitch
- - wrist_pitch
- - wrist_yaw
- - wrist_rotate
+ # - shoulder_yaw
+ # - shoulder_pitch
+ # - forearm_pitch
+ # - wrist_pitch
+ # - wrist_yaw
+ # - wrist_rotate
  - shoulder_yaw_scaling
  - shoulder_pitch_scaling
  - forearm_pitch_scaling
  - wrist_pitch_scaling
  - wrist_yaw_scaling
  - wrist_rotate_scaling
-# free_frames:
- # - name: fisheye
- #   x: true
- #   y: true
- #   z: true
- #   roll: true
- #   pitch: true
- #   yaw: true
+free_frames:
+ - name: fisheye_mount
+   x: true
+   y: true
+   z: true
+   roll: true
+   pitch: true
+   yaw: true
 error_blocks:
  - name: hand_eye
    type: chain3d_to_chain3d

@@ -36,7 +36,28 @@
 + Wait till virtual tags show up in RVIZ before collecting points
 
 ### Calibrate
++ Restart the roscore
+    + Note: need to make sure there are no stray params in the /calibrate/ namespace (this might happen if the launch file is used twice with the same roscore)
 + `roslaunch joint_calibration calibrate.launch`
+
+### Previewing results
++ Add ceres output to `joint_state_republisher.py`
++ Start core processes
+```
+roscore
+rosparam set use_sim_time true
+roslaunch titan_arm_moveit_config demo.launch
+roslaunch joint_calibration bringup.launch
+roslaunch joint_calibration connect_tf_trees.launch
+```
++ Play back rosbag, remap joint_states to a different topic
+```
+rosbag play merged.bag /joint_states:=/original_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states
+```
++ Start joint republisher
+```
+rosrun joint_calibration joint_state_republisher.py
+```
 
 ### Other launch files
 + `bringup.launch` - Starts up essential processes for joint_calibration
@@ -47,7 +68,7 @@
 ### Play bag data from cmd line
 + `rosbag play merged.bag --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
 + For testing`rosbag play merged.bag /joint_states:=/original_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
-+ `rosrun joint_calibration joint_state_republisher.py`
+
 
 ### Debugging
 + `rosrun tf view_frames`
