@@ -43,14 +43,18 @@ class VirtualSensors():
         if sensor == "base":
             source_frame = self.base_frame
             frames_list = self.base_tag_frames
+            frames_list2 = self.base_tag_frames
             publisher = self.sensor_base_pub
         if sensor == "fisheye":
             source_frame = self.camera_frame1
-            frames_list = self.virtual_tag_frames
+            frames_list = self.base_tag_frames
+            frames_list2 = self.virtual_tag_frames
             publisher = self.sensor_fisheye_pub
 
-
+        i = -1
         for tag in frames_list:
+            i = i + 1
+            tag2 = frames_list2[i]
             # Get position of tag in sensor frame
             try:
                 tag_tf = self.tf_buffer.lookup_transform(
@@ -60,9 +64,17 @@ class VirtualSensors():
                     tf2_ros.ExtrapolationException):
                 continue
 
+            try:
+                tag_tf2 = self.tf_buffer.lookup_transform(
+                    source_frame, tag2, rospy.Time(0))
+            except (tf2_ros.LookupException,
+                    tf2_ros.ConnectivityException,
+                    tf2_ros.ExtrapolationException):
+                continue
+
             msg = PointLabeled()
             msg.point_stamped.header = tag_tf.header
-            msg.label = tag_tf.child_frame_id
+            msg.label = tag_tf2.child_frame_id
             msg.point_stamped.point = tag_tf.transform.translation
 
             publisher.publish(msg)

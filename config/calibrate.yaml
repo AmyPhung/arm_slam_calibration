@@ -20,14 +20,14 @@ free_params:
  - wrist_pitch_scaling
  - wrist_yaw_scaling
  - wrist_rotate_scaling
-# free_frames:
- # - name: fisheye
- #   x: true
- #   y: true
- #   z: true
- #   roll: true
- #   pitch: true
- #   yaw: true
+free_frames:
+ - name: fisheye_mount
+   x: true
+   y: true
+   z: true
+   roll: true
+   pitch: true
+   yaw: true
 error_blocks:
  - name: hand_eye
    type: chain3d_to_chain3d
