@@ -5,14 +5,22 @@ from sensor_msgs.msg import JointState
 
 
 def state_cb(msg):
-    adjustments = [-0.0628366,
-                   -0.232881,
-                   0.348819,
-                   -0.522432,
-                   -0.569195,
-                   0]
+    scaling = [0.0380094,
+              -0.286683,
+              -0.121535,
+              -0.0561879,
+              -0.126367,
+              0]
 
-    msg.position = [i + j for i, j in zip(adjustments, msg.position)]
+
+    offsets = [-0.830455,
+               -0.909553,
+               0.721249,
+               -0.458984,
+               -0.457727,
+               0]
+
+    msg.position = [i*j + k for i,j,k in zip(scaling, msg.position, offsets)]
     state_pub.publish(msg)
 
 

@@ -14,6 +14,12 @@ free_params:
  - wrist_pitch
  - wrist_yaw
  - wrist_rotate
+ - shoulder_yaw_scaling
+ - shoulder_pitch_scaling
+ - forearm_pitch_scaling
+ - wrist_pitch_scaling
+ - wrist_yaw_scaling
+ - wrist_rotate_scaling
 # free_frames:
  # - name: fisheye
  #   x: true
