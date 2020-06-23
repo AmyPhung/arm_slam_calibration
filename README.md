@@ -6,6 +6,7 @@
 
 ## Build Dependencies
 + https://github.com/mikeferguson/robot_calibration/tree/master/robot_calibration
++ https://github.com/davisking/dlib.git (clone to home directory)
 ## Exec Dependencies:
 + https://bitbucket.org/droplabumich/easy_handeye.git
 

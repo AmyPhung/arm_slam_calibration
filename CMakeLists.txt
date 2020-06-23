@@ -31,3 +31,13 @@ catkin_package(
 include_directories(
   ${catkin_INCLUDE_DIRS}
 )
+
+include(~/dlib/dlib/cmake)
+
+add_executable(
+  Optimizer src/Optimizer/Optimizer.cpp
+)
+
+target_link_libraries(
+  Optimizer dlib ${catkin_LIBRARIES}
+)

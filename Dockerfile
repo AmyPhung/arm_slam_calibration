@@ -19,6 +19,8 @@ RUN bash -c \
     && apt-get upgrade -y \
     && apt-get install -y wget \
     && apt-get install -y sudo \
+    && cd ~ \
+    && git clone https://github.com/davisking/dlib.git \
     && cd /home/$DOCKER_USER/catkin_ws \
     && rosdep update \
     && source /opt/ros/$ROS_DISTRO/setup.bash \
