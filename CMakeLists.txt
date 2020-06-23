@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.0.2)
 project(joint_calibration)
 
+find_package(Boost REQUIRED system thread)
+
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     rospy
@@ -16,28 +18,40 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   PointLabeled.msg
+  PointGroup.msg
+  CalibrationData.msg
 )
 
 generate_messages(
   DEPENDENCIES
   std_msgs
   geometry_msgs
+  sensor_msgs
 )
 
 catkin_package(
+  INCLUDE_DIRS include
   CATKIN_DEPENDS message_runtime
+  DEPENDS Boost
+  LIBRARIES joint_calibration
 )
 
-include_directories(
-  ${catkin_INCLUDE_DIRS}
+include_directories(include ${catkin_INCLUDE_DIRS}
+                            ${Boost_INCLUDE_DIRS}
 )
 
 include(~/dlib/dlib/cmake)
 
-add_executable(
-  Optimizer src/Optimizer/Optimizer.cpp
-)
 
-target_link_libraries(
-  Optimizer dlib ${catkin_LIBRARIES}
-)
+
+add_library(joint_calibration src/Optimizer.cpp)
+                              #src/ChainModel.cpp)
+
+target_link_libraries(joint_calibration ${catkin_LIBRARIES}
+                                        ${Boost_LIBRARIES}
+                                        dlib)
+
+
+add_executable(Calibrate src/Calibrate.cpp)
+target_link_libraries(Calibrate joint_calibration
+                                ${catkin_LIBRARIES})
