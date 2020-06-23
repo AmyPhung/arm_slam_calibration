@@ -2,10 +2,10 @@
 
 import rospy
 import rosbag
-from robot_calibration_msgs.msg import CalibrationData
-from robot_calibration_msgs.msg import Observation
-from robot_calibration_msgs.msg import ExtendedCameraInfo
+from joint_calibration.msg import CalibrationData
+from joint_calibration.msg import PointGroup
 from joint_calibration.msg import PointLabeled
+from geometry_msgs.msg import PointStamped
 from std_msgs.msg import Bool
 from std_msgs.msg import String
 from sensor_msgs.msg import JointState
@@ -14,27 +14,26 @@ from sensor_msgs.msg import JointState
 from collections import OrderedDict
 
 class DataFormatter():
-    """ Formats data from two virtual sensor topics and publishes
-    calibration data to /calibration_data topic. Also writes robot_description
-    and calibration data to calibration bag file
+    """ Formats data from fisheye and publishes calibration data to
+    /calibration_data topic. Also writes robot_description and
+    calibration data to calibration bag file
     """
     def __init__(self):
         rospy.init_node("DataFormatter")
         self.update_rate = rospy.Rate(10)
 
+        # Publishers & Subscribers ---------------------------------------------
         # TODO: Make these syncronized
-        self.sensor_base_sub = rospy.Subscriber("/virtual_sensor_base",
-            PointLabeled, self.sensor_base_cb)
         self.sensor_fisheye_sub = rospy.Subscriber("/virtual_sensor_fisheye",
             PointLabeled, self.sensor_fisheye_cb)
         self.capture_sub  = rospy.Subscriber("/capture_calibration",
             Bool, self.capture_cb)
         self.state_sub  = rospy.Subscriber("/joint_states",
             JointState, self.state_cb)
-
         self.calibration_pub = rospy.Publisher("/calibration_data",
             CalibrationData, queue_size=10)
 
+        # Load ROS Params ------------------------------------------------------
         self.tags = rospy.get_param("tag_frames",
             ['tag_584', 'tag_582', 'tag_580',
              'tag_579', 'tag_578', 'tag_577',
@@ -42,19 +41,27 @@ class DataFormatter():
         self.calib_filename = rospy.get_param("calib_filename",
             '/home/amy/whoi_ws/src/joint_calibration/bags/calibration_data.bag')
 
-        self.base_tag_frames = \
-            [i + j for i, j in zip(['base_']*len(self.tags), self.tags)]
+        # Initialize Class Variables -------------------------------------------
+        # Create dict to save incoming fisheye messages by tag
         self.virtual_tag_frames = \
             [i + j for i, j in zip(['virtual_']*len(self.tags), self.tags)]
         self.blank = [None] * len(self.tags)
-
-        self.base_msgs = OrderedDict(zip(self.base_tag_frames, self.blank))
         self.fisheye_msgs = OrderedDict(zip(self.virtual_tag_frames, self.blank))
+
+        # Where JointState messages will be saved
         self.state_msg = None
 
+        # Initialize CalibrationData with empty PointGroup messages
+        self.calibration_data = CalibrationData()
+        self.calibration_data.labels = self.virtual_tag_frames
+        self.calibration_data.point_groups = []
+        for i in range(len(self.tags)):
+            self.calibration_data.point_groups.append(PointGroup())
+
+        # Open bag we'll write data to -----------------------------------------
         self.bag = rosbag.Bag(self.calib_filename, 'w')
 
-        # write the URDF
+        # Write the URDF -------------------------------------------------------
         description = String()
         description.data = rospy.get_param('robot_description')
         self.bag.write('robot_description', description)
@@ -62,10 +69,6 @@ class DataFormatter():
         # Node will shutdown when this is True
         self.complete = False
 
-
-    def sensor_base_cb(self, msg):
-        tag_name = msg.label
-        self.base_msgs[tag_name] = msg.point_stamped
 
     def sensor_fisheye_cb(self, msg):
         tag_name = msg.label
@@ -76,30 +79,28 @@ class DataFormatter():
         if msg.data == True:
             self.publish_current_values()
         else:
+            for group in self.calibration_data.point_groups:
+                group.num_pts = len(group.observations)
+            self.bag.write('calibration_data', self.calibration_data)
             self.complete = True
 
     def state_cb(self, msg):
         self.state_msg = msg
 
     def publish_current_values(self):
-        data_msg = CalibrationData()
-        data_msg.joint_states = self.state_msg
+        # Iterate through point groups
+        for i in range(len(self.calibration_data.labels)):
+            # Get matching point in current values
+            landmark = self.calibration_data.labels[i]
+            new_pt = self.fisheye_msgs[landmark] # This is a stamped point
 
-        # TODO: Put this somewhere else - just for quick testing of offsets
-        # data_msg.joint_states.position = list(map(lambda x : x - 1, data_msg.joint_states.position))
+            # Save current point to calibration data
+            curr_group = self.calibration_data.point_groups[i]
+            curr_group.observations.append(new_pt)
+            curr_group.joint_states.append(self.state_msg)
 
-        fisheye_obs = Observation()
-        fisheye_obs.sensor_name = "fisheye"
-        fisheye_obs.features = self.fisheye_msgs.values()
-
-        base_obs = Observation()
-        base_obs.sensor_name = "base"
-        base_obs.features = self.base_msgs.values()
-
-        data_msg.observations = [fisheye_obs, base_obs]
-
-        self.calibration_pub.publish(data_msg)
-        self.bag.write('calibration_data', data_msg)
+        # Publish current points for visibility
+        self.calibration_pub.publish(self.calibration_data)
 
     def run(self):
         while not rospy.is_shutdown():

@@ -10,15 +10,10 @@ to conenct everything to one tf tree -->
   <arg name="tag_frames" default="['tag_584', 'tag_582', 'tag_580',
                                    'tag_579', 'tag_578', 'tag_577',
                                    'tag_9', 'tag_5', 'tag_7']" />
-  <arg name="save_filename"
-    default="$(find joint_calibration)/bags/tag_ground_truth.bag"/>
 
   <param name="/use_sim_time" value="true"/>
 
-  <node pkg="joint_calibration" type="ground_truth_tfs.py"
-        name="ground_truth_tfs" output="screen"/>
-
   <node pkg="joint_calibration" type="virtual_tfs.py"
         name="virtual_tfs" output="screen"/>
-        
+
 </launch>
