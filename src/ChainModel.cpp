@@ -24,9 +24,11 @@ namespace joint_calibration {
     ChainModel::~ChainModel() {
     }
 
+    void ChainModel::project(const ColumnVector& params,
+            const joint_calibration::PointGroup& input_pts,
+            sensor_msgs::PointCloud& output_pts) {
 
-
-
+    }
 }
 
 //ChainModel::ChainModel(const std::string& name, KDL::Tree model, std::string root, std::string tip) :

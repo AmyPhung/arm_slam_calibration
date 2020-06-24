@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 
     // The calibration data
     std_msgs::String description_msg;
-    std::vector<joint_calibration::CalibrationData> data;
+    joint_calibration::CalibrationData data;
 
     // Load calibration data from bagfile
     std::string data_bag_name("/tmp/calibration_data.bag");

@@ -17,7 +17,7 @@ namespace joint_calibration {
         virtual ~Optimizer();
 
         void optimize(ColumnVector& params,
-                      std::vector<joint_calibration::CalibrationData>& data,
+                      joint_calibration::CalibrationData& data,
                       joint_calibration::ChainModel& model);
 
     private:

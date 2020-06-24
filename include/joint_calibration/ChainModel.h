@@ -9,13 +9,20 @@
 #include <kdl/chain.hpp>
 #include <kdl/tree.hpp>
 #include <urdf/model.h>
+#include <joint_calibration/Utils.h>
+#include <sensor_msgs/PointCloud.h>
+#include <joint_calibration/PointGroup.h>
 
 namespace joint_calibration {
 
     class ChainModel {
     public:
-        ChainModel(const std::string& robot_description, std::string root, std::string tip);
+        ChainModel(const std::string& robot_description,
+                std::string root, std::string tip);
         virtual ~ChainModel();
+        void project(const ColumnVector& params,
+                const joint_calibration::PointGroup& input_pts,
+                sensor_msgs::PointCloud& output_pts);
 
     private:
         urdf::Model model_;
