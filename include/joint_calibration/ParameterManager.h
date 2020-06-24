@@ -16,9 +16,29 @@ namespace joint_calibration {
         ParameterManager();
         virtual ~ParameterManager();
 
+        /**
+          *  \brief Load parameters and initial values from yaml file
+          *  \param filename The name of the filename
+          */
         bool loadFromYAML(std::string& filename);
+
+        /**
+         *  \brief Get value of parameter. Returns 0 if parameter not set.
+         *  \param name The name of the parameter
+         */
         double get(const std::string name);
-        bool getFrame(const std::string name, KDL::Frame& offset);
+
+        /**
+         *  \brief Load frame parameters into KDL frame
+         *  \param name The name of the frame to load
+         *  \param output_frame Where the output frame will be saved to
+         */
+        bool getFrame(const std::string name, KDL::Frame& output_frame);
+
+        /**
+         *  \brief Update parameter manager based on values in ColumnVector
+         *  \param params ColumnVector of parameters (in order)
+         */
         bool update(const ColumnVector& params);
 
     private:
@@ -26,69 +46,6 @@ namespace joint_calibration {
         std::vector<std::string> param_order_;
         std::map<std::string, double> param_lookup_;
 
-
-        /*
-         * TODO:
-         *  Parameter manager should load initial values from yaml,
-         *  update using ColumnVector
-         */
-//
-//        /** \brief Initialize the free_params */
-//        bool initialize(double* free_params);
-//
-//        /**
-//          *  \brief Tell the parser we wish to calibrate an active joint or other
-//          *         single parameter.
-//          *  \param name The name of the joint, e.g. "shoulder_pan_joint"
-//          */
-//        bool add(const std::string name);
-//
-//        /**
-//         *  \brief Tell the parser we wish to calibrate a fixed joint.
-//         *  \param name The name of the fixed joint, e.g. "head_camera_rgb_joint"
-//         */
-//        bool addFrame(const std::string name,
-//                      bool calibrate_x, bool calibrate_y, bool calibrate_z,
-//                      bool calibrate_roll, bool calibrate_pitch, bool calibrate_yaw);
-//
-//        /**
-//         *  \brief Set the values for a single parameter.
-//         *  \param name The name of the joint, e.g. "shoulder_pan_joint"
-//         */
-//        bool set(const std::string name, double value);
-//
-//        /**
-//         *  \brief Set the values for a frame.
-//         *  \param name The name of the fixed joint, e.g. "head_camera_rgb_joint"
-//         */
-//        bool setFrame(const std::string name,
-//                      double x, double y, double z,
-//                      double roll, double pitch, double yaw);
-//
-//        /** \brief Get a parameter value */
-//        double get(const std::string name) const;
-//
-//        /**
-//         *  \brief Get the offset for a frame calibration
-//         *  \param name The name of the fixed joint, e.g. "head_camera_rgb_joint"
-//         *  \param offset The KDL::Frame to fill in the offset.
-//         *  \returns True if there is an offset to apply, false if otherwise.
-//         */
-//        bool getFrame(const std::string name, KDL::Frame& offset) const;
-//
-//    private:
-//        // Names of parameters being calibrated. The order of this vector
-//        // is the same as the free_param order will be interpreted.
-//        std::vector<std::string> parameter_names_;
-//
-//        // Names of frames being calibrated.
-//        std::vector<std::string> frame_names_;
-//
-//        // Values of parameters
-//        std::vector<double> parameter_values_;
-//
-//        // Number of params being calibrated
-//        size_t num_free_params_;
     };
 }
 
