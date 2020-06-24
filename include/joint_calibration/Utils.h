@@ -54,6 +54,7 @@ namespace joint_calibration
         std_msgs::String::ConstPtr description_ = model_view_.begin()->instantiate<std_msgs::String>();
         description_msg = *description_;
 
+
         // Parse calibration_data topic
         rosbag::View data_view_(bag_, rosbag::TopicQuery("calibration_data"));
         BOOST_FOREACH (rosbag::MessageInstance const m, data_view_)

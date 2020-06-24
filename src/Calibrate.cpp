@@ -3,10 +3,13 @@
 //
 
 #include <ros/ros.h>
-
+// ROS Messages
 #include <std_msgs/String.h>
 #include <joint_calibration/CalibrationData.h>
+// Custom Libraries
 #include <joint_calibration/Utils.h>
+#include <joint_calibration/Optimizer.h>
+#include <joint_calibration/ChainModel.h>
 
 
 
@@ -48,6 +51,14 @@ int main(int argc, char** argv)
     unsigned int num_params = initial_params.size();
     joint_calibration::ColumnVector params(num_params);
     joint_calibration::reformatParams(initial_params, params);
+
+    // Set up model
+    // TODO: Remove hardcode here
+    joint_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
+
+
+    // Setup optimizer
+    //joint_calibration::Optimizer opt(params, data, chain_model);
 
     std::cout << params(0) << std::endl;
     std::cout << params(17) << std::endl;

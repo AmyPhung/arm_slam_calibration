@@ -84,3 +84,4 @@ rosrun joint_calibration joint_state_republisher.py
 + Add node args
 + Add args for sim time
 + create shared functions
++ redo parameter loading
