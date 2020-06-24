@@ -20,6 +20,31 @@ namespace joint_calibration {
     Optimizer::~Optimizer() {
     }
 
+    void Optimizer::optimize(ColumnVector& params,
+                             std::vector<joint_calibration::CalibrationData>& data,
+                             joint_calibration::ChainModel& model) {
+
+        ColumnVector observations = {3, 5, 1, 7};
+
+        auto objective_func = [&](const ColumnVector& params) {
+
+            return mean(squared(params-observations));
+        };
+        ColumnVector initial_values = {-4,5,99,3};
+        find_min_bobyqa(objective_func,
+                        initial_values,
+                        9,    // number of interpolation points
+                        uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
+                        uniform_matrix<double>(4,1, 1e100),   // upper bound constraint
+                        10,    // initial trust region radius
+                        1e-6,  // stopping trust region radius
+                        100    // max number of objective function evaluations
+        );
+        std::cout << "be_like_target solution:\n" << initial_values << std::endl;
+    }
+
+
+
 }
 
 

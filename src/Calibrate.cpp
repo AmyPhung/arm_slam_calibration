@@ -55,10 +55,13 @@ int main(int argc, char** argv)
     // Set up model
     // TODO: Remove hardcode here
     joint_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
-
+    // TODO: Implement project function, make sure it's callable from Optimizer
 
     // Setup optimizer
-    //joint_calibration::Optimizer opt(params, data, chain_model);
+    joint_calibration::Optimizer opt;
+
+    // Run optimization
+    opt.optimize(params, data, model);
 
     std::cout << params(0) << std::endl;
     std::cout << params(17) << std::endl;

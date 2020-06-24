@@ -24,6 +24,9 @@ namespace joint_calibration {
     ChainModel::~ChainModel() {
     }
 
+
+
+
 }
 
 //ChainModel::ChainModel(const std::string& name, KDL::Tree model, std::string root, std::string tip) :
