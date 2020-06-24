@@ -10,6 +10,10 @@
 #include <std_msgs/String.h>
 #include <joint_calibration/CalibrationData.h>
 
+// For rotation
+#include <kdl/chain.hpp>
+#include <kdl/tree.hpp>
+
 // For column vector
 #include <dlib/optimization.h>
 
@@ -46,6 +50,9 @@ namespace joint_calibration
  */
     void reformatParams(std::vector<double>& initial_params,
                         joint_calibration::ColumnVector& params);
+
+    KDL::Rotation rotation_from_axis_magnitude(const double x,
+            const double y, const double z);
 
 }
 

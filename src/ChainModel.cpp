@@ -19,6 +19,8 @@ namespace joint_calibration {
             std::cerr << "Failed to get chain" << std::endl;
         }
 
+
+
     }
 
     ChainModel::~ChainModel() {
@@ -27,6 +29,43 @@ namespace joint_calibration {
     void ChainModel::project(const ColumnVector& params,
             const joint_calibration::PointGroup& input_pts,
             sensor_msgs::PointCloud& output_pts) {
+
+        // Get the projection from forward kinematics of the robot chain
+//        KDL::Frame fk = getChainFK(offsets, input_pts.joint_states);
+//
+//        // Project each individual point
+//        for (size_t i = 0; i < points.size(); ++i)
+//        {
+//            points[i].header.frame_id = root_;  // fk returns point in root_ frame
+//
+//            KDL::Frame p(KDL::Frame::Identity());
+//            p.p.x(data.observations[sensor_idx].features[i].point.x);
+//            p.p.y(data.observations[sensor_idx].features[i].point.y);
+//            p.p.z(data.observations[sensor_idx].features[i].point.z);
+//
+//            // This is primarily for the case of checkerboards
+//            //   The observation is in "checkerboard" frame, but the tip of the
+//            //   kinematic chain is typically something like "wrist_roll_link".
+//            if (data.observations[sensor_idx].features[i].header.frame_id != tip_)
+//            {
+//                KDL::Frame p2(KDL::Frame::Identity());
+//                if (offsets.getFrame(data.observations[sensor_idx].features[i].header.frame_id, p2))
+//                {
+//                    // We have to apply the frame offset before the FK projection
+//                    p = p2 * p;
+//                }
+//            }
+//
+//            // Apply the FK projection
+//            p = fk * p;
+//
+//            points[i].point.x = p.p.x();
+//            points[i].point.y = p.p.y();
+//            points[i].point.z = p.p.z();
+//        }
+//
+//        return points;
+//    }
 
     }
 }

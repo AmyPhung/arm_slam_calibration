@@ -74,4 +74,19 @@ namespace joint_calibration {
         }
     }
 
+    KDL::Rotation rotation_from_axis_magnitude(const double x,
+                                               const double y,
+                                               const double z) {
+        double magnitude = sqrt(x*x + y*y + z*z);
+
+        if (magnitude == 0.0)
+        return KDL::Rotation::Quaternion(0.0, 0.0, 0.0, 1.0);
+
+        return KDL::Rotation::Quaternion(x/magnitude * sin(magnitude/2.0),
+                y/magnitude * sin(magnitude/2.0),
+                z/magnitude * sin(magnitude/2.0),
+                cos(magnitude/2.0));
+    }
+
+
 }

@@ -30,9 +30,13 @@ namespace joint_calibration {
         auto objective_func = [&](const ColumnVector& params) {
             double variance_estimate = 0;
 
+            // TODO: reformat params here to be easier to use
+            // TODO: should look like parameter_manager.update(params)
+
             BOOST_FOREACH (joint_calibration::PointGroup const pts, data.point_groups) {
 //                std::cout << pts << std::endl;
                 sensor_msgs::PointCloud tf_points; // Do I need to say new here?
+                // TODO: pass in reformatted params here
                 model.project(params, pts, tf_points);
             }
 

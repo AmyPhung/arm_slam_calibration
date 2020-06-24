@@ -44,7 +44,8 @@ include(~/dlib/dlib/cmake)
 
 
 
-add_library(joint_calibration src/Utils.cpp
+add_library(joint_calibration src/ParameterManager.cpp
+                              src/Utils.cpp
                               src/Optimizer.cpp
                               src/ChainModel.cpp)
 
