@@ -10,7 +10,7 @@
 
 namespace joint_calibration {
     ParameterManager::ParameterManager() {
-        num_free_params_ = 0;
+        num_free_params = 0;
     }
 
     ParameterManager::~ParameterManager() {
@@ -33,7 +33,7 @@ namespace joint_calibration {
                 // Insert param-value pairs into lookup table
                 param_lookup_[param] = value;
                 param_order_.push_back(param);
-                num_free_params_++;
+                num_free_params++;
             }
         }
 
@@ -62,9 +62,19 @@ namespace joint_calibration {
     }
 
     bool ParameterManager::update(const ColumnVector& params) {
-        for (int i=0; i<num_free_params_; i++){
+        for (int i=0; i<num_free_params; i++){
+            // Read input ColumnVector in order to update params
             const std::string &s = param_order_[i];
             param_lookup_[s] = params(i);
+        }
+        return true;
+    }
+
+    bool ParameterManager::getColumnVector(ColumnVector& output) {
+        for (int i=0; i<num_free_params; i++){
+            // Fill output ColumnVector in order
+            const std::string &s = param_order_[i];
+            output(i) = param_lookup_[s];
         }
         return true;
     }

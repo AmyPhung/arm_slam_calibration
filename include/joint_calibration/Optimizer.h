@@ -8,6 +8,7 @@
 #include <joint_calibration/Utils.h>
 #include <joint_calibration/CalibrationData.h>
 #include <joint_calibration/ChainModel.h>
+#include <joint_calibration/ParameterManager.h>
 
 namespace joint_calibration {
 
@@ -16,7 +17,7 @@ namespace joint_calibration {
         Optimizer();
         virtual ~Optimizer();
 
-        void optimize(ColumnVector& params,
+        void optimize(joint_calibration::ParameterManager& param_manager,
                       joint_calibration::CalibrationData& data,
                       joint_calibration::ChainModel& model);
 

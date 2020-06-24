@@ -41,8 +41,10 @@ namespace joint_calibration {
          */
         bool update(const ColumnVector& params);
 
+        bool getColumnVector(ColumnVector& output);
+
+        int num_free_params;
     private:
-        int num_free_params_;
         std::vector<std::string> param_order_;
         std::map<std::string, double> param_lookup_;
 

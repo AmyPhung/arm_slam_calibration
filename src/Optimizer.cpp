@@ -21,11 +21,15 @@ namespace joint_calibration {
     Optimizer::~Optimizer() {
     }
 
-    void Optimizer::optimize(ColumnVector& initial_params,
+    void Optimizer::optimize(joint_calibration::ParameterManager& param_manager,
                              joint_calibration::CalibrationData& data,
                              joint_calibration::ChainModel& model) {
 
         ColumnVector observations = {3, 5, 1, 7};
+
+        // Reformat initial parameters
+        ColumnVector initial_params(param_manager.num_free_params);
+        param_manager.getColumnVector(initial_params);
 
         auto objective_func = [&](const ColumnVector& params) {
             double variance_estimate = 0;
@@ -52,6 +56,17 @@ namespace joint_calibration {
             */
             return variance_estimate;
         };
+
+        find_min_bobyqa(objective_func,
+                        observations,
+                        9,    // number of interpolation points
+                        uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
+                        uniform_matrix<double>(4,1, 1e100),   // upper bound constraint
+                        10,    // initial trust region radius
+                        1e-6,  // stopping trust region radius
+                        100    // max number of objective function evaluations
+        );
+        std::cout << "be_like_target solution:\n" << initial_params << std::endl;
 
         std::cout << "Objective Function Output: " << objective_func(initial_params) << std::endl;
 //        ColumnVector initial_values = {-4,5,99,3};
