@@ -41,6 +41,10 @@ namespace joint_calibration {
          */
         bool update(const ColumnVector& params);
 
+        /**
+         *  \brief Output current parameters as a ColumnVector
+         *  \param output ColumnVector containing current parameter values)
+         */
         bool getColumnVector(ColumnVector& output);
 
         int num_free_params;

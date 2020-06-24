@@ -25,14 +25,15 @@ namespace joint_calibration {
                              joint_calibration::CalibrationData& data,
                              joint_calibration::ChainModel& model) {
 
-        ColumnVector observations = {3, 5, 1, 7};
+        ColumnVector observations = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
 
         // Reformat initial parameters
         ColumnVector initial_params(param_manager.num_free_params);
         param_manager.getColumnVector(initial_params);
 
         auto objective_func = [&](const ColumnVector& params) {
-            double variance_estimate = 0;
+            std::cout << params << std::endl;
+            double variance_estimate = 1110;
 
             // TODO: reformat params here to be easier to use
             // TODO: should look like parameter_manager.update(params)
@@ -58,10 +59,10 @@ namespace joint_calibration {
         };
 
         find_min_bobyqa(objective_func,
-                        observations,
-                        9,    // number of interpolation points
-                        uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
-                        uniform_matrix<double>(4,1, 1e100),   // upper bound constraint
+                        initial_params,
+                        20,    // number of interpolation points TODO: optimize this
+                        uniform_matrix<double>(param_manager.num_free_params,1, -1e100),  // lower bound constraint
+                        uniform_matrix<double>(param_manager.num_free_params,1, 1e100),   // upper bound constraint
                         10,    // initial trust region radius
                         1e-6,  // stopping trust region radius
                         100    // max number of objective function evaluations
