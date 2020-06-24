@@ -57,7 +57,7 @@ namespace joint_calibration {
 //    };
 //    column_vector initial_values = {-4,5,99,3};
 //    find_min_bobyqa(objective_func,
-//                    observations,
+//                    initial_values,
 //                    9,    // number of interpolation points
 //                    uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
 //                    uniform_matrix<double>(4,1, 1e100),   // upper bound constraint

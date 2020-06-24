@@ -3,10 +3,11 @@ Run optimizer in robot_calibration package on saved calibration data bag -->
 
 <launch>
 
-  <node pkg="robot_calibration" type="calibrate" name="calibrate"
-        args="--from-bag $(find joint_calibration)/bags/calibration_data.bag"
+  <node pkg="joint_calibration" type="Calibrate" name="Calibrate"
+        args="--from-bag $(find joint_calibration)/bags/calibration_data.bag
+              --config $(find joint_calibration)/config/initial_params.txt"
         output="screen" required="true">
-    <rosparam file="$(find joint_calibration)/config/calibrate.yaml" command="load" />
+    <!-- <rosparam file="$(find joint_calibration)/config/calibrate.yaml" command="load" /> -->
   </node>
 
 </launch>

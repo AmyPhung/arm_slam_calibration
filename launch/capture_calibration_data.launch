@@ -12,5 +12,5 @@ to use as ground truth. Save in tag_ground_truth.bag -->
         name="virtual_sensors" output="screen"/>
 
   <node pkg="joint_calibration" type="data_formatter.py"
-        name="data_formatter" output="screen"/>
+        name="data_formatter" output="screen" required="true"/>
 </launch>

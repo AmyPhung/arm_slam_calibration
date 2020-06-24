@@ -8,6 +8,8 @@
 #include <joint_calibration/CalibrationData.h>
 #include <joint_calibration/Utils.h>
 
+
+
 int main(int argc, char** argv)
 {
     ros::init(argc, argv,"joint_calibration");
@@ -27,4 +29,26 @@ int main(int argc, char** argv)
         // Error will have been printed in function
         return -1;
     }
+
+    // The inital parameter values
+    std::vector<double> initial_params;
+
+    // Load initial parameter values from json
+    std::string param_file_name("/tmp/initial_params.txt");
+    if (argc > 4)
+        param_file_name = argv[4];
+    ROS_INFO_STREAM("Loading calibration data from " << param_file_name);
+
+    if (!joint_calibration::loadParams(param_file_name, initial_params)) {
+        // Error will have been printed in function
+        return -1;
+    }
+
+    // Reformat as ColumnVector
+    unsigned int num_params = initial_params.size();
+    joint_calibration::ColumnVector params(num_params);
+    joint_calibration::reformatParams(initial_params, params);
+
+    std::cout << params(0) << std::endl;
+    std::cout << params(17) << std::endl;
 }
