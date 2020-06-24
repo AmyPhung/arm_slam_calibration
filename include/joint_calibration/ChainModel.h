@@ -12,6 +12,7 @@
 #include <joint_calibration/Utils.h>
 #include <sensor_msgs/PointCloud.h>
 #include <joint_calibration/PointGroup.h>
+#include <joint_calibration/ParameterManager.h>
 
 namespace joint_calibration {
 
@@ -20,7 +21,7 @@ namespace joint_calibration {
         ChainModel(const std::string& robot_description,
                 std::string root, std::string tip);
         virtual ~ChainModel();
-        void project(const ColumnVector& params,
+        void project(joint_calibration::ParameterManager& param_manager,
                 const joint_calibration::PointGroup& input_pts,
                 sensor_msgs::PointCloud& output_pts);
 

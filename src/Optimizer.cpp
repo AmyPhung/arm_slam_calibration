@@ -25,24 +25,22 @@ namespace joint_calibration {
                              joint_calibration::CalibrationData& data,
                              joint_calibration::ChainModel& model) {
 
-        ColumnVector observations = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
+//        ColumnVector observations = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
 
         // Reformat initial parameters
         ColumnVector initial_params(param_manager.num_free_params);
         param_manager.getColumnVector(initial_params);
 
         auto objective_func = [&](const ColumnVector& params) {
+            param_manager.update(params);
             std::cout << params << std::endl;
-            double variance_estimate = 1110;
 
-            // TODO: reformat params here to be easier to use
-            // TODO: should look like parameter_manager.update(params)
+            double variance_estimate = 0;
 
             BOOST_FOREACH (joint_calibration::PointGroup const pts, data.point_groups) {
 //                std::cout << pts << std::endl;
                 sensor_msgs::PointCloud tf_points; // Do I need to say new here?
-                // TODO: pass in reformatted params here
-                model.project(params, pts, tf_points);
+                model.project(param_manager, pts, tf_points);
             }
 
             /* double variance_estimate = 0
