@@ -49,14 +49,14 @@ namespace joint_calibration {
 
     bool ParameterManager::getFrame(const std::string name,
             KDL::Frame& output_frame) {
-        output_frame.p.x(get(std::string(name).append("_x")));
-        output_frame.p.y(get(std::string(name).append("_y")));
-        output_frame.p.z(get(std::string(name).append("_z")));
+        output_frame.p.x(get(std::string(name).append("_x_correction")));
+        output_frame.p.y(get(std::string(name).append("_y_correction")));
+        output_frame.p.z(get(std::string(name).append("_z_correction")));
 
         output_frame.M = Utils::rotationFromAxisMagnitude(
-                get(std::string(name).append("_a")),
-                get(std::string(name).append("_b")),
-                get(std::string(name).append("_c")));
+                get(std::string(name).append("_a_correction")),
+                get(std::string(name).append("_b_correction")),
+                get(std::string(name).append("_c_correction")));
 
         return true;
     }

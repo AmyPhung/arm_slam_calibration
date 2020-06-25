@@ -48,6 +48,10 @@ namespace joint_calibration {
             // TODO: find a way to avoid re-computing this over and over - add to param manager?
             KDL::Frame fk = getChainFK(param_manager, input_pts.joint_states[i]);
 
+//            std::cout<<fk.p.x()<<std::endl;
+//            std::cout<<fk.p.y()<<std::endl;
+//            std::cout<<fk.p.z()<<std::endl;
+
 //            points[i].header.frame_id = root_;  // fk returns point in root_ frame
 //
 //            KDL::Frame p(KDL::Frame::Identity());
@@ -90,6 +94,8 @@ namespace joint_calibration {
         // Step through joints to update p_out
         for (size_t i = 0; i < chain_.getNrOfSegments(); ++i) {
             std::string name = chain_.getSegment(i).getJoint().getName();
+
+            // Get current correction value if current joint is a free frame
             KDL::Frame correction = KDL::Frame::Identity();
             param_manager.getFrame(name, correction);
 
@@ -105,16 +111,16 @@ namespace joint_calibration {
 
                 // Load offset param, default to 0 if not set
                 double offset = param_manager.get(name + "_offset");
-                if (scale == 0.0) {
+                if (offset == 0.0) {
                     std::cout << "Offset not set for " << name << ". Defaulting to 0" << std::endl;
                 }
 
-                // Apply any joint offset calibration
+                // Apply any joint angle calibration
                 double p = positionFromMsg(name, state) * scale + offset;
-                // Get pose w.r.t. current joint
+                // Get pose w.r.t. current joint at p joint angle
                 pose = chain_.getSegment(i).pose(p);
             } else {
-                std::cout << "I think this is an error?" << std::endl;
+                // Get pose w.r.t. current joint assuming no adjustments
                 pose = chain_.getSegment(i).pose(0.0);
             }
 
