@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         data_bag_name = argv[2];
     ROS_INFO_STREAM("Loading calibration data from " << data_bag_name);
 
-    if (!joint_calibration::loadBag(data_bag_name, description_msg, data)) {
+    if (!joint_calibration::Utils::loadBag(data_bag_name, description_msg, data)) {
         // Error will have been printed in function
         return -1;
     }

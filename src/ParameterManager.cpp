@@ -53,7 +53,7 @@ namespace joint_calibration {
         output_frame.p.y(get(std::string(name).append("_y")));
         output_frame.p.z(get(std::string(name).append("_z")));
 
-        output_frame.M = rotation_from_axis_magnitude(
+        output_frame.M = Utils::rotationFromAxisMagnitude(
                 get(std::string(name).append("_a")),
                 get(std::string(name).append("_b")),
                 get(std::string(name).append("_c")));

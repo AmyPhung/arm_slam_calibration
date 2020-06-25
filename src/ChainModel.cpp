@@ -6,8 +6,19 @@
 #include <kdl_parser/kdl_parser.hpp>
 
 namespace joint_calibration {
-    ChainModel::ChainModel(const std::string& robot_description, std::string root, std::string tip) :
-        root_(root), tip_(tip){
+
+    double positionFromMsg(const std::string& name,
+                           const sensor_msgs::JointState& msg) {
+        for (size_t i = 0; i < msg.name.size(); ++i) {
+            if (msg.name[i] == name)
+                return msg.position[i];
+        }
+        std::cerr << "Unable to find " << name << " in sensor_msgs::JointState" << std::endl;
+        return 0.0;
+    }
+
+    ChainModel::ChainModel(const std::string &robot_description, std::string root, std::string tip) :
+            root_(root), tip_(tip) {
 
         if (!model_.initString(robot_description)) {
             std::cerr << "Failed to parse URDF." << std::endl;
@@ -20,22 +31,23 @@ namespace joint_calibration {
         }
 
 
-
     }
 
     ChainModel::~ChainModel() {
     }
 
-    void ChainModel::project(joint_calibration::ParameterManager& param_manager,
-            const joint_calibration::PointGroup& input_pts,
-            sensor_msgs::PointCloud& output_pts) {
+    void ChainModel::project(joint_calibration::ParameterManager &param_manager,
+                             const joint_calibration::PointGroup &input_pts,
+                             sensor_msgs::PointCloud &output_pts) {
 
-        // Get the projection from forward kinematics of the robot chain
-//        KDL::Frame fk = getChainFK(offsets, input_pts.joint_states);
-//
-//        // Project each individual point
-//        for (size_t i = 0; i < points.size(); ++i)
-//        {
+
+        // Project each individual point
+        for (size_t i = 0; i < input_pts.num_pts; ++i)
+        {
+            // Get the projection from forward kinematics of the robot chain
+            // TODO: find a way to avoid re-computing this over and over - add to param manager?
+            KDL::Frame fk = getChainFK(param_manager, input_pts.joint_states[i]);
+
 //            points[i].header.frame_id = root_;  // fk returns point in root_ frame
 //
 //            KDL::Frame p(KDL::Frame::Identity());
@@ -62,13 +74,70 @@ namespace joint_calibration {
 //            points[i].point.x = p.p.x();
 //            points[i].point.y = p.p.y();
 //            points[i].point.z = p.p.z();
-//        }
+        }
 //
 //        return points;
 //    }
 
     }
+
+    KDL::Frame ChainModel::getChainFK(joint_calibration::ParameterManager& param_manager,
+                                      const sensor_msgs::JointState& state) {
+
+        // FK from root to tip
+        KDL::Frame p_out = KDL::Frame::Identity();
+
+        // Step through joints to update p_out
+        for (size_t i = 0; i < chain_.getNrOfSegments(); ++i) {
+            std::string name = chain_.getSegment(i).getJoint().getName();
+            KDL::Frame correction = KDL::Frame::Identity();
+            param_manager.getFrame(name, correction);
+
+            KDL::Frame pose;
+
+            if (chain_.getSegment(i).getJoint().getType() != KDL::Joint::None) {
+                // Load scaling param, default to 1 if not set
+                double scale = param_manager.get(name + "_scaling");
+                if (scale == 0.0) {
+                    std::cout << "Scaling not set for " << name << ". Defaulting to 1" << std::endl;
+                    scale = 1.0;
+                }
+
+                // Load offset param, default to 0 if not set
+                double offset = param_manager.get(name + "_offset");
+                if (scale == 0.0) {
+                    std::cout << "Offset not set for " << name << ". Defaulting to 0" << std::endl;
+                }
+
+                // Apply any joint offset calibration
+                double p = positionFromMsg(name, state) * scale + offset;
+                // Get pose w.r.t. current joint
+                pose = chain_.getSegment(i).pose(p);
+            } else {
+                std::cout << "I think this is an error?" << std::endl;
+                pose = chain_.getSegment(i).pose(0.0);
+            }
+
+            KDL::Frame totip = chain_.getSegment(i).getFrameToTip();
+
+            // Apply any frame calibration on the joint <origin> frame
+            p_out = p_out * KDL::Frame(pose.p + totip.M * correction.p);
+            p_out = p_out * KDL::Frame(totip.M * correction.M * totip.M.Inverse() * pose.M);
+        }
+
+        return p_out;
+    }
 }
+
+
+
+
+
+
+
+
+
+
 
 //ChainModel::ChainModel(const std::string& name, KDL::Tree model, std::string root, std::string tip) :
 //        root_(root), tip_(tip), name_(name)
@@ -142,37 +211,5 @@ namespace joint_calibration {
 //    return points;
 //}
 //
-//KDL::Frame ChainModel::getChainFK(const CalibrationOffsetParser& offsets,
-//                                  const sensor_msgs::JointState& state)
-//{
-//    // FK from root to tip
-//    KDL::Frame p_out = KDL::Frame::Identity();
-//
-//    // Step through joints
-//    for (size_t i = 0; i < chain_.getNrOfSegments(); ++i)
-//    {
-//        std::string name = chain_.getSegment(i).getJoint().getName();
-//        KDL::Frame correction = KDL::Frame::Identity();
-//        offsets.getFrame(name, correction);
-//
-//        KDL::Frame pose;
-//        if (chain_.getSegment(i).getJoint().getType() != KDL::Joint::None)
-//        {
-//            // Apply any joint offset calibration
-//            double p = positionFromMsg(name, state) + offsets.get(name);
-//            pose = chain_.getSegment(i).pose(p);
-//        }
-//        else
-//        {
-//            pose = chain_.getSegment(i).pose(0.0);
-//        }
-//
-//        KDL::Frame totip = chain_.getSegment(i).getFrameToTip();
-//
-//        // Apply any frame calibration on the joint <origin> frame
-//        p_out = p_out * KDL::Frame(pose.p + totip.M * correction.p);
-//        p_out = p_out * KDL::Frame(totip.M * correction.M * totip.M.Inverse() * pose.M);
-//
-//    }
-////    return p_out;
+
 //}

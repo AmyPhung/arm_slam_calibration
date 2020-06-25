@@ -11,6 +11,7 @@
 #include <urdf/model.h>
 #include <joint_calibration/Utils.h>
 #include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/JointState.h>
 #include <joint_calibration/PointGroup.h>
 #include <joint_calibration/ParameterManager.h>
 
@@ -24,6 +25,9 @@ namespace joint_calibration {
         void project(joint_calibration::ParameterManager& param_manager,
                 const joint_calibration::PointGroup& input_pts,
                 sensor_msgs::PointCloud& output_pts);
+
+        KDL::Frame getChainFK(joint_calibration::ParameterManager& param_manager,
+                const sensor_msgs::JointState& state);
 
     private:
         urdf::Model model_;
