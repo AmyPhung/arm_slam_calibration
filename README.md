@@ -5,10 +5,7 @@
 
 
 ## Build Dependencies
-+ https://github.com/mikeferguson/robot_calibration/tree/master/robot_calibration
 + https://github.com/davisking/dlib.git (clone to home directory)
-## Exec Dependencies:
-+ https://bitbucket.org/droplabumich/easy_handeye.git
 
 
 ## Setup
@@ -18,15 +15,6 @@
 + `rosdep install -iry --from-paths src`
 
 ## Usage
-### Making the ground-truth tf tree
-+ `roscore`
-+ need to set sim time to true before starting `rosparam set use_sim_time true`
-+ `rqt_bag --clock` start running bag
-+ Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch` Wait till it loads
-+ `roslaunch joint_calibration bringup.launch`
-+ `roslaunch joint_calibration capture_ground_truth.launch`
-+ Wait till virtual tags show up in RVIZ before clicking button
-
 ### Recording calibration dataset
 + `roscore`
 + need to set sim time to true before starting `rosparam set use_sim_time true`
@@ -85,3 +73,4 @@ rosrun joint_calibration joint_state_republisher.py
 + Add args for sim time
 + create shared functions
 + redo parameter loading
++ fix build

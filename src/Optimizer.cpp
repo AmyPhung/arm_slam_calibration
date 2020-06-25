@@ -72,9 +72,12 @@ namespace joint_calibration {
         ColumnVector initial_params(param_manager.num_free_params);
         param_manager.getColumnVector(initial_params);
 
+        // Count iterations
+        int iter = 0;
         auto objective_func = [&](const ColumnVector& params) {
+            if (++iter%100 == 0)
+                std::cout << "Iteration: " << iter << std::endl;
             param_manager.update(params);
-            std::cout << params << std::endl;
 
             double variance_estimate = 0;
 
@@ -97,21 +100,14 @@ namespace joint_calibration {
                         uniform_matrix<double>(param_manager.num_free_params,1, 1e100),   // upper bound constraint
                         10,    // initial trust region radius
                         1e-6,  // stopping trust region radius
-                        100    // max number of objective function evaluations
+                        10000    // max number of objective function evaluations
         );
-        std::cout << "be_like_target solution:\n" << initial_params << std::endl;
 
-        std::cout << "Objective Function Output: " << objective_func(initial_params) << std::endl;
-//        ColumnVector initial_values = {-4,5,99,3};
-//        find_min_bobyqa(objective_func,
-//                        initial_values,
-//                        9,    // number of interpolation points
-//                        uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
-//                        uniform_matrix<double>(4,1, 1e100),   // upper bound constraint
-//                        10,    // initial trust region radius
-//                        1e-6,  // stopping trust region radius
-//                        100    // max number of objective function evaluations
-//        );
-//        std::cout << "be_like_target solution:\n" << initial_values << std::endl;
+        // Display final parameters
+        ColumnVector final_params(param_manager.num_free_params);
+        param_manager.getColumnVector(final_params);
+
+        std::cout << "Solution:\n" << final_params << std::endl;
+        std::cout << "Objective Function End: " << objective_func(final_params) << std::endl;
     }
 }
