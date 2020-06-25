@@ -7,9 +7,10 @@
 #define JOINT_CALIBRATION_PARAMETER_MANAGER_H
 
 #include <kdl_parser/kdl_parser.hpp>
-#include <joint_calibration/Utils.h>
 #include <string>
 #include <map>
+
+#include "Utils.h"
 
 namespace joint_calibration {
     class ParameterManager {

@@ -4,7 +4,6 @@
 //
 
 #include <joint_calibration/ChainModel.h>
-#include <kdl_parser/kdl_parser.hpp>
 
 namespace joint_calibration {
 

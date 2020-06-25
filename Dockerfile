@@ -25,8 +25,9 @@ RUN bash -c \
     && rosdep update \
     && source /opt/ros/$ROS_DISTRO/setup.bash \
     && rosdep install -iry --from-paths src \
+    && source /opt/ros/$ROS_DISTRO/setup.bash \
     && cd /home/$DOCKER_USER/catkin_ws/ \
-    && catkin_make -j1 \
+    && catkin_make \
     && source /home/$DOCKER_USER/catkin_ws/devel/setup.bash \
     && echo "source ~/catkin_ws/devel/setup.bash" >> /home/$DOCKER_USER/.bashrc \
     && chown -R $DOCKER_USER /home/$DOCKER_USER'

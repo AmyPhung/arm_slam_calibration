@@ -5,11 +5,12 @@
 #ifndef JOINT_CALIBRATION_OPTIMIZER_H
 #define JOINT_CALIBRATION_OPTIMIZER_H
 
-#include <joint_calibration/Utils.h>
-#include <joint_calibration/CalibrationData.h>
-#include <joint_calibration/ChainModel.h>
-#include <joint_calibration/ParameterManager.h>
 #include <sensor_msgs/PointCloud.h>
+#include <joint_calibration/CalibrationData.h>
+
+#include "Utils.h"
+#include "ChainModel.h"
+#include "ParameterManager.h"
 
 namespace joint_calibration {
 

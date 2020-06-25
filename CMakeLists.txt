@@ -6,13 +6,13 @@ find_package(Boost REQUIRED system thread)
 find_package(catkin REQUIRED COMPONENTS
     roscpp
     rospy
+    rosbag
     message_filters
     sensor_msgs
-    robot_calibration
-    robot_calibration_msgs
     std_msgs
     geometry_msgs
     message_generation
+    kdl_parser
 )
 
 add_message_files(

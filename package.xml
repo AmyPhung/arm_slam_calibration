@@ -11,12 +11,12 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>rospy</depend>
+  <depend>rosbag</depend>
   <depend>message_filters</depend>
   <depend>sensor_msgs</depend>
-  <depend>robot_calibration</depend>
-  <depend>robot_calibration_msgs</depend>
   <depend>std_msgs</depend>
   <depend>geometry_msgs</depend>
+  <depend>kdl_parser</depend>
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
 </package>

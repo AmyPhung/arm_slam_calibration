@@ -1,5 +1,5 @@
 <!-- calibrate.launch
-Run optimizer in robot_calibration package on saved calibration data bag -->
+Run optimizer on saved calibration data bag -->
 
 <launch>
 

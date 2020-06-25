@@ -10,12 +10,14 @@
 #include <kdl/chain.hpp>
 #include <kdl/tree.hpp>
 #include <urdf/model.h>
-#include <joint_calibration/Utils.h>
 #include <geometry_msgs/Point32.h>
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/JointState.h>
 #include <joint_calibration/PointGroup.h>
-#include <joint_calibration/ParameterManager.h>
+#include <kdl_parser/kdl_parser.hpp>
+
+#include "Utils.h"
+#include "ParameterManager.h"
 
 namespace joint_calibration {
 

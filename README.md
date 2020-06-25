@@ -66,6 +66,14 @@ rosrun joint_calibration joint_state_republisher.py
 + `killall -9 rosmaster`
 + `rosmsg show PointLabeled`
 + known bug: when ROS time jumps backwards (i.e. when the bag restarts), the tfs don't like that - when this happens, just close everything and re-run
++ To debug docker build
+    + `sudo docker ps -a`
+    + `sudo docker commit 6934ada98de6` (change number based on ps -a output)
+    + `sudo docker run -it 7015687976a4 bash -il` (change number based on commit output)
+    + `source /opt/ros/melodic/setup.bash` (needed to run catkin_make)
+    + after navigating to correct directory `catkin_make`
+    + `Ctrl + d` to logout
+
 
 ### TODO:
 + Document launch files, scripts
