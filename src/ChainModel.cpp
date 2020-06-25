@@ -40,49 +40,35 @@ namespace joint_calibration {
                              const joint_calibration::PointGroup &input_pts,
                              sensor_msgs::PointCloud &output_pts) {
 
+        // Output pointcloud will be in root frame
+        output_pts.header.frame_id = root_;
 
         // Project each individual point
-        for (size_t i = 0; i < input_pts.num_pts; ++i)
-        {
+        for (size_t i = 0; i < input_pts.num_pts; ++i) {
             // Get the projection from forward kinematics of the robot chain
             // TODO: find a way to avoid re-computing this over and over - add to param manager?
             KDL::Frame fk = getChainFK(param_manager, input_pts.joint_states[i]);
 
-//            std::cout<<fk.p.x()<<std::endl;
-//            std::cout<<fk.p.y()<<std::endl;
-//            std::cout<<fk.p.z()<<std::endl;
+            // Format observation as KDL Frame
+            KDL::Frame p(KDL::Frame::Identity());
+            p.p.x(input_pts.observations[i].point.x);
+            p.p.y(input_pts.observations[i].point.y);
+            p.p.z(input_pts.observations[i].point.z);
 
-//            points[i].header.frame_id = root_;  // fk returns point in root_ frame
-//
-//            KDL::Frame p(KDL::Frame::Identity());
-//            p.p.x(data.observations[sensor_idx].features[i].point.x);
-//            p.p.y(data.observations[sensor_idx].features[i].point.y);
-//            p.p.z(data.observations[sensor_idx].features[i].point.z);
-//
-//            // This is primarily for the case of checkerboards
-//            //   The observation is in "checkerboard" frame, but the tip of the
-//            //   kinematic chain is typically something like "wrist_roll_link".
-//            if (data.observations[sensor_idx].features[i].header.frame_id != tip_)
-//            {
-//                KDL::Frame p2(KDL::Frame::Identity());
-//                if (offsets.getFrame(data.observations[sensor_idx].features[i].header.frame_id, p2))
-//                {
-//                    // We have to apply the frame offset before the FK projection
-//                    p = p2 * p;
-//                }
-//            }
-//
-//            // Apply the FK projection
-//            p = fk * p;
-//
-//            points[i].point.x = p.p.x();
-//            points[i].point.y = p.p.y();
-//            points[i].point.z = p.p.z();
+            // Apply the FK projection
+            p = fk * p;
+
+            // Create new point
+            geometry_msgs::Point32 new_pt;
+
+            // Fill in new point with computed projection (in root frame)
+            new_pt.x = p.p.x();
+            new_pt.y = p.p.y();
+            new_pt.z = p.p.z();
+
+            // Add point to pointcloud
+            output_pts.points.push_back(new_pt);
         }
-//
-//        return points;
-//    }
-
     }
 
     KDL::Frame ChainModel::getChainFK(joint_calibration::ParameterManager& param_manager,

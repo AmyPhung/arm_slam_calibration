@@ -37,11 +37,12 @@ namespace joint_calibration {
 
             double variance_estimate = 0;
 
+            // Iterate through point groups
             BOOST_FOREACH (joint_calibration::PointGroup const pts, data.point_groups) {
-//                std::cout << pts << std::endl;
-                sensor_msgs::PointCloud tf_points; // Do I need to say new here?
+                sensor_msgs::PointCloud tf_points; // TODO: Init number of pts here
                 model.project(param_manager, pts, tf_points);
             }
+
 
             /* double variance_estimate = 0
              *
