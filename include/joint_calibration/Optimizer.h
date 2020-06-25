@@ -9,6 +9,7 @@
 #include <joint_calibration/CalibrationData.h>
 #include <joint_calibration/ChainModel.h>
 #include <joint_calibration/ParameterManager.h>
+#include <sensor_msgs/PointCloud.h>
 
 namespace joint_calibration {
 

@@ -14,8 +14,51 @@
 using namespace dlib;
 
 namespace joint_calibration {
-    Optimizer::Optimizer() {
 
+    double getPointComponent(sensor_msgs::PointCloud &input_pts, int pt, int component) {
+        if (component == 0) {
+            return input_pts.points[pt].x;
+        } else if (component == 1) {
+            return input_pts.points[pt].y;
+        } else if (component == 2) {
+            return input_pts.points[pt].z;
+        } else {
+            std::cout << "Desired Component does not exist" << std::endl;
+            return 0.0;
+        }
+    }
+
+    void computeCovarianceMatrix(sensor_msgs::PointCloud &input_pts,
+                                 double (&covariance_matrix)[3][3]) {
+        // Based on https://gist.github.com/atandrau/847214
+        double means[3] = {0, 0, 0};
+        for (int i = 0; i < input_pts.points.size(); i++)
+            means[0] += input_pts.points[i].x,
+            means[1] += input_pts.points[i].y,
+            means[2] += input_pts.points[i].z;
+        means[0] /= input_pts.points.size(),
+        means[1] /= input_pts.points.size(),
+        means[2] /= input_pts.points.size();
+
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++) {
+                covariance_matrix[i][j] = 0.0;
+                for (int k = 0; k < input_pts.points.size(); k++)
+                    covariance_matrix[i][j] += (means[i] - getPointComponent(input_pts, k, i)) *
+                                               (means[j] - getPointComponent(input_pts, k, j));
+                covariance_matrix[i][j] /= input_pts.points.size() - 1;
+            }
+    }
+
+    double computeEigenvectorSum(double (&covariance_matrix)[3][3]) {
+        // Sum of eigen values of a matrix is equal to the trace of a matrix
+        double sum = 0;
+        for (int i = 0; i < 3; i++)
+            sum += (covariance_matrix[i][i]);
+        return sum;
+    }
+
+    Optimizer::Optimizer() {
     }
 
     Optimizer::~Optimizer() {
@@ -24,8 +67,6 @@ namespace joint_calibration {
     void Optimizer::optimize(joint_calibration::ParameterManager& param_manager,
                              joint_calibration::CalibrationData& data,
                              joint_calibration::ChainModel& model) {
-
-//        ColumnVector observations = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18};
 
         // Reformat initial parameters
         ColumnVector initial_params(param_manager.num_free_params);
@@ -41,19 +82,11 @@ namespace joint_calibration {
             BOOST_FOREACH (joint_calibration::PointGroup const pts, data.point_groups) {
                 sensor_msgs::PointCloud tf_points; // TODO: Init number of pts here
                 model.project(param_manager, pts, tf_points);
+                double covariance_matrix[3][3];
+                computeCovarianceMatrix(tf_points, covariance_matrix);
+                variance_estimate += computeEigenvectorSum(covariance_matrix);
             }
 
-
-            /* double variance_estimate = 0
-             *
-             * // Transform each landmark's points according to model
-             * for point_group in data.point_groups:
-             *      tf_points = PointCloud();
-             *      model.project(params, point_group, tf_points); // TODO: implement this in ChainModel
-             *      cov_mat = compute_covariance_matrix(tf_points);
-             *      variance_estimate += compute_eigenvector_sum(cov_mat);
-
-            */
             return variance_estimate;
         };
 
@@ -81,74 +114,4 @@ namespace joint_calibration {
 //        );
 //        std::cout << "be_like_target solution:\n" << initial_values << std::endl;
     }
-
-
-
 }
-
-
-
-//
-//
-//// ----------------------------------------------------------------------------------------
-//
-//// In dlib, most of the general purpose solvers optimize functions that take a
-//// column vector as input and return a double.  So here we make a typedef for a
-//// variable length column vector of doubles.  This is the type we will use to
-//// represent the input to our objective functions which we will be minimizing.
-//typedef matrix<double,0,1> column_vector;
-//
-//struct Point3D {
-//    float x;
-//    float y;
-//    float z;
-//};
-//
-//struct Group {
-//
-//};
-//
-//struct Observations {
-//
-//};
-//
-//int main() {
-//    column_vector observations = {3, 5, 1, 7};
-//
-//    auto objective_func = [&](const column_vector& params) {
-//
-//        return mean(squared(params-observations));
-//    };
-//    column_vector initial_values = {-4,5,99,3};
-//    find_min_bobyqa(objective_func,
-//                    initial_values,
-//                    9,    // number of interpolation points
-//                    uniform_matrix<double>(4,1, -1e100),  // lower bound constraint
-//                    uniform_matrix<double>(4,1, 1e100),   // upper bound constraint
-//                    10,    // initial trust region radius
-//                    1e-6,  // stopping trust region radius
-//                    100    // max number of objective function evaluations
-//    );
-//    cout << "be_like_target solution:\n" << initial_values << endl;
-//}
-//
-//// // https://gist.github.com/atandrau/847214
-////void PointCloud::computeCovarianceMatrix() {
-////    double means[3] = {0, 0, 0};
-////    for (int i = 0; i < points.size(); i++)
-////        means[0] += points[i].x,
-////        means[1] += points[i].y,
-////        means[2] += points[i].z;
-////    means[0] /= points.size(), means[1] /= points.size(), means[2] /= points.size();
-////
-////    for (int i = 0; i < 3; i++)
-////        for (int j = 0; j < 3; j++) {
-////            covarianceMatrix[i][j] = 0.0;
-////            for (int k = 0; k < points.size(); k++)
-////                covarianceMatrix[i][j] += (means[i] - points[k].coord(i)) *
-////                                          (means[j] - points[k].coord(j));
-////            covarianceMatrix[i][j] /= points.size() - 1;
-////        }
-////}
-//
-//

@@ -1,5 +1,6 @@
 //
 // Created by amy on 6/23/20.
+// Based on https://github.com/mikeferguson/robot_calibration/
 //
 
 #ifndef JOINT_CALIBRATION_CHAIN_MODEL_H
