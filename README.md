@@ -50,7 +50,8 @@ rosrun joint_calibration joint_state_republisher.py
 
 ### Other launch files
 + `bringup.launch` - Starts up essential processes for joint_calibration
-+ `connect_tf_trees.launch` - Publish tf between fisheye -> virtual tags and base_link -> ground truth tags to conenct everything to one tf tree
++ `connect_tf_trees.launch` - Publish tf between fisheye -> virtual tags to connect everything to one tf tree
++ `create_artificial_tfs.launch` - Publish tf between fisheye -> ground truth tags to connect artificial tags to base tf tree. To be used for testing/verification purposes.
 
 ## Misc useful notes
 
@@ -78,7 +79,7 @@ rosrun joint_calibration joint_state_republisher.py
 ### TODO:
 + Document launch files, scripts
 + Add node args
-+ Add args for sim time
++ Add args for sim time/make sure it works realtime
 + create shared functions
 + redo parameter loading
-+ fix build
++ synchronize calibration data collection

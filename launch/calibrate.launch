@@ -7,7 +7,17 @@ Run optimizer on saved calibration data bag -->
         args="--from-bag $(find joint_calibration)/bags/calibration_data.bag
               --config $(find joint_calibration)/config/initial_params.yaml"
         output="screen" required="true">
-    <!-- <rosparam file="$(find joint_calibration)/config/calibrate.yaml" command="load" /> -->
-  </node>
 
+    <!-- Comments are based on info available here:
+    https://www.rdocumentation.org/packages/minqa/versions/1.2.4/topics/bobyqa -->
+    <!-- Recommended: Number of parameters + 2 -->
+   <param name="opt_npt" type="int" value="20"/>
+    <!-- Should be about one tenth of the greatest expected change to a variable -->
+    <param name="opt_rho_begin" type="double" value="0.1"/>
+    <!-- The smallest value of the trust region radius that is allowed -->
+    <param name="opt_rho_end" type="double" value="1e-6"/>
+    <!-- The maximum allowed number of function evaluation -->
+    <param name="opt_max_f_evals" type="int" value="10000"/>
+
+  </node>
 </launch>

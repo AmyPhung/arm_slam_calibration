@@ -7,6 +7,7 @@
 #define JOINT_CALIBRATION_PARAMETER_MANAGER_H
 
 #include <kdl_parser/kdl_parser.hpp>
+#include <ros/ros.h>
 #include <string>
 #include <map>
 
@@ -23,6 +24,12 @@ namespace joint_calibration {
           *  \param filename The name of the filename
           */
         bool loadFromYAML(std::string& filename);
+
+        /**
+          *  \brief Load optimization parameters from ROS/launch file
+          *  \param nh ROS nodehandle
+          */
+        bool loadFromROS(ros::NodeHandle& nh);
 
         /**
          *  \brief Get value of parameter. Returns 0 if parameter not set.
@@ -50,10 +57,17 @@ namespace joint_calibration {
         bool getColumnVector(ColumnVector& output);
 
         int num_free_params;
+        int opt_npt;
+        double opt_rho_begin;
+        double opt_rho_end;
+        int opt_max_f_evals;
+
+        ColumnVector * lower_limits;
+        ColumnVector * upper_limits;
+
     private:
         std::vector<std::string> param_order_;
         std::map<std::string, double> param_lookup_;
-
     };
 }
 

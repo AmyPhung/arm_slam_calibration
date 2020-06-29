@@ -17,28 +17,84 @@ namespace joint_calibration {
     }
 
     bool ParameterManager::loadFromYAML(std::string& filename) {
+        // TODO: Make this function easier to read
 
         std::string line;
         std::ifstream f(filename.c_str());
+        std::string curr_param;
+        std::vector<double> lower_limits_vec_;
+        std::vector<double> upper_limits_vec_;
+
         while (std::getline(f, line)) {
             std::istringstream str(line.c_str());
             std::string param;
             double value;
 
             if (str >> param >> value) {
+                // This line should include initial values or limits
+
                 // Remove the ":"
                 param.erase(param.size() - 1);
-                std::cout << "Loading '" << param << "' with value " << value << std::endl;
+                // Display parameter values
+                std::cout << "  " << param << ": " << value << std::endl;
 
-                // Insert param-value pairs into lookup table
-                param_lookup_[param] = value;
-                param_order_.push_back(param);
+                if (param == "initial_value") {
+                    // Insert param-value pairs into lookup table
+                    param_lookup_[curr_param] = value;
+                } else if (param == "lower_limit") {
+                    lower_limits_vec_.push_back(value);
+                } else if (param == "upper_limit") {
+                    upper_limits_vec_.push_back(value);
+                } else {
+                    std::cerr << "Unrecognized parameter in yaml file" << std::endl;
+                    return false;
+                }
+
+            } else {
+                // This line should include the next parameter name
+                str >> param;
+
+                // Ignore blank lines
+                if (param.empty()) {
+                    continue;
+                }
+
+                // Remove the ":"
+                param.erase(param.size() - 1);
+
+                curr_param = param;
+                param_order_.push_back(curr_param);
                 num_free_params++;
+
+                // Display parameter values
+                std::cout << "Loading '" << curr_param << "' with values: " << std::endl;
             }
         }
 
         f.close();
 
+        // Reformat upper and lower limits as column vector
+        lower_limits = new ColumnVector(num_free_params);
+        upper_limits = new ColumnVector(num_free_params);
+
+        for (int i=0; i<num_free_params; i++) {
+            lower_limits->operator()(i) = lower_limits_vec_[i];
+            upper_limits->operator()(i) = upper_limits_vec_[i];
+        }
+
+        return true;
+    }
+
+    bool ParameterManager::loadFromROS(ros::NodeHandle& nh) {
+        nh.param<int>("opt_npt", opt_npt, num_free_params + 2);
+        nh.param<double>("opt_rho_begin", opt_rho_begin, 10);
+        nh.param<double>("opt_rho_end", opt_rho_end, 1e-6);
+        nh.param<int>("opt_max_f_evals", opt_max_f_evals, 10000);
+
+        std::cout << "Loading 'opt_npt' with value " << opt_npt << std::endl;
+        std::cout << "Loading 'opt_rho_begin' with value " << opt_rho_begin << std::endl;
+        std::cout << "Loading 'opt_rho_end' with value " << opt_rho_end << std::endl;
+        std::cout << "Loading 'opt_max_f_evals' with value " << opt_max_f_evals << std::endl;
         return true;
     }
 

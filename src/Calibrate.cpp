@@ -52,6 +52,12 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    // Load optimization parameters from ROS
+    if (!param_manager.loadFromROS(nh)) {
+        // Error will have been printed in function
+        return -1;
+    }
+
 
     // Set up model
     // TODO: Remove hardcode here - use ROS parameters in launch file

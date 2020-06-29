@@ -29,8 +29,6 @@ namespace joint_calibration {
         if (!tree_.getChain(root, tip, chain_)) {
             std::cerr << "Failed to get chain" << std::endl;
         }
-
-
     }
 
     ChainModel::~ChainModel() {
@@ -91,14 +89,14 @@ namespace joint_calibration {
                 // Load scaling param, default to 1 if not set
                 double scale = param_manager.get(name + "_scaling");
                 if (scale == 0.0) {
-                    std::cout << "Scaling not set for " << name << ". Defaulting to 1" << std::endl;
+//                    std::cout << "Scaling not set for " << name << ". Defaulting to 1" << std::endl;
                     scale = 1.0;
                 }
 
                 // Load offset param, default to 0 if not set
                 double offset = param_manager.get(name + "_offset");
                 if (offset == 0.0) {
-                    std::cout << "Offset not set for " << name << ". Defaulting to 0" << std::endl;
+//                    std::cout << "Offset not set for " << name << ". Defaulting to 0" << std::endl;
                 }
 
                 // Apply any joint angle calibration

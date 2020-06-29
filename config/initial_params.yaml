@@ -1,10 +1,74 @@
-shoulder_yaw_offset: 0
-shoulder_pitch_offset: 0
-forearm_pitch_offset: 0
-wrist_pitch_offset: 0
-wrist_yaw_offset: 0
-shoulder_yaw_scaling: 1
-shoulder_pitch_scaling: 1
-forearm_pitch_scaling: 1
-wrist_pitch_scaling: 1
-wrist_yaw_scaling: 1
+shoulder_yaw_offset:
+    initial_value: 0.1
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+shoulder_pitch_offset:
+    initial_value: 0.3
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+forearm_pitch_offset:
+    initial_value: -0.1
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+wrist_pitch_offset:
+    initial_value: -0.3
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+wrist_yaw_offset:
+    initial_value: 0
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+wrist_rotate_offset:
+    initial_value: 0.1
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+
+shoulder_yaw_scaling:
+    initial_value: 0.2
+    lower_limit: 0
+    upper_limit: 10
+shoulder_pitch_scaling:
+    initial_value: 4
+    lower_limit: 0
+    upper_limit: 10
+forearm_pitch_scaling:
+    initial_value: 0.1
+    lower_limit: 0
+    upper_limit: 10
+wrist_pitch_scaling:
+    initial_value: 0.3
+    lower_limit: 0
+    upper_limit: 10
+wrist_yaw_scaling:
+    initial_value: 4
+    lower_limit: 0
+    upper_limit: 10
+wrist_rotate_scaling:
+    initial_value: 5
+    lower_limit: 0
+    upper_limit: 10
+
+fisheye_mount_x_correction:
+    initial_value: 0
+    lower_limit: -10
+    upper_limit: 10
+fisheye_mount_y_correction:
+    initial_value: 0
+    lower_limit: -10
+    upper_limit: 10
+fisheye_mount_z_correction:
+    initial_value: 0
+    lower_limit: -10
+    upper_limit: 10
+fisheye_mount_a_correction:
+    initial_value: 0
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+fisheye_mount_b_correction:
+    initial_value: 0
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932
+fisheye_mount_c_correction:
+    initial_value: 0
+    lower_limit: -3.1415926535897932
+    upper_limit: 3.1415926535897932

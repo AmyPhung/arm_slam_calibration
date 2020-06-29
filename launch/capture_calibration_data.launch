@@ -3,7 +3,11 @@ Used for capturing a single tagslam output (tf between tags and base_link
 to use as ground truth. Save in tag_ground_truth.bag -->
 
 <launch>
-  <include file="$(find joint_calibration)/launch/connect_tf_trees.launch"/>
+  <!-- For tagslam data -->
+  <!-- <include file="$(find joint_calibration)/launch/connect_tf_trees.launch"/> -->
+
+  <!-- For testing data -->
+  <include file="$(find joint_calibration)/launch/create_artificial_tfs.launch"/>
 
   <node pkg="joint_calibration" type="calibration_gui.py"
         name="calibration_gui" output="screen"/>
