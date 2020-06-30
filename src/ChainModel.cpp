@@ -100,7 +100,13 @@ namespace joint_calibration {
                 }
 
                 // Apply any joint angle calibration
-                double p = positionFromMsg(name, state) * scale + offset;
+                double p = ((positionFromMsg(name, state) - offset) / scale) * (M_PI / 180);
+
+//                std::cout << positionFromMsg(name, state) << std::endl;
+//                std::cout << offset << std::endl;
+//                std::cout << scale << std::endl;
+//                std::cin.get();
+
                 // Get pose w.r.t. current joint at p joint angle
                 pose = chain_.getSegment(i).pose(p);
             } else {

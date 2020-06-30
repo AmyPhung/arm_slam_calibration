@@ -75,7 +75,6 @@ namespace joint_calibration {
         // Count iterations
         int iter = 0;
         auto objective_func = [&](const ColumnVector& params) {
-            std::cout << params(2) << std::endl;
             if (++iter%100 == 0)
                 std::cout << "Iteration: " << iter << std::endl;
             param_manager.update(params);
@@ -89,6 +88,17 @@ namespace joint_calibration {
                 double covariance_matrix[3][3];
                 computeCovarianceMatrix(tf_points, covariance_matrix);
                 variance_estimate += computeEigenvectorSum(covariance_matrix);
+
+//                std::cout << tf_points << std::endl;
+                std::cout << variance_estimate << std::endl;
+//                std::cin.get();
+//                if (++iter%100 == 0) {
+//                    std::cout << params << std::endl;
+//                    std::cout << variance_estimate << std::endl;
+//                    std::cin.get();
+//                }
+                break; // Just use one point
+                // TODO: decide whether to use multiple or single tag
             }
 
             return variance_estimate;

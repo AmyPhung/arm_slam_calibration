@@ -85,6 +85,20 @@ class DataFormatter():
             self.complete = True
 
     def state_cb(self, msg):
+        # TODO: Put this somewhere else - just for quick testing of offsets
+        TICKS_PER_DEGREE = [46, 49, 52, 46, 46, 46, 46]
+        TICKS_ZERO = [65322, 3792, 59777, 64437, 65324, 65252, 1082]
+        PI = 3.14159265359
+
+        joint_states_ticks = []
+        for i in range(len(msg.position)):
+            joint_angle = msg.position[i]
+            ticks_per_degree = TICKS_PER_DEGREE[i]
+            tick_zero = TICKS_ZERO[i]
+            tick_value = (joint_angle * (180/PI) * ticks_per_degree) + tick_zero
+            joint_states_ticks.append(int(tick_value))
+        msg.position = joint_states_ticks
+
         self.state_msg = msg
 
     def publish_current_values(self):

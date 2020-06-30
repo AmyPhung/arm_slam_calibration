@@ -11,13 +11,13 @@ Run optimizer on saved calibration data bag -->
     <!-- Comments are based on info available here:
     https://www.rdocumentation.org/packages/minqa/versions/1.2.4/topics/bobyqa -->
     <!-- Recommended: Number of parameters + 2 -->
-   <param name="opt_npt" type="int" value="20"/>
+   <param name="opt_npt" type="int" value="12"/>
     <!-- Should be about one tenth of the greatest expected change to a variable -->
-    <param name="opt_rho_begin" type="double" value="0.1"/>
+    <param name="opt_rho_begin" type="double" value="10"/>
     <!-- The smallest value of the trust region radius that is allowed -->
     <param name="opt_rho_end" type="double" value="1e-6"/>
     <!-- The maximum allowed number of function evaluation -->
-    <param name="opt_max_f_evals" type="int" value="10000"/>
+    <param name="opt_max_f_evals" type="int" value="300000"/>
 
   </node>
 </launch>
