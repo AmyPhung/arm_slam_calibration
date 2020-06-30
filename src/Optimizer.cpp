@@ -108,17 +108,14 @@ namespace joint_calibration {
         find_min_bobyqa(objective_func,
                         initial_params,
                         param_manager.opt_npt,    // number of interpolation points TODO: optimize this
-                        uniform_matrix<double>(param_manager.num_free_params,1, -1e100),  // lower bound constraint
-                        uniform_matrix<double>(param_manager.num_free_params,1, 1e100),   // upper bound constraint
+                        *param_manager.lower_limits,  // lower bound constraint
+                        *param_manager.upper_limits,   // upper bound constraint
                         param_manager.opt_rho_begin,    // initial trust region radius // should be about one tenth of the greatest expected change to a variable
                         param_manager.opt_rho_end,  // stopping trust region radius
                         param_manager.opt_max_f_evals    // max number of objective function evaluations
         );
 
         // Display final parameters
-        // ColumnVector final_params(param_manager.num_free_params);
-        // param_manager.getColumnVector(final_params);
-
         std::cout << "Solution:\n" << initial_params << std::endl;
         std::cout << "Objective Function End: " << objective_func(initial_params) << std::endl;
     }
