@@ -20,6 +20,8 @@ add_message_files(
   PointLabeled.msg
   PointGroup.msg
   CalibrationData.msg
+  ParameterInfo.msg
+  FreeParameters.msg
 )
 
 generate_messages(
