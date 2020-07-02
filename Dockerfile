@@ -1,5 +1,5 @@
 ARG ROS_DISTRO=melodic
-ARG PROJECT=joint_calibration
+ARG PROJECT=min_variance_calibration
 
 FROM ros:$ROS_DISTRO
 

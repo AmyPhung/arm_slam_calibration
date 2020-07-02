@@ -4,4 +4,4 @@ services:
   - docker
 
 script:
-  docker build -t joint_calibration .
+  docker build -t min_variance_calibration .
