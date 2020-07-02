@@ -22,6 +22,8 @@ add_message_files(
   CalibrationData.msg
   ParameterInfo.msg
   FreeParameters.msg
+  OptimizationParameters.msg
+  CalibrationMsg.msg
 )
 
 generate_messages(

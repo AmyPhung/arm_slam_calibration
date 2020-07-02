@@ -83,3 +83,10 @@ rosrun joint_calibration joint_state_republisher.py
 + create shared functions
 + redo parameter loading
 + synchronize calibration data collection
++ resturcture repo (break into smaller packages)
+  + min_variance_calibration
+    + calibration bridge, all cpp files
+    + ParameterInfo, FreeParameters
+  + min_variance_calibration_msgs CalibrationData message files
+  + whoi_arm_calibration
+    + everything related to data capture, config files, joint state republisher

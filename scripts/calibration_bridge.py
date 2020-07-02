@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 import rospy
+import rosbag
 
 from joint_calibration.msg import ParameterInfo
 from joint_calibration.msg import FreeParameters
+from joint_calibration.msg import CalibrationMsg
+from joint_calibration.msg import OptimizationParameters
 
 # TODO: Add this to dependencies list
 import yaml
+import time
 
 def loadFromYAML(filename):
     """ Load in parameter info from yaml file
@@ -64,11 +68,64 @@ class CalibrationBridge():
     resultsCB()
         restoreParams()
         displayResults (just write it out here)
+
+    TODO: add ros parameters to control modes
     """
+    def __init__(self):
+        rospy.init_node("CalibrationBridge")
+        self.update_rate = rospy.Rate(10)
+
+        self.calibration_pub = rospy.Publisher("/calibrate",
+            CalibrationMsg, queue_size=10)
+
+        # self.sensor_fisheye_sub = rospy.Subscriber("/calibration_results",
+        #     PointLabeled, self.sensor_fisheye_cb)
+    def runCalibration(self, initial_params, calibration_data,
+        robot_description, opt_params):
+        """
+        Args:
+            initial_params (dict): Initial parameter info saved in a dict
+            calibration_data (CalibrationData): ROS message containing
+                measurements
+            robot_description (String): ROS message containing robot
+                description
+            opt_params (OptimizationParameters): ROS message
+                containing optimization parameters
+        """
+        free_params = preconditionParams(initial_params, opt_params.rho_start)
+
+        cal_msg = CalibrationMsg()
+        cal_msg.params = free_params
+        cal_msg.opt_params = opt_params
+        cal_msg.data = calibration_data
+        cal_msg.robot_description = robot_description
+        time.sleep(1) # For some reason the publisher doesn't work without this
+        self.calibration_pub.publish(cal_msg)
+
+    def runTestCalibration(self, initial_params, calibration_data,
+        robot_description, optimization_params,
+        param_noise, measurement_noise):
+        # Adjust values
+        # Run calibration
+        pass
 
 if __name__ == "__main__":
-    params = loadFromYAML('/home/amy/whoi_ws/src/joint_calibration/config/initial_params.yaml')
-    rho_start = 10
+    initial_params = loadFromYAML('/home/amy/whoi_ws/src/joint_calibration/config/initial_params.yaml')
+    calibration_data = None
+    robot_description = None
 
-    a = preconditionParams(params, rho_start)
-    print(a)
+    bag = rosbag.Bag('/home/amy/whoi_ws/src/joint_calibration/bags/calibration_data.bag')
+    for topic, msg, t in bag.read_messages(topics=['robot_description']):
+        robot_description = msg
+    for topic, msg, t in bag.read_messages(topics=['calibration_data']):
+        calibration_data = msg
+    bag.close()
+
+    opt_params = OptimizationParameters()
+    opt_params.rho_start = 10
+    opt_params.rho_end = 1e-6
+    opt_params.npt = len(initial_params.values()) + 2
+
+    cal_bridge = CalibrationBridge()
+    cal_bridge.runCalibration(initial_params, calibration_data,
+        robot_description, opt_params)
