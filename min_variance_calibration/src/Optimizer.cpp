@@ -66,7 +66,8 @@ namespace min_variance_calibration {
 
     void Optimizer::optimize(min_variance_calibration::ParameterManager& param_manager,
                              min_variance_calibration_msgs::CalibrationData& data,
-                             min_variance_calibration::ChainModel& model) {
+                             min_variance_calibration::ChainModel& model,
+                             min_variance_calibration_msgs::RunCalibration::Response &res) {
 
         // Reformat initial parameters
         ColumnVector initial_params(param_manager.num_free_params);
@@ -102,9 +103,10 @@ namespace min_variance_calibration {
                 // TODO: decide whether to use multiple or single tag
             }
 
-            if (iter == 1) {
-                std::cout << variance_estimate << std::endl;
-            }
+            // Save variance estimate of first iteration
+            if (iter == 1)
+                res.starting_variance = variance_estimate;
+
             return variance_estimate;
         };
 
@@ -118,9 +120,13 @@ namespace min_variance_calibration {
                         param_manager.opt_rho_end,  // stopping trust region radius
                         param_manager.opt_max_f_evals    // max number of objective function evaluations
         );
+        // Write results to service response
+
+        res.ending_variance = objective_func(initial_params);
+        param_manager.getFreeParameters(res.params);
 
         // Display final parameters
         std::cout << "Solution:\n" << initial_params << std::endl;
-        std::cout << "Objective Function End: " << objective_func(initial_params) << std::endl;
+        std::cout << "Objective Function End: " << res.ending_variance << std::endl;
     }
 }

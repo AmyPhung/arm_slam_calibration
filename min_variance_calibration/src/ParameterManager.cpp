@@ -127,72 +127,6 @@ namespace min_variance_calibration {
 
         return true;
 
-//        std::string line;
-//        std::ifstream f(filename.c_str());
-//        std::string curr_param;
-//
-//
-//        while (std::getline(f, line)) {
-//            std::istringstream str(line.c_str());
-//            std::string param;
-//            double value;
-//
-//            if (str >> param >> value) {
-//                // This line should include initial values or limits
-//
-//                // Remove the ":"
-//                param.erase(param.size() - 1);
-//                // Display parameter values
-//                std::cout << "  " << param << ": " << value << std::endl;
-//
-//                if (param == "initial_value") {
-//                    // Insert param-value pairs into lookup table
-//                    param_lookup_[curr_param] = value;
-//                } else if (param == "lower_limit") {
-//                    lower_limits_vec_.push_back(value);
-//                } else if (param == "upper_limit") {
-//                    upper_limits_vec_.push_back(value);
-//                } else {
-//                    std::cerr << "Unrecognized parameter in yaml file" << std::endl;
-//                    return false;
-//                }
-//
-//            } else {
-//                // This line should include the next parameter name
-//                str >> param;
-//
-//                // Ignore blank lines
-//                if (param.empty()) {
-//                    continue;
-//                }
-//
-//                // Remove the ":"
-//                param.erase(param.size() - 1);
-//
-//                curr_param = param;
-//                param_order_.push_back(curr_param);
-//                num_free_params++;
-//
-//                // Display parameter values
-//                std::cout << "Loading '" << curr_param << "' with values: " << std::endl;
-//            }
-//        }
-//
-//        f.close();
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        return true;
     }
 
     double ParameterManager::get(const std::string name) {
@@ -234,6 +168,24 @@ namespace min_variance_calibration {
             // Fill output ColumnVector in order
             const std::string &s = param_order_[i];
             output(i) = param_lookup_[s];
+        }
+        return true;
+    }
+
+    bool ParameterManager::getFreeParameters(min_variance_calibration_msgs::FreeParameters& free_params) {
+        min_variance_calibration_msgs::ParameterInfo param_info;
+
+        for (int i=0; i<num_free_params; i++) {
+            // Rescale values to original units
+            param_info.name = param_order_[i];
+            param_info.min = lower_limits->operator()(i) / scale_lookup_[param_info.name];
+            param_info.max = upper_limits->operator()(i) / scale_lookup_[param_info.name];
+            param_info.value = param_lookup_[param_info.name] / scale_lookup_[param_info.name];
+
+            // Restore to original scale
+            param_info.scaling = 1;
+
+            free_params.params.push_back(param_info);
         }
         return true;
     }

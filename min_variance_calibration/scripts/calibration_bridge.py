@@ -144,4 +144,6 @@ if __name__ == "__main__":
     cal_bridge = CalibrationBridge()
     result = cal_bridge.runCalibration(initial_params, calibration_data,
         robot_description, opt_params)
+    print(result.starting_variance)
     print(result.ending_variance)
+    print(result.params)

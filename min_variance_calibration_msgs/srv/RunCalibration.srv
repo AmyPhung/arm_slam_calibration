@@ -9,4 +9,4 @@ std_msgs/String robot_description
 
 float64 starting_variance
 float64 ending_variance
-float64[] params # TODO: change this output
+FreeParameters params

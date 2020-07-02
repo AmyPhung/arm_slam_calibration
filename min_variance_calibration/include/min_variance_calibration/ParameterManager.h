@@ -11,6 +11,8 @@
 #include <string>
 #include <map>
 #include <min_variance_calibration_msgs/RunCalibration.h>
+#include <min_variance_calibration_msgs/FreeParameters.h>
+#include <min_variance_calibration_msgs/ParameterInfo.h>
 
 #include "Utils.h"
 
@@ -64,6 +66,8 @@ namespace min_variance_calibration {
          *  \param output ColumnVector containing current parameter values)
          */
         bool getColumnVector(ColumnVector& output);
+
+        bool getFreeParameters(min_variance_calibration_msgs::FreeParameters& free_params);
 
         int num_free_params;
         int opt_npt;

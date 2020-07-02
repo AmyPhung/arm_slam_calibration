@@ -33,8 +33,9 @@ bool run_calibration(min_variance_calibration_msgs::RunCalibration::Request  &re
     // Set up optimizer
     min_variance_calibration::Optimizer opt;
     // Run optimization
-    opt.optimize(param_manager, data, model);
+    opt.optimize(param_manager, data, model, res);
 
+    ROS_INFO("Calibration Complete!");
     return true;
 }
 
@@ -43,6 +44,7 @@ int main(int argc, char** argv) {
     ros::init(argc, argv, "min_variance_calibration_server");
     ros::NodeHandle nh("~");
 
+    // TODO: Add verbose mode for print statements
     ros::ServiceServer service = nh.advertiseService("/run_calibration", run_calibration);
     ROS_INFO("Ready to calibrate");
     ros::spin();

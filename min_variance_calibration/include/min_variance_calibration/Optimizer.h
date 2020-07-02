@@ -7,6 +7,7 @@
 
 #include <sensor_msgs/PointCloud.h>
 #include <min_variance_calibration_msgs/CalibrationData.h>
+#include <min_variance_calibration_msgs/RunCalibration.h>
 
 #include "Utils.h"
 #include "ChainModel.h"
@@ -21,7 +22,8 @@ namespace min_variance_calibration {
 
         void optimize(min_variance_calibration::ParameterManager& param_manager,
                       min_variance_calibration_msgs::CalibrationData& data,
-                      min_variance_calibration::ChainModel& model);
+                      min_variance_calibration::ChainModel& model,
+                      min_variance_calibration_msgs::RunCalibration::Response &res);
 
     private:
     };
