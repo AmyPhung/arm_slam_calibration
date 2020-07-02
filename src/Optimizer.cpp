@@ -89,8 +89,9 @@ namespace joint_calibration {
                 computeCovarianceMatrix(tf_points, covariance_matrix);
                 variance_estimate += computeEigenvectorSum(covariance_matrix);
 
+                std::cout << params << std::endl;
 //                std::cout << tf_points << std::endl;
-                std::cout << variance_estimate << std::endl;
+//                std::cout << variance_estimate << std::endl;
 //                std::cin.get();
 //                if (++iter%100 == 0) {
 //                    std::cout << params << std::endl;

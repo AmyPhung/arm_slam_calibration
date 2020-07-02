@@ -10,6 +10,7 @@
 #include <ros/ros.h>
 #include <string>
 #include <map>
+#include <joint_calibration/CalibrationMsg.h>
 
 #include "Utils.h"
 
@@ -31,11 +32,20 @@ namespace joint_calibration {
           */
         bool loadFromROS(ros::NodeHandle& nh);
 
+
+        bool loadFromMsg(const joint_calibration::CalibrationMsg::ConstPtr& msg);
+
         /**
          *  \brief Get value of parameter. Returns 0 if parameter not set.
          *  \param name The name of the parameter
          */
         double get(const std::string name);
+
+        /**
+         *  \brief Get scale of parameter.
+         *  \param name The name of the parameter
+         */
+        double getScale(const std::string name);
 
         /**
          *  \brief Load frame parameters into KDL frame
@@ -68,6 +78,8 @@ namespace joint_calibration {
     private:
         std::vector<std::string> param_order_;
         std::map<std::string, double> param_lookup_;
+        std::map<std::string, double> scale_lookup_;
+
     };
 }
 

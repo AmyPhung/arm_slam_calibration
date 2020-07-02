@@ -87,14 +87,17 @@ namespace joint_calibration {
 
             if (chain_.getSegment(i).getJoint().getType() != KDL::Joint::None) {
                 // Load scaling param, default to 1 if not set
-                double scale = param_manager.get(name + "_scaling");
+                double scale = param_manager.get(name + "_scaling") /
+                        param_manager.getScale(name + "_scaling");
                 if (scale == 0.0) {
 //                    std::cout << "Scaling not set for " << name << ". Defaulting to 1" << std::endl;
                     scale = 1.0;
                 }
 
+                // TODO: put scaling term somewhere else
                 // Load offset param, default to 0 if not set
-                double offset = param_manager.get(name + "_offset");
+                double offset = param_manager.get(name + "_offset") /
+                        param_manager.getScale(name + "_offset");
                 if (offset == 0.0) {
 //                    std::cout << "Offset not set for " << name << ". Defaulting to 0" << std::endl;
                 }

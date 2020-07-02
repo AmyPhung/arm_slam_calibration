@@ -98,9 +98,111 @@ namespace joint_calibration {
         return true;
     }
 
+    bool ParameterManager::loadFromMsg(const joint_calibration::CalibrationMsg::ConstPtr& msg) {
+        // Load Optimization Parameters
+        opt_npt = msg->opt_params.npt;
+        opt_rho_begin = msg->opt_params.rho_start;
+        opt_rho_end = msg->opt_params.rho_end;
+        opt_max_f_evals = msg->opt_params.max_f_evals;
+
+        std::cout << "Loading 'opt_npt' with value " << opt_npt << std::endl;
+        std::cout << "Loading 'opt_rho_begin' with value " << opt_rho_begin << std::endl;
+        std::cout << "Loading 'opt_rho_end' with value " << opt_rho_end << std::endl;
+        std::cout << "Loading 'opt_max_f_evals' with value " << opt_max_f_evals << std::endl;
+
+        num_free_params = msg->free_params.params.size();
+
+        // Reformat upper and lower limits as column vector
+        lower_limits = new ColumnVector(num_free_params);
+        upper_limits = new ColumnVector(num_free_params);
+
+        for (int i=0; i<num_free_params; i++) {
+            std::cout << msg->free_params.params[i].name <<std::endl;
+            param_order_.push_back(msg->free_params.params[i].name);
+            param_lookup_[msg->free_params.params[i].name] = msg->free_params.params[i].value;
+            scale_lookup_[msg->free_params.params[i].name] = msg->free_params.params[i].scaling;
+            lower_limits->operator()(i) = msg->free_params.params[i].min;
+            upper_limits->operator()(i) = msg->free_params.params[i].max;
+        }
+
+        return true;
+
+//        std::string line;
+//        std::ifstream f(filename.c_str());
+//        std::string curr_param;
+//
+//
+//        while (std::getline(f, line)) {
+//            std::istringstream str(line.c_str());
+//            std::string param;
+//            double value;
+//
+//            if (str >> param >> value) {
+//                // This line should include initial values or limits
+//
+//                // Remove the ":"
+//                param.erase(param.size() - 1);
+//                // Display parameter values
+//                std::cout << "  " << param << ": " << value << std::endl;
+//
+//                if (param == "initial_value") {
+//                    // Insert param-value pairs into lookup table
+//                    param_lookup_[curr_param] = value;
+//                } else if (param == "lower_limit") {
+//                    lower_limits_vec_.push_back(value);
+//                } else if (param == "upper_limit") {
+//                    upper_limits_vec_.push_back(value);
+//                } else {
+//                    std::cerr << "Unrecognized parameter in yaml file" << std::endl;
+//                    return false;
+//                }
+//
+//            } else {
+//                // This line should include the next parameter name
+//                str >> param;
+//
+//                // Ignore blank lines
+//                if (param.empty()) {
+//                    continue;
+//                }
+//
+//                // Remove the ":"
+//                param.erase(param.size() - 1);
+//
+//                curr_param = param;
+//                param_order_.push_back(curr_param);
+//                num_free_params++;
+//
+//                // Display parameter values
+//                std::cout << "Loading '" << curr_param << "' with values: " << std::endl;
+//            }
+//        }
+//
+//        f.close();
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//        return true;
+    }
+
     double ParameterManager::get(const std::string name) {
         // Will return 0 if parameter not found
         return param_lookup_[name];
+    }
+
+    double ParameterManager::getScale(const std::string name) {
+        // Will return 0 if parameter not found
+        return scale_lookup_[name];
     }
 
     bool ParameterManager::getFrame(const std::string name,

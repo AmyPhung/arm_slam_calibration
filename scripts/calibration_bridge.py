@@ -23,6 +23,22 @@ def loadFromYAML(filename):
         params = yaml.load(file)
     return params
 
+import yaml
+from collections import OrderedDict
+
+def ordered_load(filename, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
+    class OrderedLoader(Loader):
+        pass
+    def construct_mapping(loader, node):
+        loader.flatten_mapping(node)
+        return object_pairs_hook(loader.construct_pairs(node))
+    OrderedLoader.add_constructor(
+        yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
+        construct_mapping)
+    return yaml.load(filename, OrderedLoader)
+
+
+
 def preconditionParams(initial_params, rho_start):
     """ Apply scaling term to all parameters so that all parameters
     will need roughly the same amount of adjustment
@@ -52,6 +68,7 @@ def preconditionParams(initial_params, rho_start):
 
         conditioned_params.params.append(param_msg)
 
+    print(conditioned_params)
     return conditioned_params
 
 # Create function restoreParams
@@ -95,7 +112,7 @@ class CalibrationBridge():
         free_params = preconditionParams(initial_params, opt_params.rho_start)
 
         cal_msg = CalibrationMsg()
-        cal_msg.params = free_params
+        cal_msg.free_params = free_params
         cal_msg.opt_params = opt_params
         cal_msg.data = calibration_data
         cal_msg.robot_description = robot_description
@@ -110,7 +127,15 @@ class CalibrationBridge():
         pass
 
 if __name__ == "__main__":
-    initial_params = loadFromYAML('/home/amy/whoi_ws/src/joint_calibration/config/initial_params.yaml')
+
+
+    # usage example:
+    filename = '/home/amy/whoi_ws/src/joint_calibration/config/initial_params.yaml'
+    with open(filename) as file:
+        initial_params = ordered_load(file, yaml.SafeLoader)
+    # print(a.keys())
+
+    # initial_params = loadFromYAML('/home/amy/whoi_ws/src/joint_calibration/config/initial_params.yaml')
     calibration_data = None
     robot_description = None
 
@@ -125,6 +150,7 @@ if __name__ == "__main__":
     opt_params.rho_start = 10
     opt_params.rho_end = 1e-6
     opt_params.npt = len(initial_params.values()) + 2
+    opt_params.max_f_evals = 10000
 
     cal_bridge = CalibrationBridge()
     cal_bridge.runCalibration(initial_params, calibration_data,
