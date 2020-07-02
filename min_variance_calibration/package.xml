@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>min_variance_calibration</name>
+  <version>0.0.0</version>
+  <description>A calibration to calibrate mapping between
+    encoder/potentiometer measurements to joint angles and camera extrinsics
+    using minimum variance approach</description>
+  <maintainer email="aphung@olin.edu">Amy Phung</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>geometry_msgs</depend>
+  <depend>kdl_parser</depend>
+  <depend>min_variance_calibration_msgs</depend>
+  <depend>message_filters</depend>
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>rosbag</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+</package>
