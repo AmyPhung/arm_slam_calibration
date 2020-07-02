@@ -1,0 +1,3 @@
+starting_variance
+ending_variance
+params
