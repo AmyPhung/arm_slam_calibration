@@ -23,17 +23,9 @@ namespace min_variance_calibration {
         virtual ~ParameterManager();
 
         /**
-          *  \brief Load parameters and initial values from yaml file
-          *  \param filename The name of the filename
+          *  \brief Load parameters and initial values from request message
+          *  \param req The request message
           */
-        bool loadFromYAML(std::string& filename);
-
-        /**
-          *  \brief Load optimization parameters from ROS/launch file
-          *  \param nh ROS nodehandle
-          */
-        bool loadFromROS(ros::NodeHandle& nh);
-
         bool loadFromMsg(const min_variance_calibration_msgs::RunCalibration::Request &req);
 
         /**
@@ -67,6 +59,10 @@ namespace min_variance_calibration {
          */
         bool getColumnVector(ColumnVector& output);
 
+        /**
+         *  \brief Output current parameters as a FreeParameters message
+         *  \param free_params FreeParameters containing current parameter values
+         */
         bool getFreeParameters(min_variance_calibration_msgs::FreeParameters& free_params);
 
         int num_free_params;

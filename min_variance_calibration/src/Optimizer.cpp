@@ -90,15 +90,6 @@ namespace min_variance_calibration {
                 computeCovarianceMatrix(tf_points, covariance_matrix);
                 variance_estimate += computeEigenvectorSum(covariance_matrix);
 
-//                std::cout << params << std::endl;
-//                std::cout << tf_points << std::endl;
-//                std::cout << variance_estimate << std::endl;
-//                std::cin.get();
-//                if (++iter%100 == 0) {
-//                    std::cout << params << std::endl;
-//                    std::cout << variance_estimate << std::endl;
-//                    std::cin.get();
-//                }
                 break; // Just use one point
                 // TODO: decide whether to use multiple or single tag
             }
@@ -120,8 +111,8 @@ namespace min_variance_calibration {
                         param_manager.opt_rho_end,  // stopping trust region radius
                         param_manager.opt_max_f_evals    // max number of objective function evaluations
         );
-        // Write results to service response
 
+        // Write results to service response
         res.ending_variance = objective_func(initial_params);
         param_manager.getFreeParameters(res.params);
 

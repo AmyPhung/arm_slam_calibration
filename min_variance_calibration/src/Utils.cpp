@@ -8,13 +8,6 @@
 namespace min_variance_calibration {
     namespace Utils {
 
-        void reformatParams(std::vector<double> &initial_params,
-                            min_variance_calibration::ColumnVector &params) {
-            for (int i = 0; i < initial_params.size(); i++) {
-                params(i) = initial_params[i];
-            }
-        }
-
         KDL::Rotation rotationFromAxisMagnitude(const double x,
                                                 const double y,
                                                 const double z) {

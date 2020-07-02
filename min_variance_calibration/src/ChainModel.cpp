@@ -94,7 +94,6 @@ namespace min_variance_calibration {
                     scale = 1.0;
                 }
 
-                // TODO: put scaling term somewhere else
                 // Load offset param, default to 0 if not set
                 double offset = param_manager.get(name + "_offset") /
                         param_manager.getScale(name + "_offset");
@@ -104,11 +103,6 @@ namespace min_variance_calibration {
 
                 // Apply any joint angle calibration
                 double p = ((positionFromMsg(name, state) - offset) / scale) * (M_PI / 180);
-
-//                std::cout << positionFromMsg(name, state) << std::endl;
-//                std::cout << offset << std::endl;
-//                std::cout << scale << std::endl;
-//                std::cin.get();
 
                 // Get pose w.r.t. current joint at p joint angle
                 pose = chain_.getSegment(i).pose(p);
