@@ -7,12 +7,11 @@
 // ROS Messages
 #include <std_msgs/String.h>
 
-// #include <min_variance_calibration_msgs/CalibrationMsg.h>
-// // Custom Libraries
-// #include <min_variance_calibration_msgs/ParameterManager.h>
-// #include <min_variance_calibration_msgs/Utils.h>
-// #include <min_variance_calibration_msgs/Optimizer.h>
-// #include <min_variance_calibration_msgs/ChainModel.h>
+ // Custom Libraries
+ #include <min_variance_calibration/ParameterManager.h>
+ #include <min_variance_calibration/Utils.h>
+ #include <min_variance_calibration/Optimizer.h>
+ #include <min_variance_calibration/ChainModel.h>
 
 // Calibration service
 #include <min_variance_calibration_msgs/RunCalibration.h>
@@ -20,49 +19,29 @@
 bool run_calibration(min_variance_calibration_msgs::RunCalibration::Request  &req,
                      min_variance_calibration_msgs::RunCalibration::Response &res) {
 
-   ROS_INFO("request_testing");
-  //     std_msgs::String description_msg = msg->robot_description;
-  //     joint_calibration::CalibrationData data = msg->data;
-  //
-  //     joint_calibration::ParameterManager param_manager;
-  //     param_manager.loadFromMsg(msg);
-  //
-  //     // TODO: remove hardcode root and tip
-  //     joint_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
-  //
-  //     // Setup optimizer
-  //     joint_calibration::Optimizer opt;
-  //     // Run optimization
-  //     opt.optimize(param_manager, data, model);
+    ROS_INFO("Calling run_calibration service....");
+
+    // Extract info from request
+    std_msgs::String description_msg = req.robot_description;
+    min_variance_calibration_msgs::CalibrationData data = req.data;
+    min_variance_calibration::ParameterManager param_manager;
+    param_manager.loadFromMsg(req);
+
+    // TODO: remove hardcode root and tip
+    // Set up chain model
+    min_variance_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
+    // Set up optimizer
+    min_variance_calibration::Optimizer opt;
+    // Run optimization
+    opt.optimize(param_manager, data, model);
 
     return true;
 }
-
-// bool run_calibration(const joint_calibration::CalibrationMsg::ConstPtr& msg) {
-//     std_msgs::String description_msg = msg->robot_description;
-//     joint_calibration::CalibrationData data = msg->data;
-//
-//     joint_calibration::ParameterManager param_manager;
-//     param_manager.loadFromMsg(msg);
-//
-//     // TODO: remove hardcode root and tip
-//     joint_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
-//
-//     // Setup optimizer
-//     joint_calibration::Optimizer opt;
-//     // Run optimization
-//     opt.optimize(param_manager, data, model);
-//
-//     return true;
-// }
 
 int main(int argc, char** argv) {
     // ROS setup
     ros::init(argc, argv, "min_variance_calibration_server");
     ros::NodeHandle nh("~");
-
-//    ros::Subscriber sub = nh.subscribe("/calibrate", 1000, run_calibration);
-//    ros::Publisher results_pub = nh.advertise<joint_calibration::CalibrationResults>("/calibrate", 1000, run_calibration);
 
     ros::ServiceServer service = nh.advertiseService("/run_calibration", run_calibration);
     ROS_INFO("Ready to calibrate");

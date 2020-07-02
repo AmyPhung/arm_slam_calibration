@@ -43,16 +43,16 @@ include(~/dlib/dlib/cmake)
 
 
 
-# add_library(min_variance_calibration src/ParameterManager.cpp
-#                                      src/Utils.cpp
-#                                      src/Optimizer.cpp
-#                                      src/ChainModel.cpp)
-#
-# target_link_libraries(min_variance_calibration ${catkin_LIBRARIES}
-#                                                ${Boost_LIBRARIES}
-#                                                dlib)
-#
-#
-# add_executable(Calibrate src/Calibrate.cpp)
-# target_link_libraries(Calibrate min_variance_calibration
-#                                 ${catkin_LIBRARIES})
+add_library(min_variance_calibration src/ParameterManager.cpp
+                                     src/Utils.cpp
+                                     src/Optimizer.cpp
+                                     src/ChainModel.cpp)
+
+target_link_libraries(min_variance_calibration ${catkin_LIBRARIES}
+                                               ${Boost_LIBRARIES}
+                                               dlib)
+
+
+add_executable(RunCalibrationServer src/RunCalibrationServer.cpp)
+target_link_libraries(RunCalibrationServer min_variance_calibration
+                                           ${catkin_LIBRARIES})
