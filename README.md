@@ -1,64 +1,22 @@
-# Joint Calibration
+# Minimum Variance Calibration
 
 ## Build Status
-[![Build Status](https://api.travis-ci.com/AmyPhung/joint_calibration.svg?branch=master)](https://travis-ci.com/github/AmyPhung/joint_calibration)
-
+[![Build Status](https://api.travis-ci.com/AmyPhung/min_variance_calibration.svg?branch=master)](https://travis-ci.com/github/AmyPhung/min_variance_calibration)
 
 ## Build Dependencies
 + https://github.com/davisking/dlib.git (clone to home directory)
 
-
 ## Setup
 + `cd ~/catkin_ws/src`
-+ `git clone https://github.com/AmyPhung/joint_calibration`
++ `git clone https://github.com/AmyPhung/min_variance_calibration`
 + `cd ~/catkin_ws/`
 + `rosdep install -iry --from-paths src`
++ `catkin build`
 
 ## Usage
-### Recording calibration dataset
-+ `roscore`
-+ need to set sim time to true before starting `rosparam set use_sim_time true`
-+ `rqt_bag --clock` start running bag
-+ Launch arm (needed for arm frames) `roslaunch titan_arm_moveit_config demo.launch` Wait till it loads
-+ `roslaunch joint_calibration bringup.launch`
-+ `roslaunch joint_calibration capture_calibration_data.launch`
-+ Wait till virtual tags show up in RVIZ before collecting points
-
-### Calibrate
-+ Restart the roscore
-    + Note: need to make sure there are no stray params in the /calibrate/ namespace (this might happen if the launch file is used twice with the same roscore)
-+ `roslaunch joint_calibration calibrate.launch`
-
-### Previewing results
-+ Add ceres output to `joint_state_republisher.py`
-+ Start core processes
-```
-roscore
-rosparam set use_sim_time true
-roslaunch titan_arm_moveit_config demo.launch
-roslaunch joint_calibration bringup.launch
-roslaunch joint_calibration connect_tf_trees.launch
-```
-+ Play back rosbag, remap joint_states to a different topic
-```
-rosbag play merged.bag /joint_states:=/original_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states
-```
-+ Start joint republisher
-```
-rosrun joint_calibration joint_state_republisher.py
-```
-
-### Other launch files
-+ `bringup.launch` - Starts up essential processes for joint_calibration
-+ `connect_tf_trees.launch` - Publish tf between fisheye -> virtual tags to connect everything to one tf tree
-+ `create_artificial_tfs.launch` - Publish tf between fisheye -> ground truth tags to connect artificial tags to base tf tree. To be used for testing/verification purposes.
-
-## Misc useful notes
-
-### Play bag data from cmd line
-+ `rosbag play merged.bag --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
-+ For testing`rosbag play merged.bag /joint_states:=/original_joint_states --clock --topics /camera/fisheye/camera_info /camera/fisheye/image_raw /joint_states`
-
++ Requires properly formatted initial params yaml file, bag containing calibration data & robot_description
++ `rosrun min_variance_calibration RunCalibrationService`
++ `rosrun min_variance_calibration calibration_bridge.py`
 
 ### Debugging
 + `rosrun tf view_frames`
@@ -81,12 +39,6 @@ rosrun joint_calibration joint_state_republisher.py
 + Add node args
 + Add args for sim time/make sure it works realtime
 + create shared functions
-+ redo parameter loading
 + synchronize calibration data collection
-+ resturcture repo (break into smaller packages)
-  + min_variance_calibration
-    + calibration bridge, all cpp files
-    + ParameterInfo, FreeParameters
-  + min_variance_calibration_msgs CalibrationData message files
-  + whoi_arm_calibration
-    + everything related to data capture, config files, joint state republisher
++ create launch files
++ document data formats

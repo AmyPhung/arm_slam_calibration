@@ -1,0 +1,51 @@
+shoulder_yaw_offset:
+    initial_value: 56922
+    lower_limit: 0
+    upper_limit: 100000
+    uncertainty: 10000
+shoulder_pitch_offset:
+    initial_value: 3292
+    lower_limit: 0
+    upper_limit: 100000
+    uncertainty: 1000
+forearm_pitch_offset:
+    initial_value: 60017
+    lower_limit: 0
+    upper_limit: 100000
+    uncertainty: 10000
+wrist_pitch_offset:
+    initial_value: 63907
+    lower_limit: 0
+    upper_limit: 100000
+    uncertainty: 1000
+wrist_yaw_offset:
+    initial_value: 56994
+    lower_limit: 0
+    upper_limit: 100000
+    uncertainty: 10000
+
+shoulder_yaw_scaling:
+    initial_value: 50
+    lower_limit: 0
+    upper_limit: 100
+    uncertainty: 5
+shoulder_pitch_scaling:
+    initial_value: 49
+    lower_limit: 0
+    upper_limit: 100
+    uncertainty: 5
+forearm_pitch_scaling:
+    initial_value: 55
+    lower_limit: 0
+    upper_limit: 100
+    uncertainty: 5
+wrist_pitch_scaling:
+    initial_value: 45
+    lower_limit: 0
+    upper_limit: 100
+    uncertainty: 5
+wrist_yaw_scaling:
+    initial_value: 44
+    lower_limit: 0
+    upper_limit: 100
+    uncertainty: 5

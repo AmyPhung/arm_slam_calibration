@@ -120,14 +120,14 @@ class CalibrationBridge():
 
 if __name__ == "__main__":
     # TODO: Make this a ros param
-    filename = '/home/amy/whoi_ws/src/whoi_arm_calibration/config/initial_params.yaml'
+    filename = '/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/examples/initial_params.yaml'
     initial_params = loadFromYAML(filename, yaml.SafeLoader)
 
     calibration_data = None
     robot_description = None
 
     # TODO: Make this a ros param
-    bag = rosbag.Bag('/home/amy/whoi_ws/src/whoi_arm_calibration/bags/calibration_data.bag')
+    bag = rosbag.Bag('/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/examples/calibration_data.bag')
     for topic, msg, t in bag.read_messages(topics=['robot_description']):
         robot_description = msg
     for topic, msg, t in bag.read_messages(topics=['calibration_data']):
