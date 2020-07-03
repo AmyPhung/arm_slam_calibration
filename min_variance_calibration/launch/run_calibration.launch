@@ -9,8 +9,8 @@
     </node>
 
     <!-- Run calibration client -->
-    <node pkg="min_variance_calibration" type="calibration_bridge.py"
-      name="calibration_bridge" output="screen" required="True">
+    <node pkg="min_variance_calibration" type="calibrate.py"
+      name="calibration" output="screen" required="True">
         <param name="initial_param_yaml" type="string"
           value="$(find min_variance_calibration)/examples/initial_params.yaml"/>
         <param name="data_bagfile" type="string"

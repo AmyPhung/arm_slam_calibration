@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import rospy
-import rosbag
+
 
 from min_variance_calibration_msgs.msg import ParameterInfo
 from min_variance_calibration_msgs.msg import FreeParameters
@@ -9,7 +9,6 @@ from min_variance_calibration_msgs.srv import RunCalibration
 
 # TODO: Add this to dependencies list
 import yaml
-import time
 from collections import OrderedDict
 
 def loadFromYAML(filename, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
@@ -68,75 +67,27 @@ def printParams(free_params):
         print(param.name + ': ' + str(param.value))
 
 
-class CalibrationBridge():
-    """ Provides a convenient interface to the calibration service """
-    def __init__(self):
-        pass
+def runCalibration(initial_params, calibration_data,
+    robot_description, opt_params):
+    """ Provides a convenient interface to the calibration service
+    Args:
+        initial_params (dict): Initial parameter info saved in a dict
+        calibration_data (CalibrationData): ROS message containing
+            measurements
+        robot_description (String): ROS message containing robot
+            description
+        opt_params (OptimizationParameters): ROS message
+            containing optimization parameters
+    """
+    rospy.wait_for_service('/run_calibration')
 
-    def runCalibration(self, initial_params, calibration_data,
-        robot_description, opt_params):
-        """
-        Args:
-            initial_params (dict): Initial parameter info saved in a dict
-            calibration_data (CalibrationData): ROS message containing
-                measurements
-            robot_description (String): ROS message containing robot
-                description
-            opt_params (OptimizationParameters): ROS message
-                containing optimization parameters
-        """
-        rospy.wait_for_service('/run_calibration')
+    free_params = preconditionParams(initial_params, opt_params.rho_start)
 
-        free_params = preconditionParams(initial_params, opt_params.rho_start)
-
-        try:
-            run_calibration = rospy.ServiceProxy('/run_calibration',
-                                                 RunCalibration)
-            result = run_calibration(free_params, opt_params, calibration_data,
-                                     robot_description)
-            return result
-        except rospy.ServiceException as e:
-            print("Service call failed: %s"%e)
-
-    def runTestCalibration(self, initial_params, calibration_data,
-        robot_description, optimization_params,
-        param_noise, measurement_noise):
-        # Adjust values
-        # Run calibration
-        # TODO: implement this
-        pass
-
-if __name__ == "__main__":
-    rospy.init_node("calibration_bridge")
-
-    # Load initial parameters from yaml file
-    filename = rospy.get_param('~initial_param_yaml')
-    initial_params = loadFromYAML(filename, yaml.SafeLoader)
-
-    # Load calibration data and robot description from bagfile
-    bagfile = rospy.get_param('~data_bagfile')
-    bag = rosbag.Bag(bagfile)
-
-    calibration_data = None
-    robot_description = None
-
-    for topic, msg, t in bag.read_messages(topics=['robot_description']):
-        robot_description = msg
-    for topic, msg, t in bag.read_messages(topics=['calibration_data']):
-        calibration_data = msg
-    bag.close()
-
-    # Load optimization params from ROS parameter server
-    opt_params = OptimizationParameters()
-    opt_params.rho_start = rospy.get_param('~rho_start', 10)
-    opt_params.rho_end = rospy.get_param('rho_end', 1e-6)
-    opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = rospy.get_param('max_f_evals', 10000)
-
-    # Pass data to calibration server
-    cal_bridge = CalibrationBridge()
-    result = cal_bridge.runCalibration(initial_params, calibration_data,
-        robot_description, opt_params)
-    rospy.loginfo("Starting Variance: " + str(result.starting_variance))
-    rospy.loginfo("Ending Variance: " + str(result.ending_variance))
-    printParams(result.params)
+    try:
+        run_calibration = rospy.ServiceProxy('/run_calibration',
+                                             RunCalibration)
+        result = run_calibration(free_params, opt_params, calibration_data,
+                                 robot_description)
+        return result
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
