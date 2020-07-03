@@ -61,29 +61,17 @@ def preconditionParams(initial_params, rho_start):
 
         conditioned_params.params.append(param_msg)
 
-    print(conditioned_params)
     return conditioned_params
 
-# Create function restoreParams
+def printParams(free_params):
+    for param in free_params.params:
+        print(param.name + ': ' + str(param.value))
+
 
 class CalibrationBridge():
-    """
-    publisher /calibrate
-    subscriber /calibration_results
-
-    runCalibration()
-    runTestCalibration()
-    sweepNoiseLevels()
-
-    resultsCB()
-        restoreParams()
-        displayResults (just write it out here)
-
-    TODO: add ros parameters to control modes
-    """
+    """ Provides a convenient interface to the calibration service """
     def __init__(self):
-        rospy.init_node("CalibrationBridge")
-        self.update_rate = rospy.Rate(10)
+        pass
 
     def runCalibration(self, initial_params, calibration_data,
         robot_description, opt_params):
@@ -119,31 +107,36 @@ class CalibrationBridge():
         pass
 
 if __name__ == "__main__":
-    # TODO: Make this a ros param
-    filename = '/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/examples/initial_params.yaml'
+    rospy.init_node("calibration_bridge")
+
+    # Load initial parameters from yaml file
+    filename = rospy.get_param('~initial_param_yaml')
     initial_params = loadFromYAML(filename, yaml.SafeLoader)
+
+    # Load calibration data and robot description from bagfile
+    bagfile = rospy.get_param('~data_bagfile')
+    bag = rosbag.Bag(bagfile)
 
     calibration_data = None
     robot_description = None
 
-    # TODO: Make this a ros param
-    bag = rosbag.Bag('/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/examples/calibration_data.bag')
     for topic, msg, t in bag.read_messages(topics=['robot_description']):
         robot_description = msg
     for topic, msg, t in bag.read_messages(topics=['calibration_data']):
         calibration_data = msg
     bag.close()
 
-    # TODO: Make these ros params
+    # Load optimization params from ROS parameter server
     opt_params = OptimizationParameters()
-    opt_params.rho_start = 10
-    opt_params.rho_end = 1e-6
+    opt_params.rho_start = rospy.get_param('~rho_start', 10)
+    opt_params.rho_end = rospy.get_param('rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = 10000
+    opt_params.max_f_evals = rospy.get_param('max_f_evals', 10000)
 
+    # Pass data to calibration server
     cal_bridge = CalibrationBridge()
     result = cal_bridge.runCalibration(initial_params, calibration_data,
         robot_description, opt_params)
-    print(result.starting_variance)
-    print(result.ending_variance)
-    print(result.params)
+    rospy.loginfo("Starting Variance: " + str(result.starting_variance))
+    rospy.loginfo("Ending Variance: " + str(result.ending_variance))
+    printParams(result.params)

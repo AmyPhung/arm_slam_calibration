@@ -117,7 +117,7 @@ namespace min_variance_calibration {
         param_manager.getFreeParameters(res.params);
 
         // Display final parameters
-        std::cout << "Solution:\n" << initial_params << std::endl;
-        std::cout << "Objective Function End: " << res.ending_variance << std::endl;
+        // std::cout << "Solution:\n" << initial_params << std::endl;
+        // std::cout << "Objective Function End: " << res.ending_variance << std::endl;
     }
 }

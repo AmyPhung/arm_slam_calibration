@@ -15,7 +15,7 @@
 
 ## Usage
 + Requires properly formatted initial params yaml file, bag containing calibration data & robot_description
-+ `rosrun min_variance_calibration RunCalibrationService`
++ `rosrun min_variance_calibration RunCalibrationServer`
 + `rosrun min_variance_calibration calibration_bridge.py`
 
 ### Debugging
