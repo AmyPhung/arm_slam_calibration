@@ -42,3 +42,6 @@
 + synchronize calibration data collection
 + create launch files
 + document data formats
++ somehow determine effect of encoder noise
++ Add back in fisheye tf
++ add orientation as calibration data

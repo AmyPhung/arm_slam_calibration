@@ -36,8 +36,20 @@ def add_param_noise(initial_params, noise):
     return output
 
 def add_measurement_noise(calibration_data, noise):
-    """ Adds gaussian noise to measurements in calibration data """
-    pass
+    """ Adds gaussian noise to measurements in calibration data
+    Args:
+        noise (float): Approximate error to apply (in meters, will be applied
+            per-axis) """
+    output = copy.deepcopy(calibration_data)
+
+    # Iterate through all point groups and points
+    for pg in output.point_groups:
+        for pt in pg.observations:
+            pt.point.x = np.random.normal(pt.point.x, noise)
+            pt.point.y = np.random.normal(pt.point.y, noise)
+            pt.point.z = np.random.normal(pt.point.z, noise)
+
+    return output
 
 if __name__ == "__main__":
     rospy.init_node("sweep_noise_levels")
@@ -100,7 +112,13 @@ if __name__ == "__main__":
 
     # Delete later - just for checking
     noisy_params = add_param_noise(initial_params, 0.1)
+    noisy_measurements = add_measurement_noise(calibration_data, 0.01)
+
     params = noisy_params.keys()
+
+    # print(calibration_data.point_groups[0].observations)
+    print(noisy_measurements.point_groups[0].observations)
+
 
     # print(initial_params[params[0]]["initial_value"])
     # print(noisy_params[params[0]]["initial_value"])
