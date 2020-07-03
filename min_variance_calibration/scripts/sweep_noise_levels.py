@@ -2,10 +2,6 @@
 
 # TODO: add this as a dependency
 import numpy as np
-from matplotlib.mlab import griddata
-import matplotlib.pyplot as plt
-import numpy.ma as ma
-from numpy.random import uniform, seed
 import copy
 
 import calibration_bridge as bridge
@@ -74,18 +70,19 @@ if __name__ == "__main__":
     # Load optimization params from ROS parameter server
     opt_params = OptimizationParameters()
     opt_params.rho_start = rospy.get_param('~rho_start', 10)
-    opt_params.rho_end = rospy.get_param('rho_end', 1e-6)
+    opt_params.rho_end = rospy.get_param('~rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = rospy.get_param('max_f_evals', 10000)
+    opt_params.max_f_evals = 100000 # rospy.get_param('~max_f_evals', 10)
 
     # Load sweep noise levels from ROS parameter server
     # TODO: Make these ROS params
-    param_noise_start = 0
-    param_noise_end = 1
-    param_n_steps = 10
-    measurement_noise_start = 0
-    measurement_noise_end = 1
-    measurement_n_steps = 5
+    # TODO: handle 0s
+    param_noise_start = 0.0001 # Starting percentage
+    param_noise_end = 1   # Ending percentage
+    param_n_steps = 3    # Number of points
+    measurement_noise_start = 0.0001 # Starting noise (in meters)
+    measurement_noise_end = 0.5   # Ending noise (in meters)
+    measurement_n_steps = 3     # Number of points
 
     # Iterate through all combinations of specified noise levels
     x = np.linspace(param_noise_start,
@@ -98,74 +95,59 @@ if __name__ == "__main__":
     xv, yv = np.meshgrid(x, y)
     results = np.zeros(xv.shape)
 
-    # for i in range(len(xv)):
-    #     for j in range(len(yv)):
-    #         noisy_params = add_param_noise(initial_params, xv[i][j])
-    #         noisy_measurements = add_measurement_noise(calibration_data, yv[i][j])
+    for i in range(len(xv)):
+        for j in range(len(yv)):
+            noisy_params = add_param_noise(initial_params, xv[i][j])
+            noisy_measurements = add_measurement_noise(calibration_data, yv[i][j])
+
+            # print("here!")
+            # print(xv[i][j])
+            # print(yv[i][j])
+            result = bridge.runCalibration(noisy_params, noisy_measurements,
+                    robot_description, opt_params)
+
+
+            # results[i][j] = i + j
+            # print(results[i][j])
+
+    # Save results to csv file
+    results_file = rospy.get_param('~output_file')
+    csv_arr = np.array([xv.flatten(), yv.flatten(), results.flatten()])
+    np.savetxt(results_file, csv_arr, delimiter=',',
+        header="param_noise, measurement_noise, output_variance", comments="")
+
+
     #
-    #         # print("here!")
-    #         # print(xv[i][j])
-    #         # print(yv[i][j])
-    #         results[i][j] = i + j
-    #         # print(results[i][j])
-
-
-    # Delete later - just for checking
-    noisy_params = add_param_noise(initial_params, 0.1)
-    noisy_measurements = add_measurement_noise(calibration_data, 0.01)
-
-    params = noisy_params.keys()
-
-    # print(calibration_data.point_groups[0].observations)
-    print(noisy_measurements.point_groups[0].observations)
-
-
-    # print(initial_params[params[0]]["initial_value"])
-    # print(noisy_params[params[0]]["initial_value"])
+    # # Delete later - just for checking
+    # noisy_params = add_param_noise(initial_params, 0.1)
+    # noisy_measurements = add_measurement_noise(calibration_data, 0.01)
     #
-    # print(xv.shape)
-    # print(yv.shape)
-    # print(results.shape)
-
-    # for p_noise in param_noise:
-    #     for m_noise in measurement_noise:
-    #         # Pass data to calibration server
-    #         result = bridge.runCalibration(initial_params, calibration_data,
-    #             robot_description, opt_params)
-    #         rospy.loginfo("Starting Variance: " + str(result.starting_variance))
-    #         rospy.loginfo("Ending Variance: " + str(result.ending_variance))
-    #         bridge.printParams(result.params)
-
-
-
-
-
-
-
-
-    # # Save data to output file so it doesn't need re-running
-    # # make up some randomly distributed data
-    # seed(1234)
-    # npts = 200
-    # x = uniform(-2,2,npts)
-    # y = uniform(-2,2,npts)
-    # z = np.random.random(len(x))
-    # # define grid.
-    # xi = np.linspace(-2.1,2.1,100)
-    # yi = np.linspace(-2.1,2.1,100)
-    # # grid the data.
-    # zi = griddata(x, y, z, xi, yi, interp='linear')
+    # params = noisy_params.keys()
     #
-    # # contour the gridded data, plotting dots at the randomly spaced data points.
-    # CS = plt.contour(xi,yi,zi,15,linewidths=0.5,colors='k')
-    # CS = plt.contourf(xi,yi,zi,15,cmap=plt.cm.jet)
-    # plt.colorbar() # draw colorbar
-    # # plot data points.
-    # plt.scatter(x,y,marker='o',c='b',s=5)
-    # plt.xlim(-2,2)
-    # plt.ylim(-2,2)
-    # plt.title('griddata test (%d points)' % npts)
-    # plt.show()
+    # # print(calibration_data.point_groups[0].observations)
+    # print(noisy_measurements.point_groups[0].observations)
+    #
+    #
+    # # print(initial_params[params[0]]["initial_value"])
+    # # print(noisy_params[params[0]]["initial_value"])
+    # #
+    # # print(xv.shape)
+    # # print(yv.shape)
+    # # print(results.shape)
+    #
+    # # for p_noise in param_noise:
+    # #     for m_noise in measurement_noise:
+    # #         # Pass data to calibration server
+    # #         result = bridge.runCalibration(initial_params, calibration_data,
+    # #             robot_description, opt_params)
+    # #         rospy.loginfo("Starting Variance: " + str(result.starting_variance))
+    # #         rospy.loginfo("Ending Variance: " + str(result.ending_variance))
+    # #         bridge.printParams(result.params)
+
+
+
+
+
 
 """
 def runTestCalibration(self, initial_params, calibration_data,

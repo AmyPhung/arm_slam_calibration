@@ -1,51 +1,51 @@
 shoulder_yaw_offset:
     initial_value: 65322
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100000
     uncertainty: 1
 shoulder_pitch_offset:
     initial_value: 3792
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100000
     uncertainty: 1
 forearm_pitch_offset:
     initial_value: 59777
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100000
     uncertainty: 1
 wrist_pitch_offset:
     initial_value: 64437
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100000
     uncertainty: 1
 wrist_yaw_offset:
     initial_value: 65324
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100000
     uncertainty: 1
 
 shoulder_yaw_scaling:
     initial_value: 46
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100
     uncertainty: 0.01
 shoulder_pitch_scaling:
     initial_value: 49
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100
     uncertainty: 0.01
 forearm_pitch_scaling:
     initial_value: 52
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100
     uncertainty: 0.01
 wrist_pitch_scaling:
     initial_value: 46
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100
     uncertainty: 0.01
 wrist_yaw_scaling:
     initial_value: 46
-    lower_limit: -1000000000000
-    upper_limit: 1000000000000
+    lower_limit: 0
+    upper_limit: 100
     uncertainty: 0.01
