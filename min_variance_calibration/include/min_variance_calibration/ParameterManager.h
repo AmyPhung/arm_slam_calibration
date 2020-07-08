@@ -28,7 +28,7 @@ namespace min_variance_calibration {
           *  \param req The request message
           */
         bool loadFromMsg(const min_variance_calibration_msgs::RunCalibration::Request &req);
-//        bool loadFromMsg(const min_variance_calibration_msgs::ProjectPoints::Request &req);
+        bool loadFromMsg(const min_variance_calibration_msgs::ProjectPoints::Request &req);
 
 
         /**

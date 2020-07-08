@@ -54,13 +54,13 @@ if __name__ == "__main__":
 
     # --------------------------------------------------------------------------
 
-    # output_frame = String()
-    # output_frame.data = "base_link"
-    #
-    # ground_truth_projection = bridge.projectPoints(calibration_data,
-    #     result.params, robot_description, output_frame)
-    #
-    # print(ground_truth_projection)
+    output_frame = String()
+    output_frame.data = "base_link"
+
+    ground_truth_projection = bridge.projectPoints(calibration_data,
+        result.params, robot_description, output_frame)
+
+    print(ground_truth_projection)
 
 
 

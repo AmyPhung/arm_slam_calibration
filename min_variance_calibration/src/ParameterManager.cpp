@@ -45,18 +45,18 @@ namespace min_variance_calibration {
         return true;
     }
 
-//    bool ParameterManager::loadFromMsg(const min_variance_calibration_msgs::ProjectPoints::Request &req) {
-//
-//        num_free_params = req.params.params.size();
-//
-//        for (int i=0; i<num_free_params; i++) {
-//            std::cout << req.params.params[i].name <<std::endl;
-//            param_order_.push_back(req.params.params[i].name);
-//            param_lookup_[req.params.params[i].name] = req.params.params[i].value;
-//            scale_lookup_[req.params.params[i].name] = req.params.params[i].scaling;
-//        }
-//        return true;
-//    }
+   bool ParameterManager::loadFromMsg(const min_variance_calibration_msgs::ProjectPoints::Request &req) {
+
+       num_free_params = req.params.params.size();
+
+       for (int i=0; i<num_free_params; i++) {
+           std::cout << req.params.params[i].name <<std::endl;
+           param_order_.push_back(req.params.params[i].name);
+           param_lookup_[req.params.params[i].name] = req.params.params[i].value;
+           scale_lookup_[req.params.params[i].name] = req.params.params[i].scaling;
+       }
+       return true;
+   }
 
     double ParameterManager::get(const std::string name) {
         // Will return 0 if parameter not found
