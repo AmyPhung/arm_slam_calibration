@@ -59,21 +59,56 @@ namespace min_variance_calibration {
 
     bool ParameterManager::getFrame(const std::string name,
             KDL::Frame& output_frame) {
-        // TODO: Add scaling term here
-        output_frame.p.x(get(std::string(name).append("_x_correction")) /
-                         getScale(std::string(name).append("_x_correction")));
-        output_frame.p.y(get(std::string(name).append("_y_correction")) /
-                         getScale(std::string(name).append("_y_correction")));
-        output_frame.p.z(get(std::string(name).append("_z_correction")) /
-                         getScale(std::string(name).append("_z_correction")));
+        double x, y, z, a, b, c;
 
-        output_frame.M = Utils::rotationFromAxisMagnitude(
-                get(std::string(name).append("_a_correction")) /
-                    getScale(std::string(name).append("_a_correction")),
-                get(std::string(name).append("_b_correction")) /
-                    getScale(std::string(name).append("_b_correction")),
-                get(std::string(name).append("_c_correction")) /
-                    getScale(std::string(name).append("_c_correction")));
+        // TODO: Make this more readable
+        if ((get(std::string(name).append("_x_correction")) == 0) ||
+            (getScale(std::string(name).append("_x_correction")) == 0))
+            x = 0;
+        else
+            x = get(std::string(name).append("_x_correction")) /
+                    getScale(std::string(name).append("_x_correction"));
+
+        if ((get(std::string(name).append("_y_correction")) == 0) ||
+            (getScale(std::string(name).append("_y_correction")) == 0))
+            y = 0;
+        else
+            y = get(std::string(name).append("_y_correction")) /
+                getScale(std::string(name).append("_y_correction"));
+
+        if ((get(std::string(name).append("_z_correction")) == 0) ||
+            (getScale(std::string(name).append("_z_correction")) == 0))
+            z = 0;
+        else
+            z = get(std::string(name).append("_z_correction")) /
+                getScale(std::string(name).append("_z_correction"));
+
+        if ((get(std::string(name).append("_a_correction")) == 0) ||
+            (getScale(std::string(name).append("_a_correction")) == 0))
+            a = 0;
+        else
+            a = get(std::string(name).append("_a_correction")) /
+                getScale(std::string(name).append("_a_correction"));
+
+        if ((get(std::string(name).append("_b_correction")) == 0) ||
+            (getScale(std::string(name).append("_b_correction")) == 0))
+            b = 0;
+        else
+            b = get(std::string(name).append("_b_correction")) /
+                getScale(std::string(name).append("_b_correction"));
+
+        if ((get(std::string(name).append("_c_correction")) == 0) ||
+            (getScale(std::string(name).append("_c_correction")) == 0))
+            c = 0;
+        else
+            c = get(std::string(name).append("_c_correction")) /
+                getScale(std::string(name).append("_c_correction"));
+
+        output_frame.p.x(x);
+        output_frame.p.y(y);
+        output_frame.p.z(z);
+
+        output_frame.M = Utils::rotationFromAxisMagnitude(a,b,c);
 
         return true;
     }
