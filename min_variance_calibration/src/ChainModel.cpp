@@ -117,7 +117,7 @@ namespace min_variance_calibration {
             p_out = p_out * KDL::Frame(pose.p + totip.M * correction.p);
             p_out = p_out * KDL::Frame(totip.M * correction.M * totip.M.Inverse() * pose.M);
         }
-
+        
         return p_out;
     }
 }

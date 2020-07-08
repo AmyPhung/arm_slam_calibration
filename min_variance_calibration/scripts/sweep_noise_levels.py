@@ -90,10 +90,10 @@ if __name__ == "__main__":
     # TODO: handle 0s
     param_noise_start = 0.0001 # Starting percentage
     param_noise_end = 0.2   # Ending percentage
-    param_n_steps = 5    # Number of points
+    param_n_steps = 1    # Number of points
     measurement_noise_start = 0.0001 # Starting noise (in meters)
     measurement_noise_end = 0.2   # Ending noise (in meters)
-    measurement_n_steps = 5     # Number of points
+    measurement_n_steps = 1     # Number of points
 
     # Iterate through all combinations of specified noise levels
     x = np.linspace(param_noise_start,

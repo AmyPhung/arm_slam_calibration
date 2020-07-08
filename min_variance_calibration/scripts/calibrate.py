@@ -30,9 +30,9 @@ if __name__ == "__main__":
     # Load optimization params from ROS parameter server
     opt_params = OptimizationParameters()
     opt_params.rho_start = rospy.get_param('~rho_start', 10)
-    opt_params.rho_end = rospy.get_param('rho_end', 1e-6)
+    opt_params.rho_end = rospy.get_param('~rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = rospy.get_param('max_f_evals', 10000)
+    opt_params.max_f_evals = rospy.get_param('~max_f_evals', 10000)
 
     # Pass data to calibration server
     result = bridge.runCalibration(initial_params, calibration_data,

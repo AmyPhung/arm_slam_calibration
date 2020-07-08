@@ -11,6 +11,7 @@
 #include <string>
 #include <map>
 #include <min_variance_calibration_msgs/RunCalibration.h>
+//#include <min_variance_calibration_msgs/ProjectPoints.h>
 #include <min_variance_calibration_msgs/FreeParameters.h>
 #include <min_variance_calibration_msgs/ParameterInfo.h>
 
@@ -27,6 +28,8 @@ namespace min_variance_calibration {
           *  \param req The request message
           */
         bool loadFromMsg(const min_variance_calibration_msgs::RunCalibration::Request &req);
+        bool loadFromMsg(const min_variance_calibration_msgs::ProjectPoints::Request &req);
+
 
         /**
          *  \brief Get value of parameter. Returns 0 if parameter not set.
