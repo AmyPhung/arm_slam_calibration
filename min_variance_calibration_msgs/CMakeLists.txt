@@ -23,6 +23,7 @@ add_service_files(
     srv
   FILES
     RunCalibration.srv
+    ProjectPoints.srv
 )
 
 generate_messages(

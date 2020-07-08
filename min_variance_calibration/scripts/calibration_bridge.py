@@ -6,6 +6,7 @@ from min_variance_calibration_msgs.msg import ParameterInfo
 from min_variance_calibration_msgs.msg import FreeParameters
 from min_variance_calibration_msgs.msg import OptimizationParameters
 from min_variance_calibration_msgs.srv import RunCalibration
+from min_variance_calibration_msgs.srv import ProjectPoints
 
 # TODO: Add this to dependencies list
 import yaml
@@ -46,6 +47,8 @@ def preconditionParams(initial_params, rho_start):
     conditioned_params = FreeParameters()
 
     for param in initial_params.keys():
+        print(param)
+        print(initial_params[param]["uncertainty"])
         # 10 comes from the fact that rho_start should be 1/10 the
         # uncertainty value. Decimal forces float value
         scaling = (10.0 * rho_start) / initial_params[param]["uncertainty"]
@@ -89,5 +92,27 @@ def runCalibration(initial_params, calibration_data,
         result = run_calibration(free_params, opt_params, calibration_data,
                                  robot_description)
         return result
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+def projectPoints(input_data, params, robot_description, output_frame):
+    """ Provides a convenient interface to the calibration service
+    Args:
+        input_data (CalibrationData): ROS message containing
+            measurements to be projected
+        params (FreeParameters): Parameters to use for projection
+        robot_description (String): ROS message containing robot
+            description
+        output_frame (String): ROS message containing desired output
+            frame name
+    """
+    rospy.wait_for_service('/project_points')
+
+    try:
+        project_points = rospy.ServiceProxy('/project_points',
+                                            ProjectPoints)
+        projected_points = project_points(input_data, params,
+                                          robot_description, output_frame)
+        return projected_points
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
