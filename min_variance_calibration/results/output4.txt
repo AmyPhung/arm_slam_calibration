@@ -1,0 +1,4179 @@
+amy@lap-bot:~$ roslaunch min_variance_calibration sweep_noise.launch
+... logging to /home/amy/.ros/log/2746587e-bcae-11ea-bb64-f85971c60976/roslaunch-lap-bot-339.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+
+started roslaunch server http://lap-bot:44493/
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: melodic
+ * /rosversion: 1.14.5
+ * /sweep_noise/data_bagfile: /home/amy/whoi_ws...
+ * /sweep_noise/initial_param_yaml: /home/amy/whoi_ws...
+ * /sweep_noise/max_f_evals: 10000.0
+ * /sweep_noise/output_file: /home/amy/whoi_ws...
+ * /sweep_noise/rho_end: 1e-06
+ * /sweep_noise/rho_start: 10.0
+
+NODES
+  /
+    calibration_server (min_variance_calibration/RunCalibrationServer)
+    sweep_noise (min_variance_calibration/sweep_noise_levels.py)
+
+ROS_MASTER_URI=http://localhost:11311
+
+process[calibration_server-1]: started with pid [357]
+process[sweep_noise-2]: started with pid [358]
+[ INFO] [1593801959.607335039]: Ready to calibrate
+OrderedDict([('shoulder_yaw_offset', OrderedDict([('initial_value', 66729.52862397202), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 65322.0)])), ('shoulder_pitch_offset', OrderedDict([('initial_value', 7479.262416525143), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 3792.0)])), ('forearm_pitch_offset', OrderedDict([('initial_value', 25935.719284559673), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 59777.0)])), ('wrist_pitch_offset', OrderedDict([('initial_value', 17016.12669430422), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 64437.0)])), ('wrist_yaw_offset', OrderedDict([('initial_value', 26207.07036562715), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 65324.0)])), ('shoulder_yaw_scaling', OrderedDict([('initial_value', 59.662069113478005), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 46.0)])), ('shoulder_pitch_scaling', OrderedDict([('initial_value', 40.61034235732833), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 49.0)])), ('forearm_pitch_scaling', OrderedDict([('initial_value', 4.3120469023583325), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 52.0)])), ('wrist_pitch_scaling', OrderedDict([('initial_value', -20.164582808965264), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 46.0)])), ('wrist_yaw_scaling', OrderedDict([('initial_value', 102.32063421602109), ('lower_limit', -1000000000000), ('upper_limit', 1000000000000), ('uncertainty', 46.0)]))])
+[ INFO] [1593801960.248185285]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593801960.249832059]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Solution:
+ 103.309
+ 202.029
+ 39.1291
+ 21.0499
+ 56.5377
+ 128.361
+ 80.1592
+ 6.63128
+-45.9317
+ 220.789
+
+Objective Function End: 0.232216
+[ INFO] [1593801972.356771659]: Calibration Complete!
+================================================================================REQUIRED process [sweep_noise-2] has died!
+process has finished cleanly
+log file: /home/amy/.ros/log/2746587e-bcae-11ea-bb64-f85971c60976/sweep_noise-2*.log
+Initiating shutdown!
+================================================================================
+[sweep_noise-2] killing on exit
+[calibration_server-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+done
+amy@lap-bot:~$ git status
+fatal: not a git repository (or any of the parent directories): .git
+
+
+
+
+
+
+amy@lap-bot:~$ roslaunch min_variance_calibration sweep_noise.launch
+... logging to /home/amy/.ros/log/2746587e-bcae-11ea-bb64-f85971c60976/roslaunch-lap-bot-693.log
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+
+started roslaunch server http://lap-bot:35707/
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: melodic
+ * /rosversion: 1.14.5
+ * /sweep_noise/data_bagfile: /home/amy/whoi_ws...
+ * /sweep_noise/initial_param_yaml: /home/amy/whoi_ws...
+ * /sweep_noise/max_f_evals: 10000.0
+ * /sweep_noise/output_file: /home/amy/whoi_ws...
+ * /sweep_noise/rho_end: 1e-06
+ * /sweep_noise/rho_start: 10.0
+
+NODES
+  /
+    calibration_server (min_variance_calibration/RunCalibrationServer)
+    sweep_noise (min_variance_calibration/sweep_noise_levels.py)
+
+ROS_MASTER_URI=http://localhost:11311
+
+process[calibration_server-1]: started with pid [708]
+process[sweep_noise-2]: started with pid [709]
+[ INFO] [1593802223.042746484]: Ready to calibrate
+[ INFO] [1593802223.681490702]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802223.683070332]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Solution:
+1.01024e+06
+1.00424e+06
+     999321
+1.00008e+06
+1.00021e+06
+     999002
+1.00067e+06
+     997922
+1.00041e+06
+1.01542e+06
+
+Objective Function End: 0.000232925
+[ INFO] [1593802224.805037187]: Calibration Complete!
+[ INFO] [1593802224.873464071]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802224.874828520]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Solution:
+290.423
+212.791
+199.838
+199.964
+97.0324
+195.354
+201.155
+200.326
+200.423
+203.144
+
+Objective Function End: 0.000227895
+[ INFO] [1593802231.101821827]: Calibration Complete!
+[ INFO] [1593802231.196573766]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802231.197750872]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Solution:
+256.502
+111.568
+37.1318
+177.273
+ 48.403
+95.8976
+ 100.98
+100.249
+100.255
+101.833
+
+Objective Function End: 0.000226749
+[ INFO] [1593802241.832447707]: Calibration Complete!
+[ INFO] [1593802241.902471113]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802241.903787419]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Iteration: 15400
+Iteration: 15500
+Iteration: 15600
+Iteration: 15700
+Iteration: 15800
+Iteration: 15900
+Iteration: 16000
+Iteration: 16100
+Iteration: 16200
+Iteration: 16300
+Iteration: 16400
+Iteration: 16500
+Iteration: 16600
+Iteration: 16700
+Iteration: 16800
+Iteration: 16900
+Iteration: 17000
+Iteration: 17100
+Iteration: 17200
+Iteration: 17300
+Iteration: 17400
+Iteration: 17500
+Iteration: 17600
+Iteration: 17700
+Iteration: 17800
+Iteration: 17900
+Iteration: 18000
+Iteration: 18100
+Iteration: 18200
+Iteration: 18300
+Iteration: 18400
+Iteration: 18500
+Iteration: 18600
+Iteration: 18700
+Iteration: 18800
+Iteration: 18900
+Iteration: 19000
+Iteration: 19100
+Iteration: 19200
+Iteration: 19300
+Iteration: 19400
+Iteration: 19500
+Iteration: 19600
+Iteration: 19700
+Iteration: 19800
+Iteration: 19900
+Iteration: 20000
+Iteration: 20100
+Iteration: 20200
+Iteration: 20300
+Iteration: 20400
+Solution:
+ 153.306
+ 221.887
+ 45.8029
+-53.1208
+  169.66
+-55.1183
+ 66.4431
+ 66.5599
+ 66.5975
+ 67.6945
+
+Objective Function End: 0.000239797
+[ INFO] [1593802276.245181833]: Calibration Complete!
+[ INFO] [1593802276.313937885]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802276.315377190]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Iteration: 15400
+Iteration: 15500
+Iteration: 15600
+Iteration: 15700
+Iteration: 15800
+Iteration: 15900
+Iteration: 16000
+Iteration: 16100
+Iteration: 16200
+Iteration: 16300
+Iteration: 16400
+Iteration: 16500
+Iteration: 16600
+Iteration: 16700
+Iteration: 16800
+Iteration: 16900
+Iteration: 17000
+Iteration: 17100
+Iteration: 17200
+Iteration: 17300
+Iteration: 17400
+Iteration: 17500
+Iteration: 17600
+Iteration: 17700
+Iteration: 17800
+Iteration: 17900
+Iteration: 18000
+Iteration: 18100
+Iteration: 18200
+Iteration: 18300
+Iteration: 18400
+Iteration: 18500
+Iteration: 18600
+Iteration: 18700
+Iteration: 18800
+Iteration: 18900
+Iteration: 19000
+Iteration: 19100
+Iteration: 19200
+Iteration: 19300
+Iteration: 19400
+Iteration: 19500
+Iteration: 19600
+Iteration: 19700
+Iteration: 19800
+Iteration: 19900
+Iteration: 20000
+Iteration: 20100
+Iteration: 20200
+Iteration: 20300
+Iteration: 20400
+Iteration: 20500
+Iteration: 20600
+Iteration: 20700
+Iteration: 20800
+Iteration: 20900
+Iteration: 21000
+Iteration: 21100
+Iteration: 21200
+Iteration: 21300
+Iteration: 21400
+Iteration: 21500
+Iteration: 21600
+Iteration: 21700
+Iteration: 21800
+Iteration: 21900
+Iteration: 22000
+Iteration: 22100
+Iteration: 22200
+Iteration: 22300
+Iteration: 22400
+Iteration: 22500
+Iteration: 22600
+Iteration: 22700
+Iteration: 22800
+Iteration: 22900
+Iteration: 23000
+Iteration: 23100
+Iteration: 23200
+Iteration: 23300
+Iteration: 23400
+Iteration: 23500
+Iteration: 23600
+Iteration: 23700
+Iteration: 23800
+Iteration: 23900
+Iteration: 24000
+Iteration: 24100
+Iteration: 24200
+Iteration: 24300
+Iteration: 24400
+Iteration: 24500
+Iteration: 24600
+Iteration: 24700
+Iteration: 24800
+Iteration: 24900
+Iteration: 25000
+Iteration: 25100
+Iteration: 25200
+Iteration: 25300
+Iteration: 25400
+Iteration: 25500
+Iteration: 25600
+Iteration: 25700
+Iteration: 25800
+Iteration: 25900
+Iteration: 26000
+Iteration: 26100
+Iteration: 26200
+Iteration: 26300
+Iteration: 26400
+Iteration: 26500
+Iteration: 26600
+Iteration: 26700
+Iteration: 26800
+Iteration: 26900
+Iteration: 27000
+Iteration: 27100
+Iteration: 27200
+Iteration: 27300
+Iteration: 27400
+Iteration: 27500
+Iteration: 27600
+Iteration: 27700
+Iteration: 27800
+Iteration: 27900
+Iteration: 28000
+Iteration: 28100
+Iteration: 28200
+Iteration: 28300
+Iteration: 28400
+Iteration: 28500
+Iteration: 28600
+Iteration: 28700
+Iteration: 28800
+Iteration: 28900
+Iteration: 29000
+Iteration: 29100
+Iteration: 29200
+Iteration: 29300
+Iteration: 29400
+Iteration: 29500
+Iteration: 29600
+Iteration: 29700
+Iteration: 29800
+Iteration: 29900
+Iteration: 30000
+Iteration: 30100
+Iteration: 30200
+Iteration: 30300
+Iteration: 30400
+Iteration: 30500
+Iteration: 30600
+Iteration: 30700
+Iteration: 30800
+Iteration: 30900
+Iteration: 31000
+Iteration: 31100
+Iteration: 31200
+Iteration: 31300
+Iteration: 31400
+Iteration: 31500
+Iteration: 31600
+Iteration: 31700
+Iteration: 31800
+Iteration: 31900
+Iteration: 32000
+Iteration: 32100
+Iteration: 32200
+Iteration: 32300
+Iteration: 32400
+Iteration: 32500
+Iteration: 32600
+Iteration: 32700
+Iteration: 32800
+Iteration: 32900
+Iteration: 33000
+Iteration: 33100
+Iteration: 33200
+Iteration: 33300
+Iteration: 33400
+Iteration: 33500
+Iteration: 33600
+Iteration: 33700
+Iteration: 33800
+Iteration: 33900
+Iteration: 34000
+Iteration: 34100
+Iteration: 34200
+Iteration: 34300
+Iteration: 34400
+Iteration: 34500
+Iteration: 34600
+Iteration: 34700
+Iteration: 34800
+Iteration: 34900
+Iteration: 35000
+Iteration: 35100
+Iteration: 35200
+Iteration: 35300
+Iteration: 35400
+Iteration: 35500
+Iteration: 35600
+Iteration: 35700
+Iteration: 35800
+Iteration: 35900
+Iteration: 36000
+Iteration: 36100
+Iteration: 36200
+Iteration: 36300
+Iteration: 36400
+Iteration: 36500
+Iteration: 36600
+Iteration: 36700
+Iteration: 36800
+Iteration: 36900
+Iteration: 37000
+Iteration: 37100
+Iteration: 37200
+Iteration: 37300
+Iteration: 37400
+Iteration: 37500
+Iteration: 37600
+Iteration: 37700
+Iteration: 37800
+Iteration: 37900
+Iteration: 38000
+Iteration: 38100
+Iteration: 38200
+Iteration: 38300
+Iteration: 38400
+Iteration: 38500
+Iteration: 38600
+Iteration: 38700
+Iteration: 38800
+Iteration: 38900
+Iteration: 39000
+Iteration: 39100
+Iteration: 39200
+Iteration: 39300
+Iteration: 39400
+Iteration: 39500
+Iteration: 39600
+Iteration: 39700
+Iteration: 39800
+Iteration: 39900
+Iteration: 40000
+Iteration: 40100
+Iteration: 40200
+Iteration: 40300
+Iteration: 40400
+Iteration: 40500
+Iteration: 40600
+Iteration: 40700
+Iteration: 40800
+Iteration: 40900
+Iteration: 41000
+Iteration: 41100
+Iteration: 41200
+Solution:
+-13.7861
+-205.296
+ 322.667
+ 159.367
+ -33.424
+  36.344
+  38.126
+ 38.0037
+ 55.6175
+ 43.9528
+
+Objective Function End: 0.102956
+[ INFO] [1593802346.209297110]: Calibration Complete!
+[ INFO] [1593802346.331626743]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802346.332966950]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Solution:
+1.14644e+06
+ 1.1162e+06
+1.00013e+06
+1.00014e+06
+     999845
+1.08558e+06
+     887766
+     871895
+     913357
+     975157
+
+Objective Function End: 0.0531429
+[ INFO] [1593802349.542470670]: Calibration Complete!
+[ INFO] [1593802349.609907132]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802349.611199750]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Solution:
+ 181.883
+ 89.2968
+ 339.913
+  318.05
+ 124.899
+  119.68
+ 269.154
+ 49.3844
+-11.2537
+ 222.366
+
+Objective Function End: 0.324293
+[ INFO] [1593802370.350990260]: Calibration Complete!
+[ INFO] [1593802370.428875852]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802370.430044371]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Solution:
+  208.14
+ 244.263
+-91.9924
+ 210.725
+ 73.4224
+ 39.8864
+-30.4103
+ 163.696
+  107.78
+ 114.029
+
+Objective Function End: 0.0809748
+[ INFO] [1593802378.842136394]: Calibration Complete!
+[ INFO] [1593802378.911163320]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802378.912421770]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Iteration: 15400
+Iteration: 15500
+Iteration: 15600
+Iteration: 15700
+Iteration: 15800
+Iteration: 15900
+Iteration: 16000
+Iteration: 16100
+Iteration: 16200
+Iteration: 16300
+Iteration: 16400
+Iteration: 16500
+Iteration: 16600
+Iteration: 16700
+Iteration: 16800
+Iteration: 16900
+Iteration: 17000
+Iteration: 17100
+Iteration: 17200
+Iteration: 17300
+Iteration: 17400
+Iteration: 17500
+Iteration: 17600
+Iteration: 17700
+Iteration: 17800
+Iteration: 17900
+Iteration: 18000
+Iteration: 18100
+Iteration: 18200
+Iteration: 18300
+Iteration: 18400
+Iteration: 18500
+Iteration: 18600
+Iteration: 18700
+Iteration: 18800
+Iteration: 18900
+Iteration: 19000
+Iteration: 19100
+Iteration: 19200
+Iteration: 19300
+Iteration: 19400
+Iteration: 19500
+Iteration: 19600
+Iteration: 19700
+Iteration: 19800
+Iteration: 19900
+Iteration: 20000
+Iteration: 20100
+Iteration: 20200
+Iteration: 20300
+Iteration: 20400
+Iteration: 20500
+Iteration: 20600
+Iteration: 20700
+Iteration: 20800
+Iteration: 20900
+Iteration: 21000
+Iteration: 21100
+Iteration: 21200
+Iteration: 21300
+Iteration: 21400
+Iteration: 21500
+Iteration: 21600
+Iteration: 21700
+Iteration: 21800
+Iteration: 21900
+Iteration: 22000
+Iteration: 22100
+Iteration: 22200
+Iteration: 22300
+Iteration: 22400
+Iteration: 22500
+Iteration: 22600
+Iteration: 22700
+Iteration: 22800
+Iteration: 22900
+Iteration: 23000
+Iteration: 23100
+Iteration: 23200
+Iteration: 23300
+Iteration: 23400
+Iteration: 23500
+Iteration: 23600
+Iteration: 23700
+Iteration: 23800
+Iteration: 23900
+Iteration: 24000
+Iteration: 24100
+Iteration: 24200
+Iteration: 24300
+Iteration: 24400
+Iteration: 24500
+Iteration: 24600
+Iteration: 24700
+Iteration: 24800
+Iteration: 24900
+Iteration: 25000
+Iteration: 25100
+Iteration: 25200
+Iteration: 25300
+Iteration: 25400
+Iteration: 25500
+Iteration: 25600
+Iteration: 25700
+Iteration: 25800
+Iteration: 25900
+Iteration: 26000
+Iteration: 26100
+Iteration: 26200
+Iteration: 26300
+Iteration: 26400
+Iteration: 26500
+Iteration: 26600
+Iteration: 26700
+Iteration: 26800
+Iteration: 26900
+Iteration: 27000
+Iteration: 27100
+Iteration: 27200
+Iteration: 27300
+Iteration: 27400
+Iteration: 27500
+Iteration: 27600
+Iteration: 27700
+Iteration: 27800
+Iteration: 27900
+Iteration: 28000
+Iteration: 28100
+Iteration: 28200
+Iteration: 28300
+Iteration: 28400
+Iteration: 28500
+Iteration: 28600
+Iteration: 28700
+Iteration: 28800
+Iteration: 28900
+Iteration: 29000
+Iteration: 29100
+Iteration: 29200
+Iteration: 29300
+Iteration: 29400
+Iteration: 29500
+Iteration: 29600
+Iteration: 29700
+Iteration: 29800
+Iteration: 29900
+Iteration: 30000
+Iteration: 30100
+Iteration: 30200
+Iteration: 30300
+Iteration: 30400
+Iteration: 30500
+Iteration: 30600
+Iteration: 30700
+Iteration: 30800
+Iteration: 30900
+Iteration: 31000
+Iteration: 31100
+Iteration: 31200
+Iteration: 31300
+Iteration: 31400
+Iteration: 31500
+Iteration: 31600
+Iteration: 31700
+Iteration: 31800
+Iteration: 31900
+Iteration: 32000
+Iteration: 32100
+Iteration: 32200
+Iteration: 32300
+Iteration: 32400
+Iteration: 32500
+Iteration: 32600
+Iteration: 32700
+Iteration: 32800
+Iteration: 32900
+Iteration: 33000
+Iteration: 33100
+Iteration: 33200
+Solution:
+  -74.64
+ 189.834
+-58.4327
+ 66.7922
+ 287.658
+  82.505
+  93.561
+ 9.23147
+ 229.982
+ -69.918
+
+Objective Function End: 0.294529
+[ INFO] [1593802435.288112427]: Calibration Complete!
+[ INFO] [1593802435.371394687]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802435.373048656]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Iteration: 15400
+Iteration: 15500
+Iteration: 15600
+Iteration: 15700
+Iteration: 15800
+Iteration: 15900
+Iteration: 16000
+Iteration: 16100
+Iteration: 16200
+Iteration: 16300
+Iteration: 16400
+Iteration: 16500
+Iteration: 16600
+Iteration: 16700
+Iteration: 16800
+Iteration: 16900
+Iteration: 17000
+Iteration: 17100
+Iteration: 17200
+Iteration: 17300
+Iteration: 17400
+Iteration: 17500
+Iteration: 17600
+Iteration: 17700
+Iteration: 17800
+Iteration: 17900
+Iteration: 18000
+Iteration: 18100
+Iteration: 18200
+Iteration: 18300
+Iteration: 18400
+Iteration: 18500
+Iteration: 18600
+Iteration: 18700
+Iteration: 18800
+Iteration: 18900
+Iteration: 19000
+Iteration: 19100
+Iteration: 19200
+Iteration: 19300
+Iteration: 19400
+Iteration: 19500
+Iteration: 19600
+Iteration: 19700
+Iteration: 19800
+Iteration: 19900
+Iteration: 20000
+Iteration: 20100
+Iteration: 20200
+Iteration: 20300
+Iteration: 20400
+Iteration: 20500
+Iteration: 20600
+Iteration: 20700
+Iteration: 20800
+Iteration: 20900
+Iteration: 21000
+Iteration: 21100
+Iteration: 21200
+Iteration: 21300
+Iteration: 21400
+Iteration: 21500
+Iteration: 21600
+Iteration: 21700
+Iteration: 21800
+Iteration: 21900
+Iteration: 22000
+Iteration: 22100
+Iteration: 22200
+Iteration: 22300
+Iteration: 22400
+Iteration: 22500
+Iteration: 22600
+Iteration: 22700
+Iteration: 22800
+Iteration: 22900
+Iteration: 23000
+Iteration: 23100
+Iteration: 23200
+Iteration: 23300
+Iteration: 23400
+Iteration: 23500
+Iteration: 23600
+Iteration: 23700
+Iteration: 23800
+Iteration: 23900
+Iteration: 24000
+Iteration: 24100
+Iteration: 24200
+Iteration: 24300
+Iteration: 24400
+Iteration: 24500
+Iteration: 24600
+Iteration: 24700
+Iteration: 24800
+Iteration: 24900
+Iteration: 25000
+Iteration: 25100
+Iteration: 25200
+Iteration: 25300
+Iteration: 25400
+Iteration: 25500
+Iteration: 25600
+Iteration: 25700
+Iteration: 25800
+Iteration: 25900
+Iteration: 26000
+Iteration: 26100
+Iteration: 26200
+Iteration: 26300
+Iteration: 26400
+Iteration: 26500
+Iteration: 26600
+Iteration: 26700
+Iteration: 26800
+Iteration: 26900
+Iteration: 27000
+Iteration: 27100
+Iteration: 27200
+Iteration: 27300
+Iteration: 27400
+Iteration: 27500
+Iteration: 27600
+Iteration: 27700
+Iteration: 27800
+Iteration: 27900
+Iteration: 28000
+Iteration: 28100
+Iteration: 28200
+Iteration: 28300
+Iteration: 28400
+Iteration: 28500
+Iteration: 28600
+Iteration: 28700
+Iteration: 28800
+Iteration: 28900
+Iteration: 29000
+Iteration: 29100
+Iteration: 29200
+Iteration: 29300
+Iteration: 29400
+Iteration: 29500
+Iteration: 29600
+Iteration: 29700
+Iteration: 29800
+Iteration: 29900
+Iteration: 30000
+Iteration: 30100
+Iteration: 30200
+Iteration: 30300
+Iteration: 30400
+Iteration: 30500
+Iteration: 30600
+Iteration: 30700
+Iteration: 30800
+Iteration: 30900
+Iteration: 31000
+Iteration: 31100
+Iteration: 31200
+Iteration: 31300
+Iteration: 31400
+Iteration: 31500
+Iteration: 31600
+Iteration: 31700
+Iteration: 31800
+Iteration: 31900
+Iteration: 32000
+Iteration: 32100
+Iteration: 32200
+Iteration: 32300
+Iteration: 32400
+Iteration: 32500
+Iteration: 32600
+Iteration: 32700
+Iteration: 32800
+Iteration: 32900
+Iteration: 33000
+Iteration: 33100
+Iteration: 33200
+Iteration: 33300
+Iteration: 33400
+Iteration: 33500
+Iteration: 33600
+Iteration: 33700
+Iteration: 33800
+Iteration: 33900
+Iteration: 34000
+Iteration: 34100
+Iteration: 34200
+Iteration: 34300
+Iteration: 34400
+Iteration: 34500
+Iteration: 34600
+Iteration: 34700
+Iteration: 34800
+Iteration: 34900
+Iteration: 35000
+Iteration: 35100
+Iteration: 35200
+Iteration: 35300
+Iteration: 35400
+Iteration: 35500
+Iteration: 35600
+Iteration: 35700
+Iteration: 35800
+Iteration: 35900
+Iteration: 36000
+Iteration: 36100
+Iteration: 36200
+Iteration: 36300
+Iteration: 36400
+Iteration: 36500
+Iteration: 36600
+Iteration: 36700
+Iteration: 36800
+Iteration: 36900
+Iteration: 37000
+Iteration: 37100
+Iteration: 37200
+Iteration: 37300
+Iteration: 37400
+Iteration: 37500
+Iteration: 37600
+Iteration: 37700
+Iteration: 37800
+Iteration: 37900
+Iteration: 38000
+Iteration: 38100
+Iteration: 38200
+Iteration: 38300
+Iteration: 38400
+Iteration: 38500
+Iteration: 38600
+Iteration: 38700
+Iteration: 38800
+Iteration: 38900
+Iteration: 39000
+Iteration: 39100
+Solution:
+ 169.911
+-19.7963
+ 86.6809
+ 102.262
+ 1149.47
+ 47.6121
+ 85.4463
+ -67.625
+ 84.6893
+ -555.54
+
+Objective Function End: 0.112567
+[ INFO] [1593802504.405643478]: Calibration Complete!
+[ INFO] [1593802504.485780239]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802504.486977823]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Solution:
+1.07635e+06
+    2780.59
+1.00237e+06
+1.00948e+06
+     997456
+     411408
+     861230
+     876328
+     991468
+     852242
+
+Objective Function End: 0.182889
+[ INFO] [1593802511.716946473]: Calibration Complete!
+[ INFO] [1593802511.852319380]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802511.854373826]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Solution:
+ 259.356
+-15.8345
+ 95.7935
+ 199.806
+ 145.295
+ 85.8495
+ 153.205
+ 167.352
+  185.72
+ 230.704
+
+Objective Function End: 0.171265
+[ INFO] [1593802525.065972543]: Calibration Complete!
+[ INFO] [1593802525.161032152]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802525.162557019]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Solution:
+ 4.73823
+ 112.714
+ 245.875
+-202.009
+ 67.8125
+ 52.1948
+ 74.6833
+-301.917
+ 331.644
+ 128.031
+
+Objective Function End: 0.173208
+[ INFO] [1593802547.382448340]: Calibration Complete!
+[ INFO] [1593802547.525527726]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802547.526715516]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Solution:
+ 90.5619
+ 148.963
+ 63.9637
+ 219.079
+ 14.4215
+ 125.097
+ 177.449
+-90.4257
+-16.0082
+ 120.088
+
+Objective Function End: 0.357376
+[ INFO] [1593802574.951273711]: Calibration Complete!
+[ INFO] [1593802575.024309648]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802575.025420767]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Solution:
+ 5.25397
+ 184.275
+-76.9882
+  112.62
+ 93.5082
+ 200.649
+-53.8401
+-4.75609
+-121.652
+-114.547
+
+Objective Function End: 0.296613
+[ INFO] [1593802590.674438064]: Calibration Complete!
+[ INFO] [1593802590.755595956]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802590.756800955]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Solution:
+     878278
+     957377
+1.00445e+06
+1.00792e+06
+1.00526e+06
+     793869
+     674141
+     833863
+     909340
+     905910
+
+Objective Function End: 0.543529
+[ INFO] [1593802596.206551276]: Calibration Complete!
+[ INFO] [1593802596.292553386]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802596.293619001]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Solution:
+483.696
+215.371
+200.696
+251.404
+27.3916
+124.651
+144.263
+191.837
+191.829
+228.044
+
+Objective Function End: 0.470029
+[ INFO] [1593802605.540225161]: Calibration Complete!
+[ INFO] [1593802605.624735863]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802605.625971364]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Solution:
+ 158.86
+317.177
+78.2343
+264.539
+72.8372
+21.9038
+65.9419
+69.0655
+91.6661
+107.917
+
+Objective Function End: 0.403524
+[ INFO] [1593802634.105200957]: Calibration Complete!
+[ INFO] [1593802634.177882862]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802634.179050484]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Solution:
+-149.875
+  264.53
+-70.1884
+-33.7575
+  109.24
+ 13.4641
+ 30.6952
+-108.852
+ 130.966
+  16.226
+
+Objective Function End: 0.653763
+[ INFO] [1593802662.290556822]: Calibration Complete!
+[ INFO] [1593802662.372352060]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802662.373676563]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Solution:
+-43.5705
+ 46.6611
+ 291.867
+ 118.454
+ 38.0663
+ 31.1412
+ 151.964
+ 51.8292
+ -91.057
+-17.7084
+
+Objective Function End: 0.539421
+[ INFO] [1593802685.842822793]: Calibration Complete!
+[ INFO] [1593802685.918524041]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802685.919714990]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Solution:
+1.09106e+06
+2.32499e+06
+1.00307e+06
+     982821
+     991334
+     413298
+1.20521e+06
+     684039
+     725834
+1.31144e+06
+
+Objective Function End: 0.745113
+[ INFO] [1593802698.468289972]: Calibration Complete!
+[ INFO] [1593802698.548196585]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802698.549436488]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Solution:
+118.792
+19.7034
+420.727
+158.725
+179.386
+46.1999
+120.673
+177.473
+194.981
+81.2943
+
+Objective Function End: 0.665083
+[ INFO] [1593802712.380631676]: Calibration Complete!
+[ INFO] [1593802712.466859777]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802712.468116293]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Solution:
+8.74146
+332.621
+102.302
+144.618
+48.0487
+63.4439
+75.3998
+100.872
+87.0946
+106.296
+
+Objective Function End: 0.60626
+[ INFO] [1593802730.024715440]: Calibration Complete!
+[ INFO] [1593802730.107041749]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802730.108456335]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+Iteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Solution:
+125.392
+42.6479
+66.8773
+80.5272
+142.869
+91.3647
+43.2326
+39.2291
+51.0264
+50.0878
+
+Objective Function End: 0.680275
+[ INFO] [1593802751.939199978]: Calibration Complete!
+[ INFO] [1593802752.021225656]: Calling run_calibration service....
+Loading 'opt_npt' with value 12
+Loading 'opt_rho_begin' with value 10
+Loading 'opt_rho_end' with value 1e-06
+Loading 'opt_max_f_evals' with value 100000
+shoulder_yaw_offset
+shoulder_pitch_offset
+forearm_pitch_offset
+wrist_pitch_offset
+wrist_yaw_offset
+shoulder_yaw_scaling
+shoulder_pitch_scaling
+forearm_pitch_scaling
+wrist_pitch_scaling
+wrist_yaw_scaling
+[ WARN] [1593802752.022454164]: The root link base_link has an inertia specified in the URDF, but KDL does not support a root link with an inertia.  As a workaround, you can add an extra dummy link to your URDF.
+Iteration: 100
+Iteration: 200
+Iteration: 300
+Iteration: 400
+Iteration: 500
+Iteration: 600
+Iteration: 700
+Iteration: 800
+Iteration: 900
+Iteration: 1000
+Iteration: 1100
+Iteration: 1200
+Iteration: 1300
+Iteration: 1400
+Iteration: 1500
+Iteration: 1600
+Iteration: 1700
+Iteration: 1800
+Iteration: 1900
+Iteration: 2000
+Iteration: 2100
+Iteration: 2200
+Iteration: 2300
+Iteration: 2400
+Iteration: 2500
+Iteration: 2600
+Iteration: 2700
+Iteration: 2800
+Iteration: 2900
+Iteration: 3000
+Iteration: 3100
+Iteration: 3200
+Iteration: 3300
+Iteration: 3400
+Iteration: 3500
+Iteration: 3600
+Iteration: 3700
+Iteration: 3800
+Iteration: 3900
+Iteration: 4000
+Iteration: 4100
+Iteration: 4200
+Iteration: 4300
+Iteration: 4400
+Iteration: 4500
+Iteration: 4600
+Iteration: 4700
+Iteration: 4800
+Iteration: 4900
+Iteration: 5000
+Iteration: 5100
+Iteration: 5200
+Iteration: 5300
+Iteration: 5400
+Iteration: 5500
+Iteration: 5600
+Iteration: 5700
+Iteration: 5800
+Iteration: 5900
+Iteration: 6000
+Iteration: 6100
+Iteration: 6200
+Iteration: 6300
+Iteration: 6400
+Iteration: 6500
+Iteration: 6600
+Iteration: 6700
+Iteration: 6800
+Iteration: 6900
+Iteration: 7000
+Iteration: 7100
+Iteration: 7200
+Iteration: 7300
+Iteration: 7400
+Iteration: 7500
+Iteration: 7600
+Iteration: 7700
+Iteration: 7800
+Iteration: 7900
+Iteration: 8000
+Iteration: 8100
+Iteration: 8200
+Iteration: 8300
+Iteration: 8400
+Iteration: 8500
+Iteration: 8600
+Iteration: 8700
+Iteration: 8800
+Iteration: 8900
+Iteration: 9000
+Iteration: 9100
+Iteration: 9200
+Iteration: 9300
+Iteration: 9400
+Iteration: 9500
+Iteration: 9600
+^[[AIteration: 9700
+Iteration: 9800
+Iteration: 9900
+Iteration: 10000
+Iteration: 10100
+Iteration: 10200
+Iteration: 10300
+Iteration: 10400
+Iteration: 10500
+Iteration: 10600
+Iteration: 10700
+Iteration: 10800
+Iteration: 10900
+Iteration: 11000
+Iteration: 11100
+Iteration: 11200
+Iteration: 11300
+Iteration: 11400
+Iteration: 11500
+Iteration: 11600
+Iteration: 11700
+Iteration: 11800
+Iteration: 11900
+Iteration: 12000
+Iteration: 12100
+Iteration: 12200
+Iteration: 12300
+Iteration: 12400
+Iteration: 12500
+Iteration: 12600
+Iteration: 12700
+Iteration: 12800
+Iteration: 12900
+Iteration: 13000
+Iteration: 13100
+Iteration: 13200
+Iteration: 13300
+Iteration: 13400
+Iteration: 13500
+Iteration: 13600
+Iteration: 13700
+Iteration: 13800
+Iteration: 13900
+Iteration: 14000
+Iteration: 14100
+Iteration: 14200
+Iteration: 14300
+Iteration: 14400
+Iteration: 14500
+Iteration: 14600
+Iteration: 14700
+Iteration: 14800
+Iteration: 14900
+Iteration: 15000
+Iteration: 15100
+Iteration: 15200
+Iteration: 15300
+Iteration: 15400
+Iteration: 15500
+Iteration: 15600
+Iteration: 15700
+Iteration: 15800
+Iteration: 15900
+Iteration: 16000
+Iteration: 16100
+Iteration: 16200
+Iteration: 16300
+Iteration: 16400
+Iteration: 16500
+Iteration: 16600
+Iteration: 16700
+Iteration: 16800
+Iteration: 16900
+Iteration: 17000
+Iteration: 17100
+Iteration: 17200
+Iteration: 17300
+Iteration: 17400
+Iteration: 17500
+Iteration: 17600
+Iteration: 17700
+Iteration: 17800
+Iteration: 17900
+Iteration: 18000
+Iteration: 18100
+Iteration: 18200
+Iteration: 18300
+Iteration: 18400
+Iteration: 18500
+Iteration: 18600
+Iteration: 18700
+Iteration: 18800
+Iteration: 18900
+Iteration: 19000
+Iteration: 19100
+Iteration: 19200
+Iteration: 19300
+Iteration: 19400
+Iteration: 19500
+Iteration: 19600
+Iteration: 19700
+Iteration: 19800
+Iteration: 19900
+Iteration: 20000
+Iteration: 20100
+Iteration: 20200
+Iteration: 20300
+Iteration: 20400
+Iteration: 20500
+Iteration: 20600
+Iteration: 20700
+Iteration: 20800
+Iteration: 20900
+Iteration: 21000
+Iteration: 21100
+Iteration: 21200
+Iteration: 21300
+Iteration: 21400
+Iteration: 21500
+Iteration: 21600
+Iteration: 21700
+Iteration: 21800
+Iteration: 21900
+Iteration: 22000
+Iteration: 22100
+Iteration: 22200
+Iteration: 22300
+Iteration: 22400
+Iteration: 22500
+Iteration: 22600
+Iteration: 22700
+Iteration: 22800
+Iteration: 22900
+Iteration: 23000
+Iteration: 23100
+Iteration: 23200
+Iteration: 23300
+Iteration: 23400
+Iteration: 23500
+Iteration: 23600
+Iteration: 23700
+Iteration: 23800
+Iteration: 23900
+Iteration: 24000
+Iteration: 24100
+Iteration: 24200
+Iteration: 24300
+Iteration: 24400
+Iteration: 24500
+Iteration: 24600
+Iteration: 24700
+Iteration: 24800
+Iteration: 24900
+Iteration: 25000
+Iteration: 25100
+Iteration: 25200
+Iteration: 25300
+Iteration: 25400
+Iteration: 25500
+Iteration: 25600
+Iteration: 25700
+Iteration: 25800
+Iteration: 25900
+Iteration: 26000
+Iteration: 26100
+Iteration: 26200
+Iteration: 26300
+Iteration: 26400
+Iteration: 26500
+Iteration: 26600
+Iteration: 26700
+Iteration: 26800
+Iteration: 26900
+Iteration: 27000
+Iteration: 27100
+Iteration: 27200
+Iteration: 27300
+Iteration: 27400
+Iteration: 27500
+Iteration: 27600
+Iteration: 27700
+Iteration: 27800
+Iteration: 27900
+Iteration: 28000
+Iteration: 28100
+Iteration: 28200
+Iteration: 28300
+Iteration: 28400
+Iteration: 28500
+Iteration: 28600
+Iteration: 28700
+Iteration: 28800
+Iteration: 28900
+Iteration: 29000
+Iteration: 29100
+Iteration: 29200
+Iteration: 29300
+Iteration: 29400
+Iteration: 29500
+Iteration: 29600
+Iteration: 29700
+Iteration: 29800
+Iteration: 29900
+Iteration: 30000
+Iteration: 30100
+Iteration: 30200
+Iteration: 30300
+Iteration: 30400
+Iteration: 30500
+Iteration: 30600
+Iteration: 30700
+Iteration: 30800
+Iteration: 30900
+Iteration: 31000
+Iteration: 31100
+Iteration: 31200
+Iteration: 31300
+Iteration: 31400
+Iteration: 31500
+Iteration: 31600
+Iteration: 31700
+Iteration: 31800
+Iteration: 31900
+Iteration: 32000
+Iteration: 32100
+Iteration: 32200
+Iteration: 32300
+Iteration: 32400
+Iteration: 32500
+Iteration: 32600
+Iteration: 32700
+Iteration: 32800
+Iteration: 32900
+Iteration: 33000
+Iteration: 33100
+Iteration: 33200
+Iteration: 33300
+Iteration: 33400
+Solution:
+ 248.433
+ 15.9379
+-27.5719
+ 140.914
+ 9.48095
+-9.54303
+  32.848
+-13.8885
+ 340.326
+ 35.1767
+
+Objective Function End: 0.635265
+[ INFO] [1593802809.526995945]: Calibration Complete!
+================================================================================REQUIRED process [sweep_noise-2] has died!
+process has finished cleanly
+log file: /home/amy/.ros/log/2746587e-bcae-11ea-bb64-f85971c60976/sweep_noise-2*.log
+Initiating shutdown!
+================================================================================
+[sweep_noise-2] killing on exit
+[calibration_server-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+done

@@ -14,17 +14,28 @@ from min_variance_calibration_msgs.msg import OptimizationParameters
 def add_param_noise(initial_params, noise):
     """ Adds gaussian noise to initial parameters
     Args:
-        noise (float): Approximate percent error to apply (between 0 and 1) """
+        noise (float): Approximate noise level to apply (between 0 and 0.5) -
+            will take a percentage of the expected range as noise """
     output = copy.deepcopy(initial_params)
 
     params = output.keys()
 
     for p in params:
+        param_range = output[p]["upper_limit"] - output[p]["lower_limit"]
+
         # Apply noise
-        scaled_noise = float(abs(noise * output[p]["initial_value"]))
+        scaled_noise = float(abs(noise * param_range / 2))
 
         # Compute noisy param within expected uncertainty levels
         noisy_param = np.random.normal(output[p]["initial_value"], scaled_noise)
+
+        # Constrain parameter value
+        if noisy_param > output[p]["upper_limit"]:
+            noisy_param = output[p]["upper_limit"]
+            scaled_noise = output[p]["upper_limit"] - output[p]["initial_value"]
+        elif noisy_param < output[p]["lower_limit"]:
+            noisy_param = output[p]["lower_limit"]
+            scaled_noise = output[p]["initial_value"] - output[p]["lower_limit"]
 
         # Write results to output
         output[p]["initial_value"] = noisy_param
@@ -72,17 +83,17 @@ if __name__ == "__main__":
     opt_params.rho_start = rospy.get_param('~rho_start', 10)
     opt_params.rho_end = rospy.get_param('~rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = 100000 # rospy.get_param('~max_f_evals', 10)
+    opt_params.max_f_evals = 200000 # rospy.get_param('~max_f_evals', 10)
 
     # Load sweep noise levels from ROS parameter server
     # TODO: Make these ROS params
     # TODO: handle 0s
     param_noise_start = 0.0001 # Starting percentage
-    param_noise_end = 1   # Ending percentage
-    param_n_steps = 3    # Number of points
+    param_noise_end = 0.2   # Ending percentage
+    param_n_steps = 5    # Number of points
     measurement_noise_start = 0.0001 # Starting noise (in meters)
-    measurement_noise_end = 0.5   # Ending noise (in meters)
-    measurement_n_steps = 3     # Number of points
+    measurement_noise_end = 0.2   # Ending noise (in meters)
+    measurement_n_steps = 5     # Number of points
 
     # Iterate through all combinations of specified noise levels
     x = np.linspace(param_noise_start,
@@ -105,8 +116,15 @@ if __name__ == "__main__":
             # print(yv[i][j])
             result = bridge.runCalibration(noisy_params, noisy_measurements,
                     robot_description, opt_params)
+            try:
+                results[i][j] = result.ending_variance
+                print("RESULTS:")
+                print("Start:" + str(result.starting_variance))
+                print("End:" + str(result.ending_variance))
+                bridge.printParams(result.params)
 
-
+            except:
+                continue
             # results[i][j] = i + j
             # print(results[i][j])
 

@@ -12,6 +12,7 @@ filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibrat
 
 (x, y, z) = np.loadtxt(open(filename, "rb"), delimiter=",", skiprows=1)
 
+# z = z - y
 print(x)
 print(x.min())
 
@@ -30,8 +31,8 @@ yi = np.linspace(y.min(),y.max(),100)
 zi = griddata(x, y, z, xi, yi, interp='linear')
 
 # contour the gridded data, plotting dots at the randomly spaced data points.
-CS = plt.contour(xi,yi,zi,15,linewidths=0.5,colors='k')
-CS = plt.contourf(xi,yi,zi,15,cmap=plt.cm.jet)
+CS = plt.contour(xi,yi,zi,20,linewidths=0.5,colors='k')
+CS = plt.contourf(xi,yi,zi,20,cmap=plt.cm.jet)
 plt.colorbar() # draw colorbar
 # plot data points.
 plt.scatter(x,y,marker='o',c='b',s=5)

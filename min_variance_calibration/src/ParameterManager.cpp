@@ -60,14 +60,20 @@ namespace min_variance_calibration {
     bool ParameterManager::getFrame(const std::string name,
             KDL::Frame& output_frame) {
         // TODO: Add scaling term here
-        output_frame.p.x(get(std::string(name).append("_x_correction")));
-        output_frame.p.y(get(std::string(name).append("_y_correction")));
-        output_frame.p.z(get(std::string(name).append("_z_correction")));
+        output_frame.p.x(get(std::string(name).append("_x_correction")) /
+                         getScale(std::string(name).append("_x_correction")));
+        output_frame.p.y(get(std::string(name).append("_y_correction")) /
+                         getScale(std::string(name).append("_y_correction")));
+        output_frame.p.z(get(std::string(name).append("_z_correction")) /
+                         getScale(std::string(name).append("_z_correction")));
 
         output_frame.M = Utils::rotationFromAxisMagnitude(
-                get(std::string(name).append("_a_correction")),
-                get(std::string(name).append("_b_correction")),
-                get(std::string(name).append("_c_correction")));
+                get(std::string(name).append("_a_correction")) /
+                    getScale(std::string(name).append("_a_correction")),
+                get(std::string(name).append("_b_correction")) /
+                    getScale(std::string(name).append("_b_correction")),
+                get(std::string(name).append("_c_correction")) /
+                    getScale(std::string(name).append("_c_correction")));
 
         return true;
     }
