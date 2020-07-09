@@ -33,34 +33,58 @@ def loadFromYAML(filename, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
         params = yaml.load(file, OrderedLoader)
     return params
 
+def convertToMsg(param_dict):
+    """ Load in parameter info from yaml file
+
+    Args:
+        param_dict (OrderedDict): Parameter info saved as a dictionary
+    Returns:
+        param_msg (FreeParameters): Parameter info saved as a ROS message
+    """
+
+    free_params_msg = FreeParameters()
+
+    for param in param_dict.keys():
+        param_msg = ParameterInfo()
+        param_msg.name = param
+        param_msg.value = param_dict[param]["initial_value"]
+        param_msg.min = param_dict[param]["lower_limit"]
+        param_msg.max = param_dict[param]["upper_limit"]
+        param_msg.uncertainty = param_dict[param]["uncertainty"]
+        param_msg.scaling = 1
+
+        free_params_msg.params.append(param_msg)
+
+    return free_params_msg
+    # TODO: implement this, modify run calibration to use this
+
 def preconditionParams(initial_params, rho_start):
     """ Apply scaling term to all parameters so that all parameters
     will need roughly the same amount of adjustment
 
     Args:
-        initial_params (OrderedDict): Initial parameter info saved in a dict
+        initial_params (FreeParameters): Initial parameter info saved as a ROS
+            message
         rho_start (float): Optimization parameter that should equal ~1/10
             the greatest expected change - will be used to scale params
     Returns:
         conditioned_params (FreeParameters): Parameter info scaled and
-            saved as ROS-compatible message
+            saved as ROS message
     """
     conditioned_params = FreeParameters()
 
-    for param in initial_params.keys():
-        print(param)
-        print(initial_params[param]["uncertainty"])
+    for param in initial_params.params:
         # 10 comes from the fact that rho_start should be 1/10 the
         # uncertainty value. Decimal forces float value
-        scaling = (10.0 * rho_start) / initial_params[param]["uncertainty"]
+        scaling = (10.0 * rho_start) / param.uncertainty
 
         param_msg = ParameterInfo()
-        param_msg.name = param
-        param_msg.value = initial_params[param]["initial_value"] * scaling
-        param_msg.min = initial_params[param]["lower_limit"] * scaling
-        param_msg.max = initial_params[param]["upper_limit"] * scaling
-        param_msg.uncertainty = initial_params[param]["uncertainty"] * scaling
-        param_msg.scaling = scaling
+        param_msg.name        = param.name
+        param_msg.value       = param.value * scaling
+        param_msg.min         = param.min * scaling
+        param_msg.max         = param.max * scaling
+        param_msg.uncertainty = param.uncertainty * scaling
+        param_msg.scaling     = scaling
 
         conditioned_params.params.append(param_msg)
 
@@ -75,7 +99,8 @@ def runCalibration(initial_params, calibration_data,
     robot_description, opt_params):
     """ Provides a convenient interface to the calibration service
     Args:
-        initial_params (dict): Initial parameter info saved in a dict
+        initial_params (FreeParameters): Initial parameter info saved as a ROS
+            message
         calibration_data (CalibrationData): ROS message containing
             measurements
         robot_description (String): ROS message containing robot

@@ -35,7 +35,8 @@ if __name__ == "__main__":
     opt_params.max_f_evals = rospy.get_param('~max_f_evals', 10000)
 
     # Pass data to calibration server
-    result = bridge.runCalibration(initial_params, calibration_data,
+    params_msg = bridge.convertToMsg(initial_params)
+    result = bridge.runCalibration(params_msg, calibration_data,
         robot_description, opt_params)
     rospy.loginfo("Starting Variance: " + str(result.starting_variance))
     rospy.loginfo("Ending Variance: " + str(result.ending_variance))
