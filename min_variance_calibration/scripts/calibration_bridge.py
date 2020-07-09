@@ -7,6 +7,7 @@ from min_variance_calibration_msgs.msg import FreeParameters
 from min_variance_calibration_msgs.msg import OptimizationParameters
 from min_variance_calibration_msgs.srv import RunCalibration
 from min_variance_calibration_msgs.srv import ProjectPoints
+from min_variance_calibration_msgs.srv import GetEndEffectorPosition
 
 # TODO: Add this to dependencies list
 import yaml
@@ -114,5 +115,27 @@ def projectPoints(input_data, params, robot_description, output_frame):
         projected_points = project_points(input_data, params,
                                           robot_description, output_frame)
         return projected_points
+    except rospy.ServiceException as e:
+        print("Service call failed: %s"%e)
+
+def getEndEffectorPosition(joint_states, params, robot_description,
+    effector_frame, output_frame):
+    """ Provides a convenient interface to the end effector position service
+    Args:
+        joint_states (list): List of joint angles to use
+        params (FreeParameters): Parameters to use for projection
+        robot_description (String): ROS message containing robot
+            description
+        effector_frame (String): ROS message containing end effector frame
+        output_frame (String): ROS message containing desired output frame
+    """
+    rospy.wait_for_service('/get_end_effector_position')
+
+    try:
+        get_end_effector_position = rospy.ServiceProxy('/get_end_effector_position',
+            GetEndEffectorPosition)
+        end_effector_positions = get_end_effector_position(joint_states, params,
+            robot_description, effector_frame, output_frame)
+        return end_effector_positions
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)

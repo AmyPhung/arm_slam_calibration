@@ -60,3 +60,7 @@ target_link_libraries(RunCalibrationServer min_variance_calibration
 add_executable(ProjectPointsServer src/ProjectPointsServer.cpp)
 target_link_libraries(ProjectPointsServer min_variance_calibration
                                           ${catkin_LIBRARIES})
+
+add_executable(GetEndEffectorPositionServer src/GetEndEffectorPositionServer.cpp)
+target_link_libraries(GetEndEffectorPositionServer min_variance_calibration
+                                                   ${catkin_LIBRARIES})

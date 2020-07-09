@@ -1,7 +1,7 @@
 # Service request
 
 # Joint angles to read positions at
-CalibrationData input_data
+sensor_msgs/JointState[] joint_states
 
 # Parameters to use for forward kinematics
 FreeParameters params

@@ -64,14 +64,29 @@ if __name__ == "__main__":
 
     pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    pcl_pub.publish(ground_truth_projection.output_points)
+    # pcl_pub.publish(ground_truth_projection.output_points)
+    # # rospy.sleep(2)
+    # print(ground_truth_projection.output_points)
+
+    # --------------------------------------------------------------------------
+
+    effector_frame = String()
+    effector_frame.data = "fisheye"
+
+    output_frame = String()
+    output_frame.data = "base_link"
+
+    # TODO: remove hardcoded single tag
+    joint_states = calibration_data.point_groups[0].joint_states
+
+    end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+        result.params, robot_description, effector_frame, output_frame)
+
+    gt_pos_pub = rospy.Publisher('/ground_truth_positions', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    gt_pos_pub.publish(end_effector_positions.output_positions)
     # rospy.sleep(2)
-    print(ground_truth_projection.output_points)
-
-
-
-
-
+    print(end_effector_positions.output_positions)
 
 
 

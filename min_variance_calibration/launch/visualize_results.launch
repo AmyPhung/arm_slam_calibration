@@ -17,7 +17,9 @@
         <param name="tip_link" value="/fisheye"/> -->
     </node>
 
-
+    <!-- Start end effector position server -->
+    <node pkg="min_variance_calibration" type="GetEndEffectorPositionServer"
+      name="get_end_effector_position_server" output="screen"/>
 
     <!-- Run visualization client -->
     <node pkg="min_variance_calibration" type="visualize_results.py"
