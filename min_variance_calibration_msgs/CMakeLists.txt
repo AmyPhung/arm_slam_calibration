@@ -22,8 +22,9 @@ add_service_files(
   DIRECTORY
     srv
   FILES
-    RunCalibration.srv
+    GetEndEffectorPosition.srv
     ProjectPoints.srv
+    RunCalibration.srv
 )
 
 generate_messages(

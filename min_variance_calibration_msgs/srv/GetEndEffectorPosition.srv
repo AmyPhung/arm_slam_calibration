@@ -1,0 +1,21 @@
+# Service request
+
+# Joint angles to read positions at
+CalibrationData input_data
+
+# Parameters to use for forward kinematics
+FreeParameters params
+
+# Robot URDF to use for projection
+std_msgs/String robot_description
+
+# End effector frame
+std_msgs/String effector_frame
+
+# Frame to project end effector position to
+std_msgs/String output_frame
+---
+# Service response
+
+# Projected end effector positions in new frame
+sensor_msgs/PointCloud output_positions
