@@ -1,4 +1,6 @@
 <launch>
+    <node type="rviz" name="rviz" pkg="rviz"
+      args="-d $(find min_variance_calibration)/rviz/config.rviz" />
 
     <node pkg="min_variance_calibration" type="RunCalibrationServer"
       name="calibration_server" output="screen">
@@ -19,7 +21,7 @@
 
     <!-- Run visualization client -->
     <node pkg="min_variance_calibration" type="visualize_results.py"
-      name="visualize_results" output="screen" required="True">
+      name="visualize_results" output="screen">
       <param name="initial_param_yaml" type="string"
         value="$(find min_variance_calibration)/examples/initial_params.yaml"/>
       <param name="data_bagfile" type="string"

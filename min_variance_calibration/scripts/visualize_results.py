@@ -5,6 +5,7 @@ import rospy
 import rosbag
 from min_variance_calibration_msgs.msg import OptimizationParameters
 from std_msgs.msg import String
+from sensor_msgs.msg import PointCloud
 
 # Python Libraries
 from matplotlib.mlab import griddata
@@ -13,6 +14,7 @@ import numpy.ma as ma
 from numpy.random import uniform, seed
 import numpy as np
 import yaml
+import time
 
 # Custom Libraries
 import calibration_bridge as bridge
@@ -55,12 +57,17 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
 
     output_frame = String()
-    output_frame.data = "base_link"
+    output_frame.data = "fisheye"
 
     ground_truth_projection = bridge.projectPoints(calibration_data,
         result.params, robot_description, output_frame)
 
-    print(ground_truth_projection)
+    pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    pcl_pub.publish(ground_truth_projection.output_points)
+    # rospy.sleep(2)
+    print(ground_truth_projection.output_points)
+
 
 
 

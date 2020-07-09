@@ -23,14 +23,13 @@ bool project_points(min_variance_calibration_msgs::ProjectPoints::Request  &req,
 
     // TODO: remove hardcode root and tip
     // Set up chain model
-    min_variance_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
+    min_variance_calibration::ChainModel model(description_msg.data,
+        "base_link", output_frame.data);
     min_variance_calibration::ParameterManager param_manager;
     param_manager.loadFromMsg(req);
 
     // TODO: remove hardcoded point group value
     model.project(param_manager, data.point_groups[0], res.output_points);
-//    std::cout << res.output_points << std::endl;
-    ROS_INFO("wahat");
     ROS_INFO("Point projection Complete!");
     return true;
 }

@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 #include <min_variance_calibration_msgs/RunCalibration.h>
-//#include <min_variance_calibration_msgs/ProjectPoints.h>
+#include <min_variance_calibration_msgs/ProjectPoints.h>
 #include <min_variance_calibration_msgs/FreeParameters.h>
 #include <min_variance_calibration_msgs/ParameterInfo.h>
 
