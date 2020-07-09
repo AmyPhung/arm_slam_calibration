@@ -45,30 +45,39 @@ if __name__ == "__main__":
     opt_params.rho_start = rospy.get_param('~rho_start', 10)
     opt_params.rho_end = rospy.get_param('rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = rospy.get_param('max_f_evals', 10000)
+    opt_params.max_f_evals = rospy.get_param('max_f_evals', 20000)
+
+    # --------------------------------------------------------------------------
+    # Create noisy and clean set
+    gt_params = bridge.convertToMsg(initial_params)
+    noisy_params = bridge.add_param_noise(gt_params, 0.1)
 
     # Pass data to calibration server
-    result = bridge.runCalibration(initial_params, calibration_data,
+    result = bridge.runCalibration(noisy_params, calibration_data,
         robot_description, opt_params)
     rospy.loginfo("Starting Variance: " + str(result.starting_variance))
     rospy.loginfo("Ending Variance: " + str(result.ending_variance))
     bridge.printParams(result.params)
 
     # --------------------------------------------------------------------------
+    # Publish projected points based on ground truth params
 
-    output_frame = String()
-    output_frame.data = "fisheye"
-
-    ground_truth_projection = bridge.projectPoints(calibration_data,
-        result.params, robot_description, output_frame)
-
-    pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
-    rospy.sleep(1) # For some reason won't publish without this
+    # output_frame = String()
+    # output_frame.data = "fisheye"
+    #
+    # ground_truth_projection = bridge.projectPoints(calibration_data,
+    #     result.params, robot_description, output_frame)
+    # # ground_truth_projection = bridge.projectPoints(calibration_data,
+    # #     result.params, robot_description, output_frame)
+    #
+    # pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
+    # rospy.sleep(1) # For some reason won't publish without this
     # pcl_pub.publish(ground_truth_projection.output_points)
     # # rospy.sleep(2)
     # print(ground_truth_projection.output_points)
 
     # --------------------------------------------------------------------------
+    # Publish end effector positions
 
     effector_frame = String()
     effector_frame.data = "fisheye"
@@ -79,16 +88,39 @@ if __name__ == "__main__":
     # TODO: remove hardcoded single tag
     joint_states = calibration_data.point_groups[0].joint_states
 
-    end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+    gt_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+        gt_params, robot_description, effector_frame, output_frame)
+
+    initial_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+        noisy_params, robot_description, effector_frame, output_frame)
+
+    final_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
         result.params, robot_description, effector_frame, output_frame)
 
     gt_pos_pub = rospy.Publisher('/ground_truth_positions', PointCloud, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    gt_pos_pub.publish(end_effector_positions.output_positions)
+    gt_pos_pub.publish(gt_end_effector_positions.output_positions)
     # rospy.sleep(2)
-    print(end_effector_positions.output_positions)
+    # print(gt_end_effector_positions.output_positions)
 
+    initial_pos_pub = rospy.Publisher('/initial_positions', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    initial_pos_pub.publish(initial_end_effector_positions.output_positions)
+    # rospy.sleep(2)
+    # print(initial_end_effector_positions.output_positions)
 
+    final_pos_pub = rospy.Publisher('/final_positions', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    final_pos_pub.publish(final_end_effector_positions.output_positions)
+    # rospy.sleep(2)
+    # print(final_end_effector_positions.output_positions)
+
+    # --------------------------------------------------------------------------
+    # joint_states = calibration_data.point_groups[0].joint_states
+    #
+    # cal_pos_pub = rospy.Publisher('/calibration_positions', PointCloud, queue_size=10)
+    # rospy.sleep(1) # For some reason won't publish without this
+    # cal_pos_pub.publish(end_effector_positions.output_positions)
 
 
 

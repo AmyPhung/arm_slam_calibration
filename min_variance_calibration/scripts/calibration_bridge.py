@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import rospy
 
-
 from min_variance_calibration_msgs.msg import ParameterInfo
 from min_variance_calibration_msgs.msg import FreeParameters
 from min_variance_calibration_msgs.msg import OptimizationParameters
@@ -11,7 +10,9 @@ from min_variance_calibration_msgs.srv import GetEndEffectorPosition
 
 # TODO: Add this to dependencies list
 import yaml
+import copy
 from collections import OrderedDict
+import numpy as np
 
 def loadFromYAML(filename, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     """ Load in parameter info from yaml file
@@ -164,3 +165,51 @@ def getEndEffectorPosition(joint_states, params, robot_description,
         return end_effector_positions
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
+
+def add_param_noise(initial_params, noise):
+    """ Adds gaussian noise to initial parameters
+    Args:
+        initial_params (FreeParameters): Ground truth prameter values
+        noise (float): Approximate noise level to apply (between 0 and 0.5) -
+            will take a percentage of the expected range as noise
+    Returns:
+        output (FreeParameters): Parameter values with added noise"""
+    output = copy.deepcopy(initial_params)
+
+    for param in output.params:
+        param_range = param.max - param.min
+
+        # Apply noise
+        scaled_noise = float(abs(noise * param_range / 2))
+
+        # Compute noisy param within expected uncertainty levels
+        noisy_param = np.random.normal(param.value, scaled_noise)
+
+        # Constrain parameter value
+        if noisy_param > param.max:
+            noisy_param = param.max
+            scaled_noise = param.max - param.value
+        elif noisy_param < param.min:
+            noisy_param = param.min
+            scaled_noise = param.value - param.min
+
+        # Write results to output
+        param.value = noisy_param
+        param.uncertainty = scaled_noise
+    return output
+
+def add_measurement_noise(calibration_data, noise):
+    """ Adds gaussian noise to measurements in calibration data
+    Args:
+        noise (float): Approximate error to apply (in meters, will be applied
+            per-axis) """
+    output = copy.deepcopy(calibration_data)
+
+    # Iterate through all point groups and points
+    for pg in output.point_groups:
+        for pt in pg.observations:
+            pt.point.x = np.random.normal(pt.point.x, noise)
+            pt.point.y = np.random.normal(pt.point.y, noise)
+            pt.point.z = np.random.normal(pt.point.z, noise)
+
+    return output
