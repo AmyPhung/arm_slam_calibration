@@ -35,18 +35,23 @@ bool get_end_effector_position(min_variance_calibration_msgs::GetEndEffectorPosi
     min_variance_calibration::ParameterManager param_manager;
     param_manager.loadFromMsg(req);
 
-    res.output_positions.header.frame_id = output_frame.data;
+    res.output_poses.header.frame_id = output_frame.data;
     BOOST_FOREACH (sensor_msgs::JointState const state, joint_states) {
         KDL::Frame fk = model.getChainFK(param_manager, state);
 
         // Create new point
-        geometry_msgs::Point32 new_pt;
-        new_pt.x = fk.p.x();
-        new_pt.y = fk.p.y();
-        new_pt.z = fk.p.z();
+        geometry_msgs::Pose new_pt;
+        new_pt.position.x = fk.p.x();
+        new_pt.position.y = fk.p.y();
+        new_pt.position.z = fk.p.z();
+
+        fk.M.GetQuaternion(new_pt.orientation.x,
+                           new_pt.orientation.y,
+                           new_pt.orientation.z,
+                           new_pt.orientation.w);
 
         // Add point to pointcloud
-        res.output_positions.points.push_back(new_pt);
+        res.output_poses.poses.push_back(new_pt);
     }
 
     ROS_INFO("get_end_effector_position service complete!");

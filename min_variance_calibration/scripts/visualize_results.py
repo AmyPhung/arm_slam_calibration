@@ -6,6 +6,10 @@ import rosbag
 from min_variance_calibration_msgs.msg import OptimizationParameters
 from std_msgs.msg import String
 from sensor_msgs.msg import PointCloud
+from geometry_msgs.msg import PoseArray
+from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Point
+
 
 # Python Libraries
 from matplotlib.mlab import griddata
@@ -82,8 +86,8 @@ if __name__ == "__main__":
     # rospy.sleep(2)
     # print(ground_truth_projection.output_points)
 
-    # --------------------------------------------------------------------------
-    # Publish end effector positions
+    # # --------------------------------------------------------------------------
+    # # Publish end effector positions
 
     effector_frame = String()
     effector_frame.data = "fisheye"
@@ -103,32 +107,72 @@ if __name__ == "__main__":
     final_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
         result.params, robot_description, effector_frame, output_frame)
 
-    gt_pos_pub = rospy.Publisher('/ground_truth_positions', PointCloud, queue_size=10)
+    gt_pos_pub = rospy.Publisher('/ground_truth_positions', PoseArray, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    gt_pos_pub.publish(gt_end_effector_positions.output_positions)
+    gt_pos_pub.publish(gt_end_effector_positions.output_poses)
     # rospy.sleep(2)
     # print(gt_end_effector_positions.output_positions)
 
-    initial_pos_pub = rospy.Publisher('/initial_positions', PointCloud, queue_size=10)
+    initial_pos_pub = rospy.Publisher('/initial_positions', PoseArray, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    initial_pos_pub.publish(initial_end_effector_positions.output_positions)
+    initial_pos_pub.publish(initial_end_effector_positions.output_poses)
     # rospy.sleep(2)
     # print(initial_end_effector_positions.output_positions)
 
-    final_pos_pub = rospy.Publisher('/final_positions', PointCloud, queue_size=10)
+    final_pos_pub = rospy.Publisher('/final_positions', PoseArray, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    final_pos_pub.publish(final_end_effector_positions.output_positions)
+    final_pos_pub.publish(final_end_effector_positions.output_poses)
     # rospy.sleep(2)
     # print(final_end_effector_positions.output_positions)
 
     # --------------------------------------------------------------------------
-    # joint_states = calibration_data.point_groups[0].joint_states
-    #
-    # cal_pos_pub = rospy.Publisher('/calibration_positions', PointCloud, queue_size=10)
-    # rospy.sleep(1) # For some reason won't publish without this
-    # cal_pos_pub.publish(end_effector_positions.output_positions)
+    # Draw lines to connect fisheye with measurements
 
+    marker_pub = rospy.Publisher("/visualization_marker",
+    Marker, queue_size=10)
 
+    marker = Marker()
+    marker.type = marker.LINE_LIST
+    marker.header.frame_id = "base_link"
+    marker.scale.x = 0.005
+    marker.color.a = 1
+
+    # Draw lines for initial estimate
+    for effector, measurement in zip(initial_end_effector_positions.output_poses.poses, uncalibrated_projection.output_points.points):
+        # Add effector position
+        effector_pt = Point()
+        effector_pt.x = effector.position.x
+        effector_pt.y = effector.position.y
+        effector_pt.z = effector.position.z
+        marker.points.append(effector_pt)
+
+        # Add measurement position
+        measurement_pt = Point()
+        measurement_pt.x = measurement.x
+        measurement_pt.y = measurement.y
+        measurement_pt.z = measurement.z
+        marker.points.append(measurement_pt)
+
+    # Draw lines for final estimate
+    for effector, measurement in zip(final_end_effector_positions.output_poses.poses, ground_truth_projection.output_points.points):
+        # Add effector position
+        effector_pt = Point()
+        effector_pt.x = effector.position.x
+        effector_pt.y = effector.position.y
+        effector_pt.z = effector.position.z
+        marker.points.append(effector_pt)
+
+        # Add measurement position
+        measurement_pt = Point()
+        measurement_pt.x = measurement.x
+        measurement_pt.y = measurement.y
+        measurement_pt.z = measurement.z
+        marker.points.append(measurement_pt)
+
+    # print(uncalibrated_projection.output_points.points)
+    rospy.sleep(1)
+    marker_pub.publish(marker)
+    rospy.sleep(1)
 
     ### UNCOMMENT TO VIEW CONTOUR GRAPH
     # filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/results.csv"

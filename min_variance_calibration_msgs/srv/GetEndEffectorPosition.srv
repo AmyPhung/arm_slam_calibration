@@ -17,5 +17,5 @@ std_msgs/String output_frame
 ---
 # Service response
 
-# Projected end effector positions in new frame
-sensor_msgs/PointCloud output_positions
+# Projected end effector poses in new frame
+geometry_msgs/PoseArray output_poses
