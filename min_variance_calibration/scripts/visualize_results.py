@@ -62,18 +62,24 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Publish projected points based on ground truth params
 
-    # output_frame = String()
-    # output_frame.data = "fisheye"
-    #
-    # ground_truth_projection = bridge.projectPoints(calibration_data,
-    #     result.params, robot_description, output_frame)
-    # # ground_truth_projection = bridge.projectPoints(calibration_data,
-    # #     result.params, robot_description, output_frame)
-    #
-    # pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
-    # rospy.sleep(1) # For some reason won't publish without this
-    # pcl_pub.publish(ground_truth_projection.output_points)
-    # # rospy.sleep(2)
+    output_frame = String()
+    output_frame.data = "fisheye"
+
+    ground_truth_projection = bridge.projectPoints(calibration_data,
+        result.params, robot_description, output_frame)
+    uncalibrated_projection = bridge.projectPoints(calibration_data,
+        noisy_params, robot_description, output_frame)
+
+    pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    pcl_pub.publish(ground_truth_projection.output_points)
+    # rospy.sleep(2)
+    # print(ground_truth_projection.output_points)
+
+    no_cal_pcl_pub = rospy.Publisher('/uncalibrated_projected_points', PointCloud, queue_size=10)
+    rospy.sleep(1) # For some reason won't publish without this
+    no_cal_pcl_pub.publish(uncalibrated_projection.output_points)
+    # rospy.sleep(2)
     # print(ground_truth_projection.output_points)
 
     # --------------------------------------------------------------------------
