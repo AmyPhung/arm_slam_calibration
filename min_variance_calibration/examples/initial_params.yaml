@@ -50,33 +50,33 @@ wrist_yaw_scaling:
     upper_limit: 100
     uncertainty: 0.01
 
-# fisheye_mount_x_correction:
-#     initial_value: 0
-#     lower_limit: -1
-#     upper_limit: 1
-#     uncertainty: 0.01
-# fisheye_mount_y_correction:
-#     initial_value: 0
-#     lower_limit: -1
-#     upper_limit: 1
-#     uncertainty: 0.01
-# fisheye_mount_z_correction:
-#     initial_value: 0
-#     lower_limit: -1
-#     upper_limit: 1
-#     uncertainty: 0.01
-# fisheye_mount_a_correction:
-#     initial_value: 0
-#     lower_limit: -6.28318530718
-#     upper_limit: 6.28318530718
-#     uncertainty: 0.01
-# fisheye_mount_b_correction:
-#     initial_value: 0
-#     lower_limit: -6.28318530718
-#     upper_limit: 6.28318530718
-#     uncertainty: 0.01
-# fisheye_mount_c_correction:
-#     initial_value: 0
-#     lower_limit: -6.28318530718
-#     upper_limit: 6.28318530718
-#     uncertainty: 0.01
+fisheye_mount_x_correction:
+    initial_value: 0
+    lower_limit: -1
+    upper_limit: 1
+    uncertainty: 0.01
+fisheye_mount_y_correction:
+    initial_value: 0
+    lower_limit: -1
+    upper_limit: 1
+    uncertainty: 0.01
+fisheye_mount_z_correction:
+    initial_value: 0
+    lower_limit: -1
+    upper_limit: 1
+    uncertainty: 0.01
+fisheye_mount_a_correction:
+    initial_value: 0
+    lower_limit: -6.28318530718
+    upper_limit: 6.28318530718
+    uncertainty: 0.01
+fisheye_mount_b_correction:
+    initial_value: 0
+    lower_limit: -6.28318530718
+    upper_limit: 6.28318530718
+    uncertainty: 0.01
+fisheye_mount_c_correction:
+    initial_value: 0
+    lower_limit: -6.28318530718
+    upper_limit: 6.28318530718
+    uncertainty: 0.01

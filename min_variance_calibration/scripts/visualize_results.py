@@ -19,6 +19,7 @@ from numpy.random import uniform, seed
 import numpy as np
 import yaml
 import time
+import copy
 
 # Custom Libraries
 import calibration_bridge as bridge
@@ -54,7 +55,11 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    noisy_params = bridge.add_param_noise(gt_params, 0.1)
+    # noisy_params = bridge.add_param_noise(gt_params, 0.2)
+    noisy_params = copy.deepcopy(gt_params)
+    noisy_params.params[13].value = 4
+    noisy_params.params[14].value = 4
+    noisy_params.params[15].value = 4
 
     # Pass data to calibration server
     result = bridge.runCalibration(noisy_params, calibration_data,
@@ -134,7 +139,7 @@ if __name__ == "__main__":
     marker = Marker()
     marker.type = marker.LINE_LIST
     marker.header.frame_id = "base_link"
-    marker.scale.x = 0.005
+    marker.scale.x = 0.001
     marker.color.a = 1
 
     # Draw lines for initial estimate
