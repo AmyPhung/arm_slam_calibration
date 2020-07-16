@@ -9,6 +9,7 @@ from sensor_msgs.msg import PointCloud
 from geometry_msgs.msg import PoseArray
 from visualization_msgs.msg import Marker
 from geometry_msgs.msg import Point
+from sensor_msgs.msg import JointState
 
 
 # Python Libraries
@@ -55,11 +56,34 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    # noisy_params = bridge.add_param_noise(gt_params, 0.2)
-    noisy_params = copy.deepcopy(gt_params)
-    noisy_params.params[13].value = 4
-    noisy_params.params[14].value = 4
-    noisy_params.params[15].value = 4
+    noisy_params = bridge.add_param_noise(gt_params, 0.00001)
+
+    # TODO: Change this
+    # Assume shoulder yaw joint is correct
+    noisy_params.params[0].value = 65322
+    noisy_params.params[0].min = 65321.9999999
+    noisy_params.params[0].max = 65322.0000001
+    noisy_params.params[0].uncertainty = 0.000000001
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[1].value = 3792
+    noisy_params.params[1].min = 3791.999999
+    noisy_params.params[1].max = 3792.0000001
+    noisy_params.params[1].uncertainty = 0.000000001
+    # Assume fisheye roll orientation is correct
+    noisy_params.params[13].value = 0
+    noisy_params.params[13].min = -0.0000001
+    noisy_params.params[13].max = 0.0000001
+    noisy_params.params[13].uncertainty = 0.000000001
+    # Assume fisheye pitch orientation is correct
+    noisy_params.params[15].value = 0
+    noisy_params.params[15].min = -0.0000001
+    noisy_params.params[15].max = 0.0000001
+    noisy_params.params[15].uncertainty = 0.000000001
+
+    # noisy_params = copy.deepcopy(gt_params)
+    # noisy_params.params[13].value = 4
+    # noisy_params.params[14].value = 4
+    # noisy_params.params[15].value = 4
 
     # Pass data to calibration server
     result = bridge.runCalibration(noisy_params, calibration_data,
@@ -178,6 +202,24 @@ if __name__ == "__main__":
     rospy.sleep(1)
     marker_pub.publish(marker)
     rospy.sleep(1)
+
+    # TODO: Visualize camera adjustment ----------------------------------------
+    js_pub = rospy.Publisher('/joint_states', JointState, queue_size=10)
+
+    # Display 1 calibration point at a time
+    for state in joint_states:
+        current_angles = bridge.convertJointStates(state, gt_params)
+        # rospy.sleep(1)
+        js_pub.publish(current_angles)
+        # rospy.sleep(1)
+
+        print "Press Enter to continue...."
+        raw_input()
+
+    # gt_params
+    # noisy_params
+    # result.params
+
 
     ### UNCOMMENT TO VIEW CONTOUR GRAPH
     # filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/results.csv"

@@ -7,12 +7,14 @@ from min_variance_calibration_msgs.msg import OptimizationParameters
 from min_variance_calibration_msgs.srv import RunCalibration
 from min_variance_calibration_msgs.srv import ProjectPoints
 from min_variance_calibration_msgs.srv import GetEndEffectorPosition
+from sensor_msgs.msg import JointState
 
 # TODO: Add this to dependencies list
 import yaml
 import copy
 from collections import OrderedDict
 import numpy as np
+import math
 
 def loadFromYAML(filename, Loader=yaml.Loader, object_pairs_hook=OrderedDict):
     """ Load in parameter info from yaml file
@@ -165,6 +167,31 @@ def getEndEffectorPosition(joint_states, params, robot_description,
         return end_effector_positions
     except rospy.ServiceException as e:
         print("Service call failed: %s"%e)
+
+def convertJointStates(sensor_input, params):
+    """ Converts sensor input to joint angles and formats output as message
+
+    Args:
+        sensor_input (list): List of sensor inputs to use
+        params (FreeParameters): Parameters to use for conversion
+    """
+    output = JointState()
+    output.name = sensor_input.name
+
+    for i, pos in enumerate(sensor_input.position):
+        # Assumes parameters are in order, last joint removed
+        offset = params.params[i].value
+        scaling = params.params[i+5].value
+
+        if scaling == 0:
+            angle = 0
+        else:
+            angle = ((pos - offset) / scaling) * (math.pi / 180)
+
+        output.position.append(angle)
+
+    return output
+
 
 def add_param_noise(initial_params, noise):
     """ Adds gaussian noise to initial parameters
