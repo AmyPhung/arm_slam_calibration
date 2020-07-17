@@ -3,6 +3,7 @@
 # ROS
 import rospy
 import rosbag
+import tf
 from min_variance_calibration_msgs.msg import OptimizationParameters
 from std_msgs.msg import String
 from sensor_msgs.msg import PointCloud
@@ -56,7 +57,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    noisy_params = bridge.add_param_noise(gt_params, 0.00001)
+    noisy_params = bridge.add_param_noise(gt_params, 0.1)
 
     # TODO: Change this
     # Assume shoulder yaw joint is correct
@@ -69,16 +70,17 @@ if __name__ == "__main__":
     noisy_params.params[1].min = 3791.999999
     noisy_params.params[1].max = 3792.0000001
     noisy_params.params[1].uncertainty = 0.000000001
-    # Assume fisheye roll orientation is correct
-    noisy_params.params[13].value = 0
-    noisy_params.params[13].min = -0.0000001
-    noisy_params.params[13].max = 0.0000001
-    noisy_params.params[13].uncertainty = 0.000000001
-    # Assume fisheye pitch orientation is correct
-    noisy_params.params[15].value = 0
-    noisy_params.params[15].min = -0.0000001
-    noisy_params.params[15].max = 0.0000001
-    noisy_params.params[15].uncertainty = 0.000000001
+
+    # # Assume fisheye roll orientation is correct
+    # noisy_params.params[13].value = 0
+    # noisy_params.params[13].min = -0.0000001
+    # noisy_params.params[13].max = 0.0000001
+    # noisy_params.params[13].uncertainty = 0.000000001
+    # # Assume fisheye pitch orientation is correct
+    # noisy_params.params[15].value = 0
+    # noisy_params.params[15].min = -0.0000001
+    # noisy_params.params[15].max = 0.0000001
+    # noisy_params.params[15].uncertainty = 0.000000001
 
     # noisy_params = copy.deepcopy(gt_params)
     # noisy_params.params[13].value = 4
@@ -203,22 +205,55 @@ if __name__ == "__main__":
     marker_pub.publish(marker)
     rospy.sleep(1)
 
-    # TODO: Visualize camera adjustment ----------------------------------------
+    # Visualize point-by-point movements ----------------------------------------
     js_pub = rospy.Publisher('/joint_states', JointState, queue_size=10)
+
+    # Visualize camera as a marker (comment out visual in URDF first) ----------------------------------------
+    camera_visual_pub = rospy.Publisher("/camera_visualization_marker",
+        Marker, queue_size=10)
 
     # Display 1 calibration point at a time
     for state in joint_states:
-        current_angles = bridge.convertJointStates(state, gt_params)
-        # rospy.sleep(1)
-        js_pub.publish(current_angles)
-        # rospy.sleep(1)
+        # Update visual ----------------
+        # Available Params:
+            # gt_params
+            # noisy_params
+            # result.params
 
+        current_angles = bridge.convertJointStates(state, result.params)
+        js_pub.publish(current_angles)
+
+        # Create Marker ----------------
+        marker = Marker()
+        marker.type = marker.CUBE
+        # NOTE: Computed corrections are made in fisheye frame
+        marker.header.frame_id = "fisheye"
+        # print(result.params.params[10].name)
+
+        marker.pose.position.x = result.params.params[10].value# + -0.124
+        marker.pose.position.y = result.params.params[11].value# + -0.010
+        marker.pose.position.z = result.params.params[12].value# + 0.000
+
+        quaternion = tf.transformations.quaternion_from_euler(result.params.params[13].value,# + 2.356,
+                                                              result.params.params[14].value,# + 1.571,
+                                                              result.params.params[15].value)# + 0.393)
+        marker.pose.orientation.x = quaternion[0]
+        marker.pose.orientation.y = quaternion[1]
+        marker.pose.orientation.z = quaternion[2]
+        marker.pose.orientation.w = quaternion[3]
+
+        marker.action = marker.ADD
+
+        marker.scale.x = 0.1
+        marker.scale.y = 0.05
+        marker.scale.z = 0.2
+        marker.color.a = 0.5
+
+        camera_visual_pub.publish(marker)
+
+        # Wait for user ----------------
         print "Press Enter to continue...."
         raw_input()
-
-    # gt_params
-    # noisy_params
-    # result.params
 
 
     ### UNCOMMENT TO VIEW CONTOUR GRAPH

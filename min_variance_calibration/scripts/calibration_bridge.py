@@ -177,6 +177,7 @@ def convertJointStates(sensor_input, params):
     """
     output = JointState()
     output.name = sensor_input.name
+    output.header.stamp = rospy.get_rostime()
 
     for i, pos in enumerate(sensor_input.position):
         # Assumes parameters are in order, last joint removed
