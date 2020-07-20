@@ -1,66 +1,102 @@
 #!/usr/bin/env python
 
-# TODO: add this as a dependency
-import numpy as np
-import copy
-
-import calibration_bridge as bridge
-
+# ROS
 import rospy
 import rosbag
-import yaml
+import tf
 from min_variance_calibration_msgs.msg import OptimizationParameters
+from std_msgs.msg import String
+from sensor_msgs.msg import PointCloud
+from geometry_msgs.msg import PoseArray
+from visualization_msgs.msg import Marker
+from geometry_msgs.msg import Point
+from sensor_msgs.msg import JointState
 
-def add_param_noise(initial_params, noise):
-    """ Adds gaussian noise to initial parameters
+
+# Python Libraries
+from matplotlib.mlab import griddata
+import matplotlib.pyplot as plt
+import numpy.ma as ma
+from numpy.random import uniform, seed
+import numpy as np
+import yaml
+import time
+import copy
+
+# Custom Libraries
+import calibration_bridge as bridge
+
+
+def resetShoulderValues(params):
+    # TODO: Change this
+    # Assume shoulder yaw joint is correct
+    params.params[0].value = 65322
+    params.params[0].min = 65321.9999999
+    params.params[0].max = 65322.0000001
+    params.params[0].uncertainty = 0.000000001
+    # Assume shoulder pitch joint is correct
+    params.params[1].value = 3792
+    params.params[1].min = 3791.999999
+    params.params[1].max = 3792.0000001
+    params.params[1].uncertainty = 0.000000001
+
+    # # Assume fisheye roll orientation is correct
+    # params.params[13].value = 0
+    # params.params[13].min = -0.0000001
+    # params.params[13].max = 0.0000001
+    # params.params[13].uncertainty = 0.000000001
+    # # Assume fisheye pitch orientation is correct
+    # params.params[15].value = 0
+    # params.params[15].min = -0.0000001
+    # params.params[15].max = 0.0000001
+    # params.params[15].uncertainty = 0.000000001
+
+    # params = copy.deepcopy(gt_params)
+    # params.params[13].value = 4
+    # params.params[14].value = 4
+    # params.params[15].value = 4
+
+def computeDistance(point1, point2):
+    """ Compute distance between 2 ROS points
     Args:
-        noise (float): Approximate noise level to apply (between 0 and 0.5) -
-            will take a percentage of the expected range as noise """
-    output = copy.deepcopy(initial_params)
+        point1 (geometry_msgs/Point): 3 dimensional point
+        point2 (geometry_msgs/Point): 3 dimensional point in same frame
+    Returns:
+        distance (float): Distance between two points
+    """
+    p1 = np.array([point1.x, point1.y, point1.z])
+    p2 = np.array([point2.x, point2.y, point2.z])
 
-    params = output.keys()
+    squared_dist = np.sum((p1-p2)**2, axis=0)
+    dist = np.sqrt(squared_dist)
+    return dist
 
-    for p in params:
-        param_range = output[p]["upper_limit"] - output[p]["lower_limit"]
+def computeMetrics(gt_positions, computed_positions):
+    """ Compute accuracy and precision between computed points and ground
+    truth points
 
-        # Apply noise
-        scaled_noise = float(abs(noise * param_range / 2))
-
-        # Compute noisy param within expected uncertainty levels
-        noisy_param = np.random.normal(output[p]["initial_value"], scaled_noise)
-
-        # Constrain parameter value
-        if noisy_param > output[p]["upper_limit"]:
-            noisy_param = output[p]["upper_limit"]
-            scaled_noise = output[p]["upper_limit"] - output[p]["initial_value"]
-        elif noisy_param < output[p]["lower_limit"]:
-            noisy_param = output[p]["lower_limit"]
-            scaled_noise = output[p]["initial_value"] - output[p]["lower_limit"]
-
-        # Write results to output
-        output[p]["initial_value"] = noisy_param
-        output[p]["uncertainty"] = scaled_noise
-    return output
-
-def add_measurement_noise(calibration_data, noise):
-    """ Adds gaussian noise to measurements in calibration data
     Args:
-        noise (float): Approximate error to apply (in meters, will be applied
-            per-axis) """
-    output = copy.deepcopy(calibration_data)
+        gt_positions (Pose[]): List of ground truth poses
+        computed_positions (Pose[]): List of computed poses
 
-    # Iterate through all point groups and points
-    for pg in output.point_groups:
-        for pt in pg.observations:
-            pt.point.x = np.random.normal(pt.point.x, noise)
-            pt.point.y = np.random.normal(pt.point.y, noise)
-            pt.point.z = np.random.normal(pt.point.z, noise)
+    Returns:
+        accuracy (double): Average error between points
+        variance (double): Variance of error (assuming low variance = consistent offsett)
+    """
+    errors = []
 
-    return output
+    for gt_pos, com_pos in zip(gt_positions, computed_positions):
+        # print(gt_pos.position)
+        # print(com_pos.position)
+        errors.append(computeDistance(gt_pos.position, com_pos.position))
+
+    errors = np.array(errors)
+    return errors.mean(), errors.var()
 
 if __name__ == "__main__":
     rospy.init_node("sweep_noise_levels")
 
+    # Load data and optimization params ----------------------------------------
     # Load initial parameters from yaml file
     filename = rospy.get_param('~initial_param_yaml')
     initial_params = bridge.loadFromYAML(filename, yaml.SafeLoader)
@@ -83,96 +119,73 @@ if __name__ == "__main__":
     opt_params.rho_start = rospy.get_param('~rho_start', 10)
     opt_params.rho_end = rospy.get_param('~rho_end', 1e-6)
     opt_params.npt = len(initial_params.values()) + 2
-    opt_params.max_f_evals = 200000 # rospy.get_param('~max_f_evals', 10)
+    opt_params.max_f_evals = rospy.get_param('~max_f_evals', 20000)
 
-    # Load sweep noise levels from ROS parameter server
-    # TODO: Make these ROS params
-    # TODO: handle 0s
-    param_noise_start = 0.0001 # Starting percentage
-    param_noise_end = 0.2   # Ending percentage
-    param_n_steps = 1    # Number of points
-    measurement_noise_start = 0.0001 # Starting noise (in meters)
-    measurement_noise_end = 0.2   # Ending noise (in meters)
-    measurement_n_steps = 1     # Number of points
+    # --------------------------------------------------------------------------
+    # Create ground truth params
+    gt_params = bridge.convertToMsg(initial_params)
 
-    # Iterate through all combinations of specified noise levels
-    x = np.linspace(param_noise_start,
-                    param_noise_end,
-                    param_n_steps)
-    y = np.linspace(measurement_noise_start,
-                    measurement_noise_end,
-                    measurement_n_steps)
+    # Create arrays to save data
+    xs, ys, acc_arr, prec_arr, results_arr = [], [], [], [], []
 
-    xv, yv = np.meshgrid(x, y)
-    results = np.zeros(xv.shape)
+    # MODIFY THESE VALUES FOR TESTING
+    # Iterate through various levels of parameter and measurement noise
+    for x in np.linspace(0.000001, 0.1, 4): # Parameter error (%)
+        for y in np.linspace(0, 0.05, 4): # Measurement noise (meters)
+            for _ in range(3): # Run multiple times to get averages
 
-    for i in range(len(xv)):
-        for j in range(len(yv)):
-            noisy_params = add_param_noise(initial_params, xv[i][j])
-            noisy_measurements = add_measurement_noise(calibration_data, yv[i][j])
+                noisy_params = bridge.add_param_noise(gt_params, x)
+                resetShoulderValues(noisy_params)
+                calibration_data = bridge.add_measurement_noise(calibration_data, y)
 
-            # print("here!")
-            # print(xv[i][j])
-            # print(yv[i][j])
-            result = bridge.runCalibration(noisy_params, noisy_measurements,
+                # ---------------
+                # Pass data to calibration server
+                result = bridge.runCalibration(noisy_params, calibration_data,
                     robot_description, opt_params)
-            try:
-                results[i][j] = result.ending_variance
-                print("RESULTS:")
-                print("Start:" + str(result.starting_variance))
-                print("End:" + str(result.ending_variance))
+
+                # Handle case of no convergence
+                if result == None:
+                    xs.append(x), ys.append(y)
+                    acc_arr.append(np.nan), prec_arr.append(np.nan)
+                    results_arr.append(np.nan)
+                    continue
+
+                rospy.loginfo("Starting Variance: " + str(result.starting_variance))
+                rospy.loginfo("Ending Variance: " + str(result.ending_variance))
                 bridge.printParams(result.params)
 
-            except:
-                continue
-            # results[i][j] = i + j
-            # print(results[i][j])
+                # -----------------
+                # Compute end effector positions
+                effector_frame = String()
+                effector_frame.data = "fisheye"
+                output_frame = String()
+                output_frame.data = "base_link"
 
+                # TODO: remove hardcoded single tag
+                joint_states = calibration_data.point_groups[0].joint_states
+
+                gt_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+                    gt_params, robot_description, effector_frame, output_frame)
+
+                # initial_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+                #     noisy_params, robot_description, effector_frame, output_frame)
+
+                final_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
+                    result.params, robot_description, effector_frame, output_frame)
+
+                # -----------------
+                # Compute accuracy and precision
+                acc, prec = computeMetrics(gt_end_effector_positions.output_poses.poses,
+                                           final_end_effector_positions.output_poses.poses)
+                # -----------------
+                # Save results
+                xs.append(x), ys.append(y)
+                acc_arr.append(acc), prec_arr.append(prec)
+                results_arr.append(result.ending_variance)
+
+    # --------------------------------------------------------------------------
     # Save results to csv file
     results_file = rospy.get_param('~output_file')
-    csv_arr = np.array([xv.flatten(), yv.flatten(), results.flatten()])
+    csv_arr = np.array([xs, ys, acc_arr, prec_arr, results_arr])
     np.savetxt(results_file, csv_arr, delimiter=',',
-        header="param_noise, measurement_noise, output_variance", comments="")
-
-
-    #
-    # # Delete later - just for checking
-    # noisy_params = add_param_noise(initial_params, 0.1)
-    # noisy_measurements = add_measurement_noise(calibration_data, 0.01)
-    #
-    # params = noisy_params.keys()
-    #
-    # # print(calibration_data.point_groups[0].observations)
-    # print(noisy_measurements.point_groups[0].observations)
-    #
-    #
-    # # print(initial_params[params[0]]["initial_value"])
-    # # print(noisy_params[params[0]]["initial_value"])
-    # #
-    # # print(xv.shape)
-    # # print(yv.shape)
-    # # print(results.shape)
-    #
-    # # for p_noise in param_noise:
-    # #     for m_noise in measurement_noise:
-    # #         # Pass data to calibration server
-    # #         result = bridge.runCalibration(initial_params, calibration_data,
-    # #             robot_description, opt_params)
-    # #         rospy.loginfo("Starting Variance: " + str(result.starting_variance))
-    # #         rospy.loginfo("Ending Variance: " + str(result.ending_variance))
-    # #         bridge.printParams(result.params)
-
-
-
-
-
-
-"""
-def runTestCalibration(self, initial_params, calibration_data,
-    robot_description, optimization_params,
-    param_noise, measurement_noise):
-    # Adjust values
-    # Run calibration
-    # TODO: implement this
-    pass
-"""
+        header="param_noise, measurement_noise, accuracy, precision, output_variance", comments="")
