@@ -180,16 +180,19 @@ def convertJointStates(sensor_input, params):
     output.header.stamp = rospy.get_rostime()
 
     for i, pos in enumerate(sensor_input.position):
-        # Assumes parameters are in order, last joint removed
-        offset = params.params[i].value
-        scaling = params.params[i+5].value
-
-        if scaling == 0:
-            angle = 0
+        if i >= 5: # Handle wrist rotate
+            output.position.append(pos)
         else:
-            angle = ((pos - offset) / scaling) * (math.pi / 180)
+            # Assumes parameters are in order, last joint removed
+            offset = params.params[i].value
+            scaling = params.params[i+5].value
 
-        output.position.append(angle)
+            if scaling == 0:
+                angle = 0
+            else:
+                angle = ((pos - offset) / scaling) * (math.pi / 180)
+
+            output.position.append(angle)
 
     return output
 

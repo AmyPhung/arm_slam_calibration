@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    noisy_params = bridge.add_param_noise(gt_params, 0.1)
+    noisy_params = bridge.add_param_noise(gt_params, 0.2)
 
     # TODO: Change this
     # Assume shoulder yaw joint is correct
@@ -87,6 +87,11 @@ if __name__ == "__main__":
     # noisy_params.params[14].value = 4
     # noisy_params.params[15].value = 4
 
+    # --------------------------------------------------------------------------
+
+    calibration_data = bridge.add_measurement_noise(calibration_data, 0.05)
+
+    # --------------------------------------------------------------------------
     # Pass data to calibration server
     result = bridge.runCalibration(noisy_params, calibration_data,
         robot_description, opt_params)
@@ -230,13 +235,13 @@ if __name__ == "__main__":
         marker.header.frame_id = "fisheye"
         # print(result.params.params[10].name)
 
-        marker.pose.position.x = result.params.params[10].value# + -0.124
-        marker.pose.position.y = result.params.params[11].value# + -0.010
-        marker.pose.position.z = result.params.params[12].value# + 0.000
+        marker.pose.position.x = 0#result.params.params[10].value# + -0.124
+        marker.pose.position.y = 0#result.params.params[11].value# + -0.010
+        marker.pose.position.z = 0#result.params.params[12].value# + 0.000
 
-        quaternion = tf.transformations.quaternion_from_euler(result.params.params[13].value,# + 2.356,
-                                                              result.params.params[14].value,# + 1.571,
-                                                              result.params.params[15].value)# + 0.393)
+        quaternion = tf.transformations.quaternion_from_euler(0,#result.params.params[13].value,# + 2.356,
+                                                              0,#result.params.params[14].value,# + 1.571,
+                                                              0)#result.params.params[15].value)# + 0.393)
         marker.pose.orientation.x = quaternion[0]
         marker.pose.orientation.y = quaternion[1]
         marker.pose.orientation.z = quaternion[2]
