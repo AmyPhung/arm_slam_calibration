@@ -25,6 +25,44 @@ import copy
 # Custom Libraries
 import calibration_bridge as bridge
 
+
+def computeDistance(point1, point2):
+    """ Compute distance between 2 ROS points
+    Args:
+        point1 (geometry_msgs/Point): 3 dimensional point
+        point2 (geometry_msgs/Point): 3 dimensional point in same frame
+    Returns:
+        distance (float): Distance between two points
+    """
+    p1 = np.array([point1.x, point1.y, point1.z])
+    p2 = np.array([point2.x, point2.y, point2.z])
+
+    squared_dist = np.sum((p1-p2)**2, axis=0)
+    dist = np.sqrt(squared_dist)
+    return dist
+
+def computeMetrics(gt_positions, computed_positions):
+    """ Compute accuracy and precision between computed points and ground
+    truth points
+
+    Args:
+        gt_positions (Pose[]): List of ground truth poses
+        computed_positions (Pose[]): List of computed poses
+
+    Returns:
+        accuracy (double): Average error between points
+        variance (double): Variance of error (assuming low variance = consistent offsett)
+    """
+    errors = []
+
+    for gt_pos, com_pos in zip(gt_positions, computed_positions):
+        # print(gt_pos.position)
+        # print(com_pos.position)
+        errors.append(computeDistance(gt_pos.position, com_pos.position))
+
+    errors = np.array(errors)
+    return errors.mean(), errors.var()
+
 if __name__ == "__main__":
     rospy.init_node("visualize_results")
 
@@ -56,7 +94,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    noisy_params = bridge.add_param_noise(gt_params, 0.2)
+    noisy_params = bridge.add_param_noise(gt_params, 0.3)
 
     # TODO: Change this
     # Assume shoulder yaw joint is correct
@@ -88,7 +126,7 @@ if __name__ == "__main__":
 
     # --------------------------------------------------------------------------
 
-    calibration_data = bridge.add_measurement_noise(calibration_data, 0.05)
+    calibration_data = bridge.add_measurement_noise(calibration_data, 0.1)
 
     # --------------------------------------------------------------------------
     # Pass data to calibration server
@@ -141,6 +179,11 @@ if __name__ == "__main__":
 
     final_end_effector_positions = bridge.getEndEffectorPosition(joint_states,
         result.params, robot_description, effector_frame, output_frame)
+
+    acc, prec = computeMetrics(gt_end_effector_positions.output_poses.poses,
+                               final_end_effector_positions.output_poses.poses)
+    print("Accuracy: " + str(acc))
+    print("Precision: " + str(prec))
 
     gt_pos_pub = rospy.Publisher('/ground_truth_positions', PoseArray, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this

@@ -15,9 +15,16 @@ def getAverages(arr, N):
             length N
     """
     avgs = []
+    print(arr)
+
     for i in range(0, len(arr), N):
         for _ in range(N):
-            mean = np.nanmean(arr[i:i+N]) # ignore mean values
+            #mean = np.nanmean(arr[i:i+N]) # ignore nan values
+            # print("HERE!")
+            # print(i)
+            # print(i+N)
+            print(arr[i:i+N])
+            mean = np.nanmean(arr[i:i+N])
             avgs.append(mean)
     return avgs
 
@@ -28,11 +35,13 @@ filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibrat
 (x, y, a, b, c) = np.loadtxt(open(filename, "rb"), delimiter=",", skiprows=1)
 
 # Number of points per measurement
-N = 3
+N = 1
 
 # define grid.
 xi = np.linspace(x.min(),x.max(),100)
 yi = np.linspace(y.min(),y.max(),100)
+print(x)
+print(y)
 
 # Average duplicate measurements ----------------------------------------------
 # Get unique parameter noise/measurement noise
@@ -43,8 +52,11 @@ ai = griddata(x, y, avg_a, xi, yi, interp='linear')
 
 # contour the gridded data, plotting dots at the randomly spaced data points.
 CS = plt.contour(xi,yi,ai,20,linewidths=0.5,colors='k')
-CS = plt.contourf(xi,yi,ai,20,cmap=plt.cm.jet)
+CS = plt.contourf(xi,yi,ai,200,cmap=plt.cm.jet)
+
 plt.colorbar() # draw colorbar
+plt.clim(0,0.5)
+
 # plot data points.
 plt.scatter(x,y,marker='o',c='b',s=5)
 # plt.xlim(-2,2)

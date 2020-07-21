@@ -130,10 +130,11 @@ if __name__ == "__main__":
 
     # MODIFY THESE VALUES FOR TESTING
     # Iterate through various levels of parameter and measurement noise
-    for x in np.linspace(0.000001, 0.1, 4): # Parameter error (%)
-        for y in np.linspace(0, 0.05, 4): # Measurement noise (meters)
-            for _ in range(3): # Run multiple times to get averages
-
+    for x in np.linspace(0.000001, 0.6, 4): # Parameter error (%)
+        for y in np.linspace(0, 0.3, 4): # Measurement noise (meters)
+            for _ in range(1): # Run multiple times to get averages
+                print(x)
+                print(y)
                 noisy_params = bridge.add_param_noise(gt_params, x)
                 resetShoulderValues(noisy_params)
                 calibration_data = bridge.add_measurement_noise(calibration_data, y)
