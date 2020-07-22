@@ -1,0 +1,39 @@
+<launch>
+
+    <!-- Start calibration server -->
+    <node pkg="min_variance_calibration" type="RunCalibrationServer"
+      name="calibration_server" output="screen">
+      <!-- TODO: Implement this -->
+        <!-- <param name="root_link" value="/base_link"/>
+        <param name="tip_link" value="/fisheye"/> -->
+    </node>
+
+    <!-- Start point projection server -->
+    <node pkg="min_variance_calibration" type="ProjectPointsServer"
+      name="project_points_server" output="screen">
+      <!-- TODO: Implement this -->
+        <!-- <param name="root_link" value="/base_link"/>
+        <param name="tip_link" value="/fisheye"/> -->
+    </node>
+
+    <!-- Start end effector position server -->
+    <node pkg="min_variance_calibration" type="GetEndEffectorPositionServer"
+      name="get_end_effector_position_server" output="screen"/>
+
+    <!-- Run calibration client -->
+    <node pkg="min_variance_calibration" type="sweep_joint_errors.py"
+      name="sweep_noise" output="screen" required="True">
+        <param name="initial_param_yaml" type="string"
+          value="$(find min_variance_calibration)/examples/initial_params.yaml"/>
+        <param name="data_bagfile" type="string"
+          value="$(find min_variance_calibration)/examples/calibration_data.bag"/>
+
+        <param name="rho_start" type="double" value="10"/>
+        <param name="rho_end" type="double" value="1e-6"/>
+        <param name="max_f_evals" type="double" value="10000"/>
+
+        <param name="output_file" type="string"
+          value="$(find min_variance_calibration)/results/results.csv"/>
+    </node>
+
+</launch>

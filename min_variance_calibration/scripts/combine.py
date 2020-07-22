@@ -3,7 +3,7 @@
 import os
 import glob
 import pandas as pd
-
+import numpy as np
 
 path = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/to_combine/"
 extension = "csv"
@@ -14,7 +14,12 @@ print(files)
 li = []
 
 for file in files:
-    df = pd.read_csv(path + file, index_col=None, header=0)
+    print(file)
+    # (x, y, a, b, c) =
+    data = np.loadtxt(open(path + file, "rb"), delimiter=",", skiprows=1)
+
+    df = pd.DataFrame(data, index=['param_noise', 'measurement_noise', 'accuracy', 'precision', 'output_variance']).T
+    print(df)
     li.append(df)
 
 frame = pd.concat(li, axis=0, ignore_index=True)

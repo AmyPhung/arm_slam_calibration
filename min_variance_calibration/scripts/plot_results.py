@@ -3,7 +3,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.mlab import griddata
-
+import pandas as pd
+from scipy import stats
 
 def getAverages(arr, N):
     """ Average slices of length N within the array
@@ -30,9 +31,28 @@ def getAverages(arr, N):
 
 
 ## View contour graph
-filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/results.csv"
+filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/combined.csv"
 
-(x, y, a, b, c) = np.loadtxt(open(filename, "rb"), delimiter=",", skiprows=1)
+df = pd.read_csv(filename, delimiter=",")
+# remove outliers
+df = df[np.abs(stats.zscore(df['param_noise'])) < 3]
+# restricting measurement noise to 0.5m (50 cm)
+# df = df[df['measurement_noise'] < 0.5]
+# df = pd.DataFrame(np.random.randn(100, 3))
+# df = df[(np.abs(stats.zscore(df)) < 3).all(axis=1)]
+# print(df)
+
+print(df.columns)
+x = df['param_noise']
+y = df['measurement_noise']
+a = df['accuracy']
+b = df['precision']
+c = df['output_variance']
+plt.plot(a)
+plt.plot(b)
+plt.plot(c)
+
+plt.show()
 
 # Number of points per measurement
 N = 1
@@ -46,7 +66,7 @@ print(y)
 # Average duplicate measurements ----------------------------------------------
 # Get unique parameter noise/measurement noise
 un_x, un_y = np.unique(x), np.unique(y)
-avg_a = getAverages(a, N)
+avg_a = getAverages(b, N)
 
 ai = griddata(x, y, avg_a, xi, yi, interp='linear')
 

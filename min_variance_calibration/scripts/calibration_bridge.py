@@ -244,3 +244,35 @@ def add_measurement_noise(calibration_data, noise):
             pt.point.z = np.random.normal(pt.point.z, noise)
 
     return output
+
+def convertDegreesToTicks(num_degrees, param_scaling):
+    """ Convert input degree offset to number of ticks """
+    # TODO: take into account parameter scaling terms (post-preconditioning)
+    ticks = num_degrees * param_scaling.value
+    return ticks
+
+def addOffsetToJoint(initial_params, joint_name, deg_offset):
+    """ Add an offset to a particular joint
+
+    Args:
+        initial_params (FreeParameters): Ground truth prameter values
+        joint_name (string): Name of joint to add offset to
+        offset (float): Degrees of offset to add to the joint name
+
+    Returns:
+        output (FreeParameters): Parameter values with added joint offset
+    """
+    output = copy.deepcopy(initial_params)
+
+    offset = [param for param in output.params if param.name == joint_name + "_offset"]
+    scaling = [param for param in output.params if param.name == joint_name + "_scaling"]
+
+    if not offset or not scaling:
+        print(joint_name + " not found in parameter list in addOffsetToJoint")
+        return output
+
+    # Convert degrees to ticks
+    ticks = convertDegreesToTicks(deg_offset, scaling[0])
+    offset[0].value += ticks
+
+    return output
