@@ -5,7 +5,7 @@ import glob
 import pandas as pd
 import numpy as np
 
-path = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/to_combine/"
+path = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/temp/"
 extension = "csv"
 os.chdir(path)
 files = glob.glob('*.{}'.format(extension))

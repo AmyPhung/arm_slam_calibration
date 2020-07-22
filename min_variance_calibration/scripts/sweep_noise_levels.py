@@ -30,15 +30,34 @@ import calibration_bridge as bridge
 def resetShoulderValues(params):
     # TODO: Change this
     # Assume shoulder yaw joint is correct
-    params.params[0].value = 65322
-    params.params[0].min = 65321.9999999
-    params.params[0].max = 65322.0000001
-    params.params[0].uncertainty = 0.000000001
+    noisy_params.params[0].value = 65322
+    noisy_params.params[0].min = 65321.9999999
+    noisy_params.params[0].max = 65322.0000001
+    noisy_params.params[0].uncertainty = 0.000000001
     # Assume shoulder pitch joint is correct
-    params.params[1].value = 3792
-    params.params[1].min = 3791.999999
-    params.params[1].max = 3792.0000001
-    params.params[1].uncertainty = 0.000000001
+    noisy_params.params[1].value = 3792
+    noisy_params.params[1].min = 3791.999999
+    noisy_params.params[1].max = 3792.0000001
+    noisy_params.params[1].uncertainty = 0.000000001
+
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[2].value = 59777
+    noisy_params.params[2].min = 59776.999999
+    noisy_params.params[2].max = 59777.0000001
+    noisy_params.params[2].uncertainty = 0.000000001
+
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[3].value = 64437
+    noisy_params.params[3].min = 64436.999999
+    noisy_params.params[3].max = 64437.0000001
+    noisy_params.params[3].uncertainty = 0.000000001
+
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[4].value = 65324
+    noisy_params.params[4].min = 65323.999999
+    noisy_params.params[4].max = 65324.0000001
+    noisy_params.params[4].uncertainty = 0.000000001
+
 
     # # Assume fisheye roll orientation is correct
     # params.params[13].value = 0

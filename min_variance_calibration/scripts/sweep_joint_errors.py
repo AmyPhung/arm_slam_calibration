@@ -21,12 +21,13 @@ import numpy as np
 import yaml
 import time
 import copy
+import pandas as pd
 
 # Custom Libraries
 import calibration_bridge as bridge
 
-joint = "shoulder_pitch"
-offset = 40 # in degrees
+joint_list = ["shoulder_yaw", "shoulder_pitch", "forearm_pitch", "wrist_pitch", "wrist_yaw"]
+offset_increment = 5 # in degrees
 
 
 """
@@ -36,6 +37,9 @@ get initial variance = the net effect
 compute variance for incorrect
 
 
+pandas dataframe
+
+joint_name degrees_offset variance
 """
 
 if __name__ == "__main__":
@@ -70,14 +74,34 @@ if __name__ == "__main__":
     # Create ground truth params
     gt_params = bridge.convertToMsg(initial_params)
 
-    # Add error to joint
-    offset_params = bridge.addOffsetToJoint(gt_params, joint, offset)
+    # Initialize lists (will be saved in dataframe later)
+    df_joints = []
+    df_offsets = []
+    df_variance = []
 
-    # Compute variance
-    gt_result = bridge.runCalibration(gt_params, calibration_data,
-        robot_description, opt_params)
-    offset_result = bridge.runCalibration(offset_params, calibration_data,
-        robot_description, opt_params)
+    for joint in joint_list:
+        for offset in range(0, 180, offset_increment):
+            # Add error to joint
+            offset_params = bridge.addOffsetToJoint(gt_params, joint, offset)
 
-    rospy.loginfo("GT Variance: " + str(gt_result.starting_variance))
-    rospy.loginfo("Offset Variance: " + str(offset_result.starting_variance))
+            # Compute variance
+            gt_result = bridge.runCalibration(gt_params, calibration_data,
+                robot_description, opt_params)
+            offset_result = bridge.runCalibration(offset_params, calibration_data,
+                robot_description, opt_params)
+
+            rospy.loginfo("Offset Variance: " + str(offset_result.starting_variance))
+
+            df_joints.append(joint)
+            df_offsets.append(offset)
+            df_variance.append(offset_result.starting_variance)
+
+    # Create dataframe
+    df_data = [df_joints, df_offsets, df_variance]
+    print(df_data)
+    output_df = pd.DataFrame(df_data, index=['joint_name',
+                                             'degrees_offset',
+                                             'variance']).T
+
+    output_df.to_csv("joint_results.csv")
+    print(output_df)

@@ -108,6 +108,25 @@ if __name__ == "__main__":
     noisy_params.params[1].max = 3792.0000001
     noisy_params.params[1].uncertainty = 0.000000001
 
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[2].value = 59777
+    noisy_params.params[2].min = 59776.999999
+    noisy_params.params[2].max = 59777.0000001
+    noisy_params.params[2].uncertainty = 0.000000001
+
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[3].value = 64437
+    noisy_params.params[3].min = 64436.999999
+    noisy_params.params[3].max = 64437.0000001
+    noisy_params.params[3].uncertainty = 0.000000001
+
+    # Assume shoulder pitch joint is correct
+    noisy_params.params[4].value = 65324
+    noisy_params.params[4].min = 65323.999999
+    noisy_params.params[4].max = 65324.0000001
+    noisy_params.params[4].uncertainty = 0.000000001
+
+
     # # Assume fisheye roll orientation is correct
     # noisy_params.params[13].value = 0
     # noisy_params.params[13].min = -0.0000001
@@ -126,7 +145,7 @@ if __name__ == "__main__":
 
     # --------------------------------------------------------------------------
 
-    calibration_data = bridge.add_measurement_noise(calibration_data, 0.1)
+    calibration_data = bridge.add_measurement_noise(calibration_data, 0.05)
 
     # --------------------------------------------------------------------------
     # Pass data to calibration server
