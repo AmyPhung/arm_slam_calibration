@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+"""
+Quick script to combine results from all noise sweeps into one csv file
+"""
 
 import os
 import glob

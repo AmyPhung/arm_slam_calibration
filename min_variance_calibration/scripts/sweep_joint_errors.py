@@ -25,22 +25,10 @@ import pandas as pd
 
 # Custom Libraries
 import calibration_bridge as bridge
+import helper_functions as hf
 
 joint_list = ["shoulder_yaw", "shoulder_pitch", "forearm_pitch", "wrist_pitch", "wrist_yaw"]
-offset_increment = 5 # in degrees
-
-
-"""
-add error to joint angle
-run calibration
-get initial variance = the net effect
-compute variance for incorrect
-
-
-pandas dataframe
-
-joint_name degrees_offset variance
-"""
+offset_increment = 179 # in degrees
 
 if __name__ == "__main__":
     rospy.init_node("sweep_joint_errors")
@@ -78,6 +66,8 @@ if __name__ == "__main__":
     df_joints = []
     df_offsets = []
     df_variance = []
+    df_ee_accuracy = []
+    df_ee_precision = []
 
     for joint in joint_list:
         for offset in range(0, 180, offset_increment):
@@ -92,16 +82,45 @@ if __name__ == "__main__":
 
             rospy.loginfo("Offset Variance: " + str(offset_result.starting_variance))
 
+
+            # -----------------
+            # Compute end effector positions
+            effector_frame = String()
+            effector_frame.data = "fisheye"
+            output_frame = String()
+            output_frame.data = "base_link"
+
+            # TODO: remove hardcoded single tag
+            joint_states = calibration_data.point_groups[0].joint_states
+
+            gt_ee_positions = bridge.getEndEffectorPosition(joint_states,
+                gt_params, robot_description, effector_frame, output_frame)
+
+            offset_ee_positions = bridge.getEndEffectorPosition(joint_states,
+                offset_params, robot_description, effector_frame, output_frame)
+
+            # -----------------
+            # Compute accuracy and precision
+            acc, prec = hf.computeMetrics(gt_ee_positions.output_poses.poses,
+                                          offset_ee_positions.output_poses.poses)
+
+
             df_joints.append(joint)
             df_offsets.append(offset)
             df_variance.append(offset_result.starting_variance)
+            df_ee_accuracy.append(acc)
+            df_ee_precision.append(prec)
 
     # Create dataframe
-    df_data = [df_joints, df_offsets, df_variance]
+    df_data = [df_joints, df_offsets, df_variance,
+               df_ee_accuracy, df_ee_precision]
     print(df_data)
     output_df = pd.DataFrame(df_data, index=['joint_name',
                                              'degrees_offset',
-                                             'variance']).T
+                                             'variance',
+                                             'end_effector_accuracy',
+                                             'end_effector_precision']).T
 
-    output_df.to_csv("joint_results.csv")
+    path = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/sweep_joint_errors/"
+    output_df.to_csv(path + "joint_results.csv")
     print(output_df)
