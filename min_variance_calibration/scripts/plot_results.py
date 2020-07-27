@@ -87,69 +87,106 @@ def getAverages(arr, N):
 # plt.show()
 
 
+# ---------------------------------------------------------------------------------
+# Sweep individual joints
+#--------------------------------------------------------------------------------------
+# # View Joint Errors
+# filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/joint_results.csv"
+# df = pd.read_csv(filename, delimiter=",")
+#
+# fig, ax = plt.subplots(5,2)
+#
+# filtered_df = df[df["joint_name"] == "shoulder_yaw"]
+# ax[0,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+# ax[0,0].set_title("shoulder_yaw")
+#
+# filtered_df = df[df["joint_name"] == "shoulder_pitch"]
+# ax[1,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+# ax[1,0].set_title("shoulder_pitch")
+#
+# filtered_df = df[df["joint_name"] == "forearm_pitch"]
+# ax[2,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+# ax[2,0].set_title("forearm_pitch")
+#
+# filtered_df = df[df["joint_name"] == "wrist_pitch"]
+# ax[3,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+# ax[3,0].set_title("wrist_pitch")
+#
+# filtered_df = df[df["joint_name"] == "wrist_yaw"]
+# ax[4,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+# ax[4,0].set_title("wrist_yaw")
+#
+#
+#
+# filtered_df = df[df["joint_name"] == "shoulder_yaw"]
+# ax[0,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+# ax[0,1].set_title("shoulder_yaw")
+#
+# filtered_df = df[df["joint_name"] == "shoulder_pitch"]
+# ax[1,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+# ax[1,1].set_title("shoulder_pitch")
+#
+# filtered_df = df[df["joint_name"] == "forearm_pitch"]
+# ax[2,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+# ax[2,1].set_title("forearm_pitch")
+#
+# filtered_df = df[df["joint_name"] == "wrist_pitch"]
+# ax[3,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+# ax[3,1].set_title("wrist_pitch")
+#
+# filtered_df = df[df["joint_name"] == "wrist_yaw"]
+# ax[4,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+# ax[4,1].set_title("wrist_yaw")
+#
+#
+# # Defining custom 'xlim' and 'ylim' values.
+# # custom_xlim = (0, 7.5)
+# custom_ylim1 = (0, 2.5)
+# custom_ylim2= (0, 25)
+#
+# # Setting the values for all axes.
+# plt.setp(ax[:,1], ylim=custom_ylim1)
+# plt.setp(ax[:,0], ylim=custom_ylim2)
+# plt.xlabel("Angle offset (degrees)")
+# ax[2,0].set_ylabel("Objective function output (measurement variance)")
+# ax[2,1].set_ylabel("End effector error (meters)")
+# plt.show()
+#-------------------------------------------------------------------------------------
 
 
-# View Joint Errors
-filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/joint_results.csv"
+
+# ---------------------------------------------------------------------------------
+# Uniformly sweep joints
+# ------------------------------------------------------------------------------
+# Plot total results ----------------------------------------------
+ filename = "/home/amy/whoi_ws/src/min_variance_calibration/min_variance_calibration/results/joint_results_all.csv"
 df = pd.read_csv(filename, delimiter=",")
 
-fig, ax = plt.subplots(5,2)
+fig, ax = plt.subplots(2,1)
 
-filtered_df = df[df["joint_name"] == "shoulder_yaw"]
-ax[0,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
-ax[0,0].set_title("shoulder_yaw")
+filtered_df = df[df["joint_name"] == "all"]
+ax[0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
+ax[0].set_title("Objective Function Output vs Uniform Joint Offset")
 
-filtered_df = df[df["joint_name"] == "shoulder_pitch"]
-ax[1,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
-ax[1,0].set_title("shoulder_pitch")
-
-filtered_df = df[df["joint_name"] == "forearm_pitch"]
-ax[2,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
-ax[2,0].set_title("forearm_pitch")
-
-filtered_df = df[df["joint_name"] == "wrist_pitch"]
-ax[3,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
-ax[3,0].set_title("wrist_pitch")
-
-filtered_df = df[df["joint_name"] == "wrist_yaw"]
-ax[4,0].plot(filtered_df["degrees_offset"], filtered_df["variance"])
-ax[4,0].set_title("wrist_yaw")
-
-
-
-filtered_df = df[df["joint_name"] == "shoulder_yaw"]
-ax[0,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
-ax[0,1].set_title("shoulder_yaw")
-
-filtered_df = df[df["joint_name"] == "shoulder_pitch"]
-ax[1,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
-ax[1,1].set_title("shoulder_pitch")
-
-filtered_df = df[df["joint_name"] == "forearm_pitch"]
-ax[2,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
-ax[2,1].set_title("forearm_pitch")
-
-filtered_df = df[df["joint_name"] == "wrist_pitch"]
-ax[3,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
-ax[3,1].set_title("wrist_pitch")
-
-filtered_df = df[df["joint_name"] == "wrist_yaw"]
-ax[4,1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
-ax[4,1].set_title("wrist_yaw")
-
+filtered_df = df[df["joint_name"] == "all"]
+ax[1].plot(filtered_df["degrees_offset"], filtered_df["end_effector_accuracy"])
+ax[1].set_title("Average Camera Position Error vs Uniform Joint Offset")
 
 # Defining custom 'xlim' and 'ylim' values.
-# custom_xlim = (0, 7.5)
-custom_ylim1 = (0, 2.5)
-custom_ylim2= (0, 25)
+# custom_xlim = (0, 100)
+custom_ylim1 = (0, 0.4)
+custom_ylim2 = (0, 3)
 
 # Setting the values for all axes.
-plt.setp(ax[:,1], ylim=custom_ylim1)
-plt.setp(ax[:,0], ylim=custom_ylim2)
+plt.setp(ax[0], ylim=custom_ylim1)
+plt.setp(ax[1], ylim=custom_ylim2)
 plt.xlabel("Angle offset (degrees)")
-ax[2,0].set_ylabel("Objective function output (measurement variance)")
-ax[2,1].set_ylabel("End effector error (meters)")
+ax[0].set_ylabel("Objective function output (measurement variance)")
+ax[1].set_ylabel("Average camera position error (meters)")
 plt.show()
+
+
+
 # plt.show()
 #
 # # COMPUTE AVG END EFFECTOR ERROR FOR EACH
