@@ -6,6 +6,7 @@
 #define MIN_VARIANCE_CALIBRATION_OPTIMIZER_H
 
 #include <sensor_msgs/PointCloud.h>
+#include <geometry_msgs/PointStamped.h>
 #include <min_variance_calibration_msgs/CalibrationData.h>
 #include <min_variance_calibration_msgs/RunCalibration.h>
 

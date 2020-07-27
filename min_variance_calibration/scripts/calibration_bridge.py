@@ -118,6 +118,8 @@ def runCalibration(initial_params, calibration_data,
     try:
         run_calibration = rospy.ServiceProxy('/run_calibration',
                                              RunCalibration)
+
+        print(calibration_data)
         result = run_calibration(free_params, opt_params, calibration_data,
                                  robot_description)
         return result

@@ -163,7 +163,7 @@ if __name__ == "__main__":
 
     ground_truth_projection = bridge.projectPoints(calibration_data,
         result.params, robot_description, output_frame)
-    uncalibrated_projection = bridge.projectPoints(calibration_data,
+    calibrated_projection = bridge.projectPoints(calibration_data,
         noisy_params, robot_description, output_frame)
 
     pcl_pub = rospy.Publisher('/projected_points', PointCloud, queue_size=10)
@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
     no_cal_pcl_pub = rospy.Publisher('/uncalibrated_projected_points', PointCloud, queue_size=10)
     rospy.sleep(1) # For some reason won't publish without this
-    no_cal_pcl_pub.publish(uncalibrated_projection.output_points)
+    no_cal_pcl_pub.publish(calibrated_projection.output_points)
     # rospy.sleep(2)
     # print(ground_truth_projection.output_points)
 
@@ -235,7 +235,7 @@ if __name__ == "__main__":
     marker.color.a = 1
 
     # Draw lines for initial estimate
-    for effector, measurement in zip(initial_end_effector_positions.output_poses.poses, uncalibrated_projection.output_points.points):
+    for effector, measurement in zip(initial_end_effector_positions.output_poses.poses, calibrated_projection.output_points.points):
         # Add effector position
         effector_pt = Point()
         effector_pt.x = effector.position.x
@@ -266,7 +266,7 @@ if __name__ == "__main__":
         measurement_pt.z = measurement.z
         marker.points.append(measurement_pt)
 
-    # print(uncalibrated_projection.output_points.points)
+    # print(calibrated_projection.output_points.points)
     rospy.sleep(1)
     marker_pub.publish(marker)
     rospy.sleep(1)

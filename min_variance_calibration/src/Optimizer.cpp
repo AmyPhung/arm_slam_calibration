@@ -58,6 +58,24 @@ namespace min_variance_calibration {
         return sum;
     }
 
+    template <class T, class U>
+    double computePointDistance (T const pt1, U const pt2) {
+        double d = sqrt(pow(pt2.x - pt1.x, 2) +
+                        pow(pt2.y - pt1.y, 2) +
+                        pow(pt2.z - pt1.z, 2) * 1.0);
+        return d;
+    }
+
+    double computeTotalDistance(const sensor_msgs::PointCloud &input_pts,
+                                const geometry_msgs::PointStamped &ground_truth) {
+        double d = 0;
+
+        BOOST_FOREACH ( geometry_msgs::Point32 const pt, input_pts.points) {
+            d += computePointDistance(pt, ground_truth.point);
+        }
+        return d;
+    }
+
     Optimizer::Optimizer() {
     }
 
@@ -84,11 +102,17 @@ namespace min_variance_calibration {
 
             // Iterate through point groups
             BOOST_FOREACH (min_variance_calibration_msgs::PointGroup const pts, data.point_groups) {
-                sensor_msgs::PointCloud tf_points; // TODO: Init number of pts here
+                // Min Variance Optimizer
+//                sensor_msgs::PointCloud tf_points; // TODO: Init number of pts here
+//                model.project(param_manager, pts, tf_points);
+//                double covariance_matrix[3][3];
+//                computeCovarianceMatrix(tf_points, covariance_matrix);
+//                variance_estimate += computeEigenvectorSum(covariance_matrix);
+
+                // Base Link Optimizer
+                sensor_msgs::PointCloud tf_points;
                 model.project(param_manager, pts, tf_points);
-                double covariance_matrix[3][3];
-                computeCovarianceMatrix(tf_points, covariance_matrix);
-                variance_estimate += computeEigenvectorSum(covariance_matrix);
+                variance_estimate += computeTotalDistance(tf_points, pts.ground_truth);
 
                 break; // Just use one point
                 // TODO: decide whether to use multiple or single tag
