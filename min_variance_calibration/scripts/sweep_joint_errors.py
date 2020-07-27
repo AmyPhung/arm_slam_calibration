@@ -28,7 +28,7 @@ import calibration_bridge as bridge
 import helper_functions as hf
 
 joint_list = ["shoulder_yaw", "shoulder_pitch", "forearm_pitch", "wrist_pitch", "wrist_yaw"]
-offset_increment = 95 # in degrees
+offset_increment = 5 # in degrees
 
 if __name__ == "__main__":
     rospy.init_node("sweep_joint_errors")
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     df_ee_precision = []
 
     for joint in joint_list:
-        for offset in range(0, 96, offset_increment):
+        for offset in range(0, 181, offset_increment):
             # Add error to joint
             offset_params = bridge.addOffsetToJoint(gt_params, joint, offset)
 

@@ -140,8 +140,8 @@ ax[4,1].set_title("wrist_yaw")
 
 # Defining custom 'xlim' and 'ylim' values.
 # custom_xlim = (0, 7.5)
-custom_ylim1 = (0, 1)
-custom_ylim2= (0, 7.5)
+custom_ylim1 = (0, 2.5)
+custom_ylim2= (0, 25)
 
 # Setting the values for all axes.
 plt.setp(ax[:,1], ylim=custom_ylim1)

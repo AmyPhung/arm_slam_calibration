@@ -30,7 +30,7 @@
 
         <param name="rho_start" type="double" value="10"/>
         <param name="rho_end" type="double" value="1e-6"/>
-        <param name="max_f_evals" type="double" value="10000"/>
+        <param name="max_f_evals" type="double" value="30000"/>
 
         <param name="output_file" type="string"
           value="$(find min_variance_calibration)/results/results.csv"/>
