@@ -26,9 +26,10 @@ bool run_calibration(min_variance_calibration_msgs::RunCalibration::Request  &re
     min_variance_calibration::ParameterManager param_manager;
     param_manager.loadFromMsg(req);
 
-    // TODO: remove hardcode root and tip
     // Set up chain model
-    min_variance_calibration::ChainModel model(description_msg.data, "base_link", "fisheye");
+    min_variance_calibration::ChainModel model(description_msg.data,
+            data.point_groups[0].ground_truth.header.frame_id,
+            data.point_groups[0].observations[0].header.frame_id);
     // Set up optimizer
     min_variance_calibration::Optimizer opt;
     // Run optimization

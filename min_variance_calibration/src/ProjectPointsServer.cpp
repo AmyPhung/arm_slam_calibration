@@ -24,7 +24,7 @@ bool project_points(min_variance_calibration_msgs::ProjectPoints::Request  &req,
     // TODO: remove hardcode root and tip
     // Set up chain model
     min_variance_calibration::ChainModel model(description_msg.data,
-        "base_link", output_frame.data);
+        data.point_groups[0].ground_truth.header.frame_id, output_frame.data);
     min_variance_calibration::ParameterManager param_manager;
     param_manager.loadFromMsg(req);
 

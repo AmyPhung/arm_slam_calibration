@@ -2,11 +2,7 @@
 
     <!-- Start calibration server -->
     <node pkg="min_variance_calibration" type="RunCalibrationServer"
-      name="calibration_server" output="screen">
-      <!-- TODO: Implement this -->
-        <!-- <param name="root_link" value="/base_link"/>
-        <param name="tip_link" value="/fisheye"/> -->
-    </node>
+      name="calibration_server" output="screen"/>
 
     <!-- Run calibration client -->
     <node pkg="min_variance_calibration" type="calibrate.py"
