@@ -94,7 +94,7 @@ if __name__ == "__main__":
     # --------------------------------------------------------------------------
     # Create noisy and clean set
     gt_params = bridge.convertToMsg(initial_params)
-    noisy_params = bridge.add_param_noise(gt_params, 0.3)
+    noisy_params = bridge.add_param_noise(gt_params, 0.5)
 
     # TODO: Change this
     # Assume shoulder yaw joint is correct
@@ -145,7 +145,7 @@ if __name__ == "__main__":
 
     # --------------------------------------------------------------------------
 
-    calibration_data = bridge.add_measurement_noise(calibration_data, 0.05)
+    calibration_data = bridge.add_measurement_noise(calibration_data, 0.02)
 
     # --------------------------------------------------------------------------
     # Pass data to calibration server
